@@ -27,33 +27,20 @@ conf =
 paper = Raphael(10, 10, 1000, 1000)
 
 
-createElement = (name, x, y, params = {}, id, parameters_set)->
-  x = parseInt(x)
-  y = parseInt(y)
 
-  if name == 'HubEx'
-    el_size = 15
-    icon_size = 5
-  else
-    el_size = conf.element.size
-    icon_size = conf.icon.size
+class Element
+  constructor: (@name, @x, @y, @params = {}, @id, @parameters_set)->
+    @x = parseInt(@x)
+    @y = parseInt(@y)
 
+    if name == 'HubEx'
+      @size = 15
+      @icon_size = 5
+    else
+      @size = conf.element.size
+      @icon_size = conf.icon.size
 
-
-  img = paper.image("#{conf.icon.path}#{name}.ico", x + 4, y + 4, icon_size, icon_size)
-
-  el = paper.rect(x, y, el_size, el_size, 3).attr
-    fill: img
-    "fill-opacity": 0
-    "stroke-width": conf.element.border.size
-    stroke: conf.element.border.color
-
-
-  console.log elements_sorted[id].params
-
-  e = paper.set()
-
-  draw_dots = (type, params)->
+  draw_dots: (type, params)->
     i = 0
 
     for param of params
@@ -70,17 +57,15 @@ createElement = (name, x, y, params = {}, id, parameters_set)->
 
       text = str[0]
 
-      t = str[1]
-
-      dot_x = offset_x + x
-      dot_y = y + conf.dot.offset + i * conf.dot.indent
+      dot_x = offset_x + @x
+      dot_y = @y + conf.dot.offset + i * conf.dot.indent
 
       dot_color = conf.dot.color
       border_color = conf.dot.border.color
 
       if param.substr(0,1) == '@' or  param.substr(0,1) == '+'
-        dot_x = x + conf.dot.offset - 1 + i * conf.dot.indent
-        dot_y = y
+        dot_x = @x + conf.dot.offset - 1 + i * conf.dot.indent
+        dot_y = @y
 
         dot_color = conf.dot.color2
         border_color = conf.dot.border.color2
@@ -119,46 +104,54 @@ createElement = (name, x, y, params = {}, id, parameters_set)->
         dots_helper.show()
       ,->
         this.attr
-            fill: dot_color
-            r: conf.dot.radius.min
+          fill: dot_color
+          r: conf.dot.radius.min
           dots_helper.hide()
       )
 
-      e.push dot
+      @element.push dot
       i++
+  save: ->
+    @icon = paper.image("#{conf.icon.path}#{@name}.ico", @x + 4, @y + 4, @icon_size, @icon_size)
 
-  draw_dots('do', elements_sorted[id].ini.Methods)
-  draw_dots('on', elements_sorted[id].ini.Methods)
+    @rect = paper.rect(@x, @y, @size, @size, 3).attr
+      fill: @icon
+      "fill-opacity": 0
+      "stroke-width": conf.element.border.size
+      stroke: conf.element.border.color
 
-  draw_dots('@', elements_sorted[id].ini.Property)
-  draw_dots('+', elements_sorted[id].ini.Property)
-
-  #
-
-  #line = paper.path("M#{x},#{y+2}c-50,10,50,110,100,100").attr({fill: "none", "stroke-width": 2})
-
-  e.push el, img #, line
-
-  # drag & drop
-  start = ->
-    this.ox = 0
-    this.oy = 0
-
-    if this.type != 'circle'
-      this.animate("fill-opacity": .3, 300, ">")
-
-  move = (dx, dy)->
-    e.translate(  dx - this.ox, dy - this.oy);
-    this.ox = dx;
-    this.oy = dy;
+    @element = paper.set()
 
 
-  up = ->
-    if this.type != 'circle'
-      this.animate( "fill-opacity": 0, 300, ">")
+    @draw_dots('do', elements_sorted[@id].ini.Methods)
+    @draw_dots('on', elements_sorted[@id].ini.Methods)
 
-  # set group params
-  paper.set(e).drag(move, start, up).toBack()
+    @draw_dots('@', elements_sorted[@id].ini.Property)
+    @draw_dots('+', elements_sorted[@id].ini.Property)
+
+    #
+    @element.push @rect, @icon #, line
+
+    # drag & drop
+    start = ->
+      this.ox = 0
+      this.oy = 0
+
+      if this.type != 'circle'
+        this.animate("fill-opacity": .3, 300, ">")
+
+    move = (dx, dy)->
+      @element.translate(  dx - this.ox, dy - this.oy);
+      this.ox = dx;
+      this.oy = dy;
+
+
+    up = ->
+      if this.type != 'circle'
+        this.animate( "fill-opacity": 0, 300, ">")
+
+    # set group params
+    paper.set(@element).drag(move, start, up).toBack()
 
 
 #DOT HELPER
@@ -189,6 +182,6 @@ $ ->
 
 
   for el in elements
-    console.log el
-    createElement(el.element[0], el.element[2], el.element[3], el.params, el.element[1], el.params)
+    element = new Element el.element[0], el.element[2], el.element[3], el.params, el.element[1], el.params
+    element.save()
 
