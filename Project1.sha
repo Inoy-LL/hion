@@ -1,0 +1,53 @@
+Make(delphi)
+ver(4.04 build 185)
+Add(MainForm,6560,84,154)
+{
+ Left=21
+ Top=105
+ Font=[Arial,8,0,0,1]
+}
+Add(Edit,92657,315,91)
+{
+ Left=80
+ Top=5
+ Width=305
+ Height=21
+ Font=[Arial,8,0,0,1]
+}
+Add(Button,97963,189,161)
+{
+ Left=10
+ Top=10
+ Font=[Arial,8,0,0,1]
+ Caption="Red"
+ Data=Integer(255)
+ link(onClick,4665:doValue,[(270,167)(270,139)(312,139)(312,146)])
+}
+Add(RichEdit,23272,315,196)
+{
+ Left=80
+ Top=35
+ Width=305
+ Height=235
+ Font=[Arial,8,0,0,1]
+ ScrollBars=3
+ link(Str,92657:Text,[])
+ link(Color,4665:Value,[])
+ link(Style,13914:Value,[(335,181)(377,181)])
+}
+Add(Memory,13914,371,140)
+{
+ Default=Integer(3)
+}
+Add(Memory,4665,322,140)
+{
+}
+Add(Button,70644,189,224)
+{
+ Left=10
+ Top=70
+ Font=[Arial,8,0,0,1]
+ Caption="Save"
+ Data=String(d:\\t1.rtf)
+ link(onClick,23272:doSave,[])
+}
