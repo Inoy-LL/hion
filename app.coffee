@@ -88,25 +88,15 @@ class Element
           fill: conf.dot.hover_color
           r: conf.dot.radius.max
 
-        #helper_box = dots_helper.getBBox()
-        # layer xy position + offset helper - this dot position
-        #dots_helper.translate(  e.layerX + conf.dot.radius.max*2 - helper_box.x , e.layerY - conf.dot.radius.max*2  - helper_box.y)
-        dots_helper.attr 'text', this.text
-        dots_helper.attr 'width', this.text.length * 6
+        Helper.setText(this.text)
+        Helper.move(e.layerX, e.layerY)
+        Helper.show()
 
-        dots_helper[0].attr 'x', e.layerX + conf.dot.radius.max*2
-        dots_helper[0].attr 'y', e.layerY - conf.dot.radius.max*2
-
-        dots_helper[1].attr 'x', e.layerX + conf.dot.radius.max*2 + this.text.length * 3
-        dots_helper[1].attr 'y', e.layerY - conf.dot.radius.max*2 + 9
-
-
-        dots_helper.show()
       ,->
         this.attr
           fill: dot_color
           r: conf.dot.radius.min
-          dots_helper.hide()
+        Helper.hide()
       )
 
       @element.push dot
@@ -122,7 +112,7 @@ class Element
 
     @element = paper.set()
 
-
+    #Todo: криво, передалть
     @draw_dots('do', elements_sorted[@id].ini.Methods)
     @draw_dots('on', elements_sorted[@id].ini.Methods)
 
@@ -132,6 +122,7 @@ class Element
     #
     @element.push @rect, @icon #, line
 
+    element = @element
     # drag & drop
     start = ->
       this.ox = 0
@@ -141,7 +132,7 @@ class Element
         this.animate("fill-opacity": .3, 300, ">")
 
     move = (dx, dy)->
-      @element.translate(  dx - this.ox, dy - this.oy);
+      element.translate(  dx - this.ox, dy - this.oy);
       this.ox = dx;
       this.oy = dy;
 
@@ -155,10 +146,36 @@ class Element
 
 
 #DOT HELPER
-paper.setStart()
-paper.rect(0, 0, 1, 20, 4).attr("fill": "#aaa")
-paper.text(0, 10, "").attr("fill": "black")
-dots_helper = paper.setFinish().toFront().hide()
+class Helper
+  helper = null
+
+  @get: ->
+    if not @helper?
+      paper.setStart()
+      paper.rect(0, 0, 1, 20, 4).attr("fill": "#aaa")
+      paper.text(0, 10, "").attr("fill": "black")
+      @helper = paper.setFinish().toFront().hide()
+
+    @helper
+  @setText: (text)->
+    @text = text
+    @get().attr 'text', text
+    @get().attr 'width', text.length * 6
+    @get().show()
+
+  @move: (layerX, layerY)->
+    @get()[0].attr 'x', layerX + conf.dot.radius.max*2
+    @get()[0].attr 'y', layerY - conf.dot.radius.max*2
+
+    @get()[1].attr 'x', layerX + conf.dot.radius.max*2 + @text.length * 3
+    @get()[1].attr 'y', layerY - conf.dot.radius.max*2 + 9
+
+  @hide: ->
+    @get().hide()
+  @show: ->
+    @get().show()
+
+  constructor: ()->
 
 
 elements_sorted = {}
