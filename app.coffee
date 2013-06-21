@@ -132,8 +132,6 @@ class Element
 
     @element = paper.set()
 
-    console.log @
-
     #Todo: криво, передалть
     @draw_dots(@ini.Methods, @ini.Property)
     #@draw_dots('on', elements_sorted[@id].ini.Methods)

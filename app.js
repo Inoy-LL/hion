@@ -126,7 +126,6 @@
         stroke: conf.element.border.color
       });
       this.element = paper.set();
-      console.log(this);
       this.draw_dots(this.ini.Methods, this.ini.Property);
       this.element.push(this.rect, this.icon);
       element = this.element;
