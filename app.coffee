@@ -3,7 +3,6 @@ conf =
     radius:
       min: 2.5
       max: 5
-
     color: "#090"
     color2: "#900"
     border:
@@ -29,9 +28,12 @@ paper = Raphael(10, 10, 1000, 1000)
 
 
 class Element
-  constructor: (@name, @x, @y, @params = {}, @id, @parameters_set)->
-    @x = parseInt(@x)
-    @y = parseInt(@y)
+  constructor: (@name, x, y, @params = {}, @id, @ini)->
+    @x = parseInt(x)
+    @y = parseInt(y)
+
+
+    @ini = ini
 
     if name == 'HubEx'
       @size = 15
@@ -40,45 +42,63 @@ class Element
       @size = conf.element.size
       @icon_size = conf.icon.size
 
-  draw_dots: (type, params)->
-    i = 0
+  draw_dots: (params, property)->
+    #i = 0
+
+    i = [0,0,0,0,0,0,0]
 
     for param of params
-      if param.substr(0,2) != type and param.substr(0,1) != type
+      #console.log params
+      if param.substr(0,1) == "*"
         continue
 
+      str = params[param].split('|')
+      types = ['', 'do', 'on', 'top', 'bot']
+
+      type_num = parseInt str[1]
+      type = types[ type_num ]
 
       offset_x = 0
 
       if type == 'on'
         offset_x = conf.element.size
 
-      str = params[param].split('|')
+
 
       text = str[0]
 
       dot_x = offset_x + @x
-      dot_y = @y + conf.dot.offset + i * conf.dot.indent
+      dot_y = @y + conf.dot.offset + i[type_num] * conf.dot.indent
 
       dot_color = conf.dot.color
       border_color = conf.dot.border.color
 
-      if param.substr(0,1) == '@' or  param.substr(0,1) == '+'
-        dot_x = @x + conf.dot.offset - 1 + i * conf.dot.indent
+      if type == 'top' or  type == 'bot'
+        dot_x = @x + conf.dot.offset - 1 + i[type_num] * conf.dot.indent
         dot_y = @y
+
 
         dot_color = conf.dot.color2
         border_color = conf.dot.border.color2
-        param = param.substr(1)
 
-        if type == '+'
+        if type == 'top'
           dot_y+=conf.element.size
+
+
+      if property[param] != undefined
+        #dot_color = property[param].split('|') # нестандартные цвета из свойств
+        dot_color = "#FFFF00"
+        border_color = "#DAA520"
+
+
+
 
       dot = paper.circle( dot_x,dot_y, conf.dot.radius.min).attr
         fill: dot_color
         stroke: border_color
         "stroke-width": 1
       dot.text = "#{param}: #{text}"
+      dot.default_color = dot_color
 
 
 
@@ -94,13 +114,13 @@ class Element
 
       ,->
         this.attr
-          fill: dot_color
+          fill: this.default_color
           r: conf.dot.radius.min
         Helper.hide()
       )
 
       @element.push dot
-      i++
+      i[type_num]++
   save: ->
     @icon = paper.image("#{conf.icon.path}#{@name}.ico", @x + 4, @y + 4, @icon_size, @icon_size)
 
@@ -112,12 +132,14 @@ class Element
 
     @element = paper.set()
 
-    #Todo: криво, передалть
-    @draw_dots('do', elements_sorted[@id].ini.Methods)
-    @draw_dots('on', elements_sorted[@id].ini.Methods)
+    console.log @
 
-    @draw_dots('@', elements_sorted[@id].ini.Property)
-    @draw_dots('+', elements_sorted[@id].ini.Property)
+    #Todo: криво, передалть
+    @draw_dots(@ini.Methods, @ini.Property)
+    #@draw_dots('on', elements_sorted[@id].ini.Methods)
+
+    #@draw_dots('@', elements_sorted[@id].ini.Property)
+    #@draw_dots('+', elements_sorted[@id].ini.Property)
 
     #
     @element.push @rect, @icon #, line
@@ -177,28 +199,78 @@ class Helper
 
   constructor: ()->
 
+links = []
 
-elements_sorted = {}
+class Sha
+  @elements = []
+  @parse: (sha)->
+    for i of sha
+      if not make and not selection and sha.substr(i, 4) is 'Make'
+        make_start = true
+      else
+        if make_start and not selection and sha[i] is '('
+          make_start = i
+        else
+          if not make and make_start and sha[i] is ')'
+            make = sha.substr(make_start, i - make_start).substr 1
+
+
+      if not selection and sha.substr(i, 3) is 'Add'
+        selection = true
+      else
+        if selection and not element and not element_start and sha[i] is '('
+          element_start = i
+        else
+          if selection and not element and element_start and sha[i] is ')'
+            element = sha.substr(element_start, i - element_start).substr 1
+          else
+            if selection and element and sha[i] is '{'
+              params_start = i
+            else
+              if selection and element and sha[i] is '"'
+                quote = not quote
+              else
+                if selection and element and not quote and sha[i] is '}'
+                  params = sha.substr(params_start, i - params_start).substr(1).split '\n'
+                  prop = []
+                  for j of params
+                    param = params[j].trim('   \t\r').split('=', 2)
+                    prop.push
+                      name: param[0]
+                      value: param[1]
+
+                  [name, id, x, y] = element.split ","
+
+                  result = ""
+                  $.ajax( url: "/delphi/conf/#{name}.ini", async: false, dataType : "text" ).success( (data)->
+                    result = parseINIString( data)
+                  )
+
+                  @elements.push
+                    name: name
+                    id: id
+                    x: x
+                    y: y
+                    params: prop
+                    ini: result
+
+
+
+                  selection = false
+                  quote = false
+                  element = false
+                  element_start = false
+                  params_start = false
+    @elements
+
 
 $ ->
 
-
-  for i of elements
-    element = elements[i].element
-    params = elements[i].params
-
-    result = ""
-
-    $.ajax( url: "/delphi/conf/#{element[0]}.ini", async: false, dataType : "text" ).success( (data)->
-
-      result = parseINIString( data)
-    )
-
-    elements_sorted[element[1]] = {name: element[0], id: element[1], params: params, ini: result}
+sha = $('textarea#sha_viewer').val()
+elements = Sha.parse(sha)
 
 
-
-  for el in elements
-    element = new Element el.element[0], el.element[2], el.element[3], el.params, el.element[1], el.params
+for el in elements
+    element = new Element el.name, el.x, el.y, el.params, el.id, el.ini
     element.save()
 
