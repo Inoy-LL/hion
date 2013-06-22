@@ -31,8 +31,6 @@ class Element
   constructor: (@name, x, y, @params = {}, @id, @ini)->
     @x = parseInt(x)
     @y = parseInt(y)
-
-
     @ini = ini
 
     if name == 'HubEx'
@@ -48,9 +46,10 @@ class Element
     i = [0,0,0,0,0,0,0]
 
     for param of params
-      #console.log params
+
       if param.substr(0,1) == "*"
         continue
+
 
       str = params[param].split('|')
       types = ['', 'do', 'on', 'top', 'bot']
@@ -99,7 +98,8 @@ class Element
         "stroke-width": 1
       dot.text = "#{param}: #{text}"
       dot.default_color = dot_color
-
+      dot.name = param
+      dot.eid = @id
 
 
       # helper dots
@@ -121,6 +121,14 @@ class Element
 
       @element.push dot
       i[type_num]++
+
+    for param in @params
+      if param.name.substr(0, 4) is "link"
+        link = param.name.substr(5, param.name.length - 6)
+        if link.substr(0, 2) == 'on'
+          link = link.replace(/\)\(/g, ',').replace(/\[\(/g, '').replace(/\)\]/g, '').split ','
+          link.eid = @id
+          links.push link
   save: ->
     @icon = paper.image("#{conf.icon.path}#{@name}.ico", @x + 4, @y + 4, @icon_size, @icon_size)
 
@@ -129,15 +137,11 @@ class Element
       "fill-opacity": 0
       "stroke-width": conf.element.border.size
       stroke: conf.element.border.color
+    @rect.eid = @id
 
     @element = paper.set()
 
-    #Todo: криво, передалть
     @draw_dots(@ini.Methods, @ini.Property)
-    #@draw_dots('on', elements_sorted[@id].ini.Methods)
-
-    #@draw_dots('@', elements_sorted[@id].ini.Property)
-    #@draw_dots('+', elements_sorted[@id].ini.Property)
 
     #
     @element.push @rect, @icon #, line
@@ -148,13 +152,29 @@ class Element
       this.ox = 0
       this.oy = 0
 
+      el = elements[this.eid].element.items
+      for e in el
+        if e.type is "path"
+          xy = e.attr('path')[1]
+          this.line = e: e, x: xy[1], y: xy[2]
+
       if this.type != 'circle'
         this.animate("fill-opacity": .3, 300, ">")
 
     move = (dx, dy)->
+
       element.translate(  dx - this.ox, dy - this.oy);
       this.ox = dx;
       this.oy = dy;
+
+      if this.line
+        path = this.line.e.attr('path')
+        path[1][1] = this.line.x
+        path[1][2] = this.line.y
+
+        console.log this.line
+
+        this.line.e.attr 'path': path
 
 
     up = ->
@@ -197,7 +217,7 @@ class Helper
 
   constructor: ()->
 
-links = []
+@links = []
 
 class Sha
   @elements = []
@@ -232,10 +252,14 @@ class Sha
                   params = sha.substr(params_start, i - params_start).substr(1).split '\n'
                   prop = []
                   for j of params
+                    if params[j].trim('   \t\r') == ""
+                      continue
                     param = params[j].trim('   \t\r').split('=', 2)
+
                     prop.push
                       name: param[0]
                       value: param[1]
+
 
                   [name, id, x, y] = element.split ","
 
@@ -267,8 +291,37 @@ $ ->
 sha = $('textarea#sha_viewer').val()
 elements = Sha.parse(sha)
 
-
 for el in elements
-    element = new Element el.name, el.x, el.y, el.params, el.id, el.ini
-    element.save()
+    elements[el.id] = new Element el.name, el.x, el.y, el.params, el.id, el.ini
+    elements[el.id].save()
 
+for link in links
+  items = elements[link.eid].element.items
+  for item in items
+    if item.name and item.name == link[0]
+       bbox = item.getBBox()
+       start_x = bbox.x + conf.dot.radius.min
+       start_y = bbox.y + conf.dot.radius.min
+       [stop_id, stop_name] = link[1].split ':'
+
+       for item2 in elements[stop_id].element.items
+         if item2.name and item2.name == stop_name
+          bbox = item2.getBBox()
+          stop_x = bbox.x + conf.dot.radius.min
+          stop_y = bbox.y + conf.dot.radius.min
+
+          l = paper.path("M#{start_x}, #{start_y} L#{stop_x}, #{stop_y}")
+          l.attr
+            stroke: "blue"
+            "stroke-width": 2
+            fill: "none"
+
+          elements[link.eid].element.push l
+
+          item2.toFront()
+          item.toFront()
+
+
+
+          break
+    break
