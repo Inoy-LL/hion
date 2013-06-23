@@ -23,7 +23,9 @@ conf =
 
 
 
-paper = Raphael(10, 10, 1000, 1000)
+paper = Raphael(10, 10, 1000, 500)
+
+paper.canvas.id = "canvas"
 
 
 
@@ -208,6 +210,9 @@ class Element
     # set group params
     paper.set(@element).drag(move, start, up).toBack()
 
+    paper.renderfix()
+    paper.safari()
+
 
   #paper.path("M12,14c-50,100,50,110,0,190").attr({fill: "none", "stroke-width": 2})
 
@@ -312,44 +317,54 @@ class Sha
                   params_start = false
     @elements
 
-$ ->
-sha = $('textarea#sha_viewer').val()
-elements = Sha.parse(sha)
+elements = []
 
-for el in elements
+@clearAll = ->
+  elements = []
+  links = []
+  Sha.elements = []
+  paper.clear()
+
+@drawAll = ->
+  sha = $('textarea#sha_viewer').val()
+  elements = Sha.parse(sha)
+
+  for el in elements
     elements[el.id] = new Element el.name, el.x, el.y, el.params, el.id, el.ini
     elements[el.id].save()
 
-for link in links
-  items = elements[link.eid].element.items
-  for item in items
-    if item.name and item.name == link[0]
-       bbox = item.getBBox()
-       start_x = bbox.x + conf.dot.radius.min
-       start_y = bbox.y + conf.dot.radius.min
-       [stop_id, stop_name] = link[1].split ':'
+  for link in links
+    items = elements[link.eid].element.items
+    for item in items
+      if item.name and item.name == link[0]
+        bbox = item.getBBox()
+        start_x = bbox.x + conf.dot.radius.min
+        start_y = bbox.y + conf.dot.radius.min
+        [stop_id, stop_name] = link[1].split ':'
 
-       for item2 in elements[stop_id].element.items
-         if item2.name and item2.name == stop_name
-          bbox = item2.getBBox()
-          stop_x = bbox.x + conf.dot.radius.min
-          stop_y = bbox.y + conf.dot.radius.min
+        for item2 in elements[stop_id].element.items
+          if item2.name and item2.name == stop_name
+            bbox = item2.getBBox()
+            stop_x = bbox.x + conf.dot.radius.min
+            stop_y = bbox.y + conf.dot.radius.min
 
-          l = paper.path("M#{start_x},#{start_y},S#{stop_x-10},#{stop_y/0.95},#{stop_x},#{stop_y}")
-          l.attr
-            stroke: "blue"
-            "stroke-width": 2
-            fill: "none"
+            l = paper.path("M#{start_x},#{start_y},S#{stop_x-10},#{stop_y/0.95},#{stop_x},#{stop_y}")
+            l.attr
+              stroke: "blue"
+              "stroke-width": 2
+              fill: "none"
 
-          l.start_id = link.eid
-          l.stop_id = stop_id
+            l.start_id = link.eid
+            l.stop_id = stop_id
 
-          elements[link.eid].element.push l
-          elements[stop_id].element.push l
+            elements[link.eid].element.push l
+            elements[stop_id].element.push l
 
-          item2.toFront()
-          item.toFront()
+            item2.toFront()
+            item.toFront()
 
 
-          break
-    break
+            break
+      break
+
+drawAll()

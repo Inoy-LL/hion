@@ -7,7 +7,28 @@
     <style type="text/css">
         .props {
             position: fixed;
+            z-index: 100;
+        }
 
+        table>thead {
+            background-color: white;
+        }
+
+        #sha_viewer {
+            position: fixed;
+            top: 520px;
+            left: 10px;
+            width: 1000px;
+        }
+
+        #redraw {
+            position: fixed;
+            top: 520px;
+            left: 300px;
+        }
+
+        #canvas {
+            background: url("background.jpg");
         }
     </style>
     <div class="props">
@@ -27,7 +48,7 @@
         </table>
     </div>
 
-<textarea name="sha" id="sha_viewer" cols="30" rows="10" style="width: 100%;display: none">
+<textarea name="sha" id="sha_viewer" cols="30" rows="10">
     Add(MainForm,6560,84,154)
     {
     Left=21
@@ -81,6 +102,7 @@
     }
 
 </textarea>
+    <button class="btn" id="redraw" onclick="clearAll();drawAll()">redraw</button>
 
     <script type="text/javascript" src="raphael-min.js"></script>
     <script type="text/javascript" src="http://yandex.st/jquery/1.8.3/jquery.min.js"></script>
