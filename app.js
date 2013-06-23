@@ -45,6 +45,10 @@
     }
   };
 
+  if ("<?='true'?>" === true) {
+    conf.icon.path = "/delphi_utf/icon/";
+  }
+
   paper = Raphael(10, 10, 1000, 500);
 
   paper.canvas.id = "canvas";
