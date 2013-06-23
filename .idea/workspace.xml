@@ -6,7 +6,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6d3ef65-dd21-4053-8596-145653f9bc3d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\canvas.iml" afterPath="" />
+      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\watcherTasks.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\workspace.xml" afterPath="" />
     </list>
     <ignored path="canvas.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -15,7 +21,7 @@
     <file path="/sha.js" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371449654445" ignored="false" />
     <file path="/.htaccess" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371455046665" ignored="false" />
     <file path="/dummy.xml" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371710121807" ignored="false" />
-    <file path="/Dummy.txt" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1372000453000" ignored="false" />
+    <file path="/Dummy.txt" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1372000487902" ignored="false" />
     <file path="/.gitignore" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999546882" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -280,7 +286,11 @@
       <created>1372000456167</created>
       <updated>1372000456167</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="-">
+      <created>1372000491274</created>
+      <updated>1372000491274</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
