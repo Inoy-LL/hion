@@ -25,6 +25,8 @@ conf =
   icon:
     path: "/delphi/icon/"
     size: 24
+  conf:
+    path: "/delphi/conf/"
 
   link:
     color:
@@ -33,7 +35,7 @@ conf =
     size: 2
 
 if "<?='true'?>" != true
-  conf.icon.path = "/delphi_utf/icon/"
+  conf.conf.path = "/delphi_utf/conf/"
 
 
 
@@ -324,7 +326,7 @@ class Sha
                   [name, id, x, y] = element.split ","
 
                   result = ""
-                  $.ajax( url: "/delphi/conf/#{name}.ini", async: false, dataType : "text" ).success( (data)->
+                  $.ajax( url: "#{conf.conf.path}#{name}.ini", async: false, dataType : "text" ).success( (data)->
                     result = parseINIString( data)
                   )
 

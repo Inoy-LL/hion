@@ -36,6 +36,9 @@
       path: "/delphi/icon/",
       size: 24
     },
+    conf: {
+      path: "/delphi/conf/"
+    },
     link: {
       color: {
         vars: 'blue',
@@ -46,7 +49,7 @@
   };
 
   if ("<?='true'?>" !== true) {
-    conf.icon.path = "/delphi_utf/icon/";
+    conf.conf.path = "/delphi_utf/conf/";
   }
 
   paper = Raphael(10, 10, 1000, 500);
@@ -348,7 +351,7 @@
                     _ref = element.split(","), name = _ref[0], id = _ref[1], x = _ref[2], y = _ref[3];
                     result = "";
                     $.ajax({
-                      url: "/delphi/conf/" + name + ".ini",
+                      url: "" + conf.conf.path + name + ".ini",
                       async: false,
                       dataType: "text"
                     }).success(function(data) {
