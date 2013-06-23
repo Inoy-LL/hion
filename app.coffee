@@ -17,9 +17,20 @@ conf =
       color: "#555"
       size: 1
     size: 32
+    opacity: .1
+    hover:
+      opacity: .4
+      time: 300
+
   icon:
     path: "/delphi/icon/"
     size: 24
+
+  link:
+    color:
+      vars: 'blue'
+      events: '#F00'
+    size: 2
 
 
 
@@ -51,6 +62,7 @@ class Element
 
       if param.substr(0,1) == "*"
         continue
+
 
 
       str = params[param].split('|')
@@ -136,13 +148,24 @@ class Element
 
     @rect = paper.rect(@x, @y, @size, @size, 3).attr
       fill: @icon
-      "fill-opacity": 0
+      "fill-opacity": conf.element.opacity
       "stroke-width": conf.element.border.size
       stroke: conf.element.border.color
     @rect.eid = @id
+    @rect.name = @name
 
     @element = paper.set()
     @element.eid = @id
+
+    @rect.hover( (e)->
+      Helper.setText " #{this.name} "
+      Helper.move(e.layerX, e.layerY)
+      Helper.show()
+
+    ,->
+      Helper.hide()
+    )
+
 
     @draw_dots(@ini.Methods, @ini.Property)
 
@@ -174,7 +197,9 @@ class Element
 
 
       if this.type != 'circle'
-        this.animate("fill-opacity": .3, 300, ">")
+        this.animate("fill-opacity": conf.element.hover.opacity, conf.element.hover.time, ">")
+
+
 
     move = (dx, dy)->
 
@@ -205,7 +230,7 @@ class Element
 
 
       if this.type != 'circle'
-        this.animate( "fill-opacity": 0, 300, ">")
+        this.animate( "fill-opacity": conf.element.opacity, 300, ">")
 
     # set group params
     paper.set(@element).drag(move, start, up).toBack()
@@ -334,6 +359,9 @@ elements = []
     elements[el.id].save()
 
   for link in links
+    if not elements[link.eid]
+      console.error "dots undefined тут должена быть точка, но её нет"
+      continue
     items = elements[link.eid].element.items
     for item in items
       if item.name and item.name == link[0]
@@ -353,13 +381,13 @@ elements = []
 
             l = paper.path("M#{start_x},#{start_y},S#{stop_x-10},#{stop_y/0.95},#{stop_x},#{stop_y}")
 
-            color = "blue"
+            color = conf.link.color.events
             if item.name.substr(0, 2) != "on"
-              color = "#F00"
+              color = conf.link.color.vars
 
             l.attr
               stroke: color
-              "stroke-width": 2
+              "stroke-width": conf.link.size
               fill: "none"
 
             l.start_id = link.eid
@@ -376,3 +404,30 @@ elements = []
       continue
 
 drawAll()
+
+handleFileSelect = (evt)->
+  files = evt.target.files
+  f = files[0]
+
+  if f.name.indexOf('.sha') == -1
+    alert "Это не схема!"
+    return 0
+  else
+    reader = new FileReader()
+
+  reader.onload = ((theFile)->
+    (e)->
+      span = document.getElementById('sha_viewer')
+      span.innerHTML = e.target.result
+
+      clearAll()
+      drawAll()
+  )(f)
+
+  reader.readAsText(f,"WINDOWS-1251");
+
+
+
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+
