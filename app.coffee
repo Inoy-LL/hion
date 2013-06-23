@@ -162,9 +162,13 @@ class Element
           else
             path_num = 1
 
-          xy = e.attr('path')[path_num]
+          path = e.attr('path')[path_num]
           e.path_num = path_num
-          e.stop = x: xy[1], y: xy[2]
+
+          if path_num == 1
+            e.stop = x: path[3], y: path[4]
+          else
+            e.stop = x: path[1], y: path[2]
 
 
       if this.type != 'circle'
@@ -182,7 +186,15 @@ class Element
       for e in el
         if e.type is "path"
           path = e.attr 'path'
-          path[e.path_num] = [path[e.path_num][0], e.stop.x - dx, e.stop.y - dy]
+
+          path[e.path_num][1] =  e.stop.x - dx
+          path[e.path_num][2] =  e.stop.y - dy
+
+          if path[e.path_num][0] == "S"
+            path[e.path_num][2] =  path[e.path_num][2] / 0.97
+            path[e.path_num][3] =  e.stop.x - dx
+            path[e.path_num][4] =  e.stop.y - dy
+
           e.attr path: path
 
 
@@ -195,6 +207,9 @@ class Element
 
     # set group params
     paper.set(@element).drag(move, start, up).toBack()
+
+
+  #paper.path("M12,14c-50,100,50,110,0,190").attr({fill: "none", "stroke-width": 2})
 
 
 #DOT HELPER
@@ -320,7 +335,7 @@ for link in links
           stop_x = bbox.x + conf.dot.radius.min
           stop_y = bbox.y + conf.dot.radius.min
 
-          l = paper.path("M#{start_x} #{start_y} L#{stop_x} #{stop_y}")
+          l = paper.path("M#{start_x},#{start_y},S#{stop_x-10},#{stop_y/0.95},#{stop_x},#{stop_y}")
           l.attr
             stroke: "blue"
             "stroke-width": 2

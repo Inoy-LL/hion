@@ -150,7 +150,7 @@
       this.element.push(this.rect, this.icon);
       element = this.element;
       start = function() {
-        var e, el, path_num, xy, _i, _len;
+        var e, el, path, path_num, _i, _len;
         this.ox = 0;
         this.oy = 0;
         el = elements[this.eid].element.items;
@@ -162,12 +162,19 @@
             } else {
               path_num = 1;
             }
-            xy = e.attr('path')[path_num];
+            path = e.attr('path')[path_num];
             e.path_num = path_num;
-            e.stop = {
-              x: xy[1],
-              y: xy[2]
-            };
+            if (path_num === 1) {
+              e.stop = {
+                x: path[3],
+                y: path[4]
+              };
+            } else {
+              e.stop = {
+                x: path[1],
+                y: path[2]
+              };
+            }
           }
         }
         if (this.type !== 'circle') {
@@ -187,7 +194,13 @@
           e = el[_i];
           if (e.type === "path") {
             path = e.attr('path');
-            path[e.path_num] = [path[e.path_num][0], e.stop.x - dx, e.stop.y - dy];
+            path[e.path_num][1] = e.stop.x - dx;
+            path[e.path_num][2] = e.stop.y - dy;
+            if (path[e.path_num][0] === "S") {
+              path[e.path_num][2] = path[e.path_num][2] / 0.97;
+              path[e.path_num][3] = e.stop.x - dx;
+              path[e.path_num][4] = e.stop.y - dy;
+            }
             _results.push(e.attr({
               path: path
             }));
@@ -373,7 +386,7 @@
             bbox = item2.getBBox();
             stop_x = bbox.x + conf.dot.radius.min;
             stop_y = bbox.y + conf.dot.radius.min;
-            l = paper.path("M" + start_x + " " + start_y + " L" + stop_x + " " + stop_y);
+            l = paper.path("M" + start_x + "," + start_y + ",S" + (stop_x - 10) + "," + (stop_y / 0.95) + "," + stop_x + "," + stop_y);
             l.attr({
               stroke: "blue",
               "stroke-width": 2,

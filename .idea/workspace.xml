@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/app.coffee" line="238" />
-    <bookmark url="file://$PROJECT_DIR$/app.coffee" line="185" mnemonic="3" />
+    <bookmark url="file://$PROJECT_DIR$/app.coffee" line="253" />
+    <bookmark url="file://$PROJECT_DIR$/app.coffee" line="197" mnemonic="3" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6d3ef65-dd21-4053-8596-145653f9bc3d" name="Default" comment="">
@@ -14,11 +14,11 @@
     <ignored path="canvas.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/index.html" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371710275882" ignored="false" />
-    <file path="/app.coffee" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371970974615" ignored="false" />
+    <file path="/app.coffee" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371973453620" ignored="false" />
     <file path="/sha.js" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371449654445" ignored="false" />
     <file path="/.htaccess" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371455046665" ignored="false" />
     <file path="/dummy.xml" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371710121807" ignored="false" />
-    <file path="/Dummy.txt" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371966584335" ignored="false" />
+    <file path="/Dummy.txt" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371971144075" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,11 +41,8 @@
       <file leaf-file-name="app.coffee" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="169" column="30" selection-start="3567" selection-end="3567" vertical-scroll-proportion="0.2254673">
-              <folding>
-                <element signature="e#4206#4925#0" expanded="false" />
-                <element signature="e#4950#7070#0" expanded="false" />
-              </folding>
+            <state line="155" column="40" selection-start="3233" selection-end="3233" vertical-scroll-proportion="-2.2400482">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -209,7 +206,11 @@
       <created>1371904960205</created>
       <updated>1371904960205</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="свяи перемащются вместе с элементами">
+      <created>1371971154752</created>
+      <updated>1371971154752</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -236,23 +237,23 @@
     <frame x="725" y="0" width="1195" height="1040" extended-state="0" />
     <editor active="false" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.05691964" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29818594" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5106157" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946922" sideWeight="0.9943182" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18744475" sideWeight="0.9988662" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18744475" sideWeight="0.67045456" order="0" side_tool="false" content_ui="combo" />
       <window_info id="DatabaseBrowser" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3024494" sideWeight="0.42743763" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12159091" sideWeight="0.5004082" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.0011337869" sideWeight="0.49959183" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.49959183" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.05691964" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -300,7 +301,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="add draw line" />
+    <option name="LAST_COMMIT_MESSAGE" value="свяи перемащются вместе с элементами" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -317,6 +318,7 @@
     <MESSAGE value="?" />
     <MESSAGE value="element_sorted,element,function parse sha -&gt; class Sha" />
     <MESSAGE value="add draw line" />
+    <MESSAGE value="свяи перемащются вместе с элементами" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -334,10 +336,7 @@
     <entry file="file://$PROJECT_DIR$/app.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#4206#4925#0" expanded="false" />
-            <element signature="e#4950#7070#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -351,10 +350,7 @@
     <entry file="file://$PROJECT_DIR$/app.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#4206#4925#0" expanded="false" />
-            <element signature="e#4950#7070#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -368,10 +364,7 @@
     <entry file="file://$PROJECT_DIR$/app.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#4206#4925#0" expanded="false" />
-            <element signature="e#4950#7070#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -385,20 +378,14 @@
     <entry file="file://$PROJECT_DIR$/app.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="15" selection-start="296" selection-end="296" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#4206#4925#0" expanded="false" />
-            <element signature="e#4950#7070#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#4206#4925#0" expanded="false" />
-            <element signature="e#4950#7070#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -433,11 +420,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="169" column="30" selection-start="3567" selection-end="3567" vertical-scroll-proportion="0.2254673">
-          <folding>
-            <element signature="e#4206#4925#0" expanded="false" />
-            <element signature="e#4950#7070#0" expanded="false" />
-          </folding>
+        <state line="155" column="40" selection-start="3233" selection-end="3233" vertical-scroll-proportion="-2.2400482">
+          <folding />
         </state>
       </provider>
     </entry>
