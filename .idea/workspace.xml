@@ -6,8 +6,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6d3ef65-dd21-4053-8596-145653f9bc3d" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.coffee" afterPath="$PROJECT_DIR$/app.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.map" afterPath="$PROJECT_DIR$/app.map" />
     </list>
     <ignored path="canvas.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -16,7 +17,7 @@
     <file path="/sha.js" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371449654445" ignored="false" />
     <file path="/.htaccess" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371455046665" ignored="false" />
     <file path="/dummy.xml" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371710121807" ignored="false" />
-    <file path="/Dummy.txt" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999769789" ignored="false" />
+    <file path="/Dummy.txt" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999859737" ignored="false" />
     <file path="/.gitignore" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999546882" ignored="false" />
     <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999853958" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -41,7 +42,7 @@
       <file leaf-file-name="app.coffee" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="399" column="26" selection-start="9473" selection-end="9473" vertical-scroll-proportion="0.17973462">
+            <state line="429" column="84" selection-start="10003" selection-end="10003" vertical-scroll-proportion="0.8359469">
               <folding>
                 <element signature="e#5810#7930#0" expanded="false" />
               </folding>
@@ -266,7 +267,11 @@
       <created>1371999775624</created>
       <updated>1371999775624</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="-">
+      <created>1371999866549</created>
+      <updated>1371999866549</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -299,7 +304,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946922" sideWeight="0.9943182" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18744475" sideWeight="0.6715909" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18744475" sideWeight="0.6715909" order="0" side_tool="false" content_ui="combo" />
       <window_info id="DatabaseBrowser" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3024494" sideWeight="0.42743763" order="2" side_tool="true" content_ui="tabs" />
@@ -492,7 +497,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="399" column="26" selection-start="9473" selection-end="9473" vertical-scroll-proportion="0.17973462">
+        <state line="429" column="84" selection-start="10003" selection-end="10003" vertical-scroll-proportion="0.8359469">
           <folding>
             <element signature="e#5810#7930#0" expanded="false" />
           </folding>
