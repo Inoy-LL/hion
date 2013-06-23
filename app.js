@@ -122,13 +122,9 @@
         param = _ref[_i];
         if (param.name.substr(0, 4) === "link") {
           link = param.name.substr(5, param.name.length - 6);
-          if (link.substr(0, 2) === 'on') {
-            link = link.replace(/\)\(/g, ',').replace(/\[\(/g, '').replace(/\)\]/g, '').split(',');
-            link.eid = this.id;
-            _results.push(links.push(link));
-          } else {
-            _results.push(void 0);
-          }
+          link = link.replace(/\)\(/g, ',').replace(/\[\(/g, '').replace(/\)\]/g, '').split(',');
+          link.eid = this.id;
+          _results.push(links.push(link));
         } else {
           _results.push(void 0);
         }
@@ -372,7 +368,7 @@
   };
 
   this.drawAll = function() {
-    var bbox, el, item, item2, items, l, link, sha, start_x, start_y, stop_id, stop_name, stop_x, stop_y, _i, _j, _len, _len1, _results;
+    var bbox, color, el, item, item2, items, l, link, sha, start_x, start_y, stop_id, stop_name, stop_x, stop_y, _i, _j, _len, _len1, _results;
     sha = $('textarea#sha_viewer').val();
     elements = Sha.parse(sha);
     for (_i = 0, _len = elements.length; _i < _len; _i++) {
@@ -402,8 +398,12 @@
                 stop_x = bbox.x + conf.dot.radius.min;
                 stop_y = bbox.y + conf.dot.radius.min;
                 l = paper.path("M" + start_x + "," + start_y + ",S" + (stop_x - 10) + "," + (stop_y / 0.95) + "," + stop_x + "," + stop_y);
+                color = "blue";
+                if (item.name.substr(0, 2) !== "on") {
+                  color = "#F00";
+                }
                 l.attr({
-                  stroke: "blue",
+                  stroke: color,
                   "stroke-width": 2,
                   fill: "none"
                 });
@@ -413,11 +413,11 @@
                 elements[stop_id].element.push(l);
                 item2.toFront();
                 item.toFront();
-                break;
+                continue;
               }
             }
           }
-          break;
+          continue;
         }
         return _results1;
       })());

@@ -127,10 +127,10 @@ class Element
     for param in @params
       if param.name.substr(0, 4) is "link"
         link = param.name.substr(5, param.name.length - 6)
-        if link.substr(0, 2) == 'on'
-          link = link.replace(/\)\(/g, ',').replace(/\[\(/g, '').replace(/\)\]/g, '').split ','
-          link.eid = @id
-          links.push link
+        #if link.substr(0, 2) == 'on'
+        link = link.replace(/\)\(/g, ',').replace(/\[\(/g, '').replace(/\)\]/g, '').split ','
+        link.eid = @id
+        links.push link
   save: ->
     @icon = paper.image("#{conf.icon.path}#{@name}.ico", @x + 4, @y + 4, @icon_size, @icon_size)
 
@@ -342,15 +342,23 @@ elements = []
         start_y = bbox.y + conf.dot.radius.min
         [stop_id, stop_name] = link[1].split ':'
 
+
+
         for item2 in elements[stop_id].element.items
           if item2.name and item2.name == stop_name
             bbox = item2.getBBox()
             stop_x = bbox.x + conf.dot.radius.min
             stop_y = bbox.y + conf.dot.radius.min
 
+
             l = paper.path("M#{start_x},#{start_y},S#{stop_x-10},#{stop_y/0.95},#{stop_x},#{stop_y}")
+
+            color = "blue"
+            if item.name.substr(0, 2) != "on"
+              color = "#F00"
+
             l.attr
-              stroke: "blue"
+              stroke: color
               "stroke-width": 2
               fill: "none"
 
@@ -364,7 +372,7 @@ elements = []
             item.toFront()
 
 
-            break
-      break
+            continue
+      continue
 
 drawAll()
