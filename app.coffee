@@ -140,6 +140,7 @@ class Element
     @rect.eid = @id
 
     @element = paper.set()
+    @element.eid = @id
 
     @draw_dots(@ini.Methods, @ini.Property)
 
@@ -152,32 +153,43 @@ class Element
       this.ox = 0
       this.oy = 0
 
+      #find all lines and save path stop
       el = elements[this.eid].element.items
       for e in el
         if e.type is "path"
-          xy = e.attr('path')[1]
-          this.line = e: e, x: xy[1], y: xy[2]
+          if e.stop_id == this.eid
+            path_num = 0
+          else
+            path_num = 1
+
+          xy = e.attr('path')[path_num]
+          e.path_num = path_num
+          e.stop = x: xy[1], y: xy[2]
+
 
       if this.type != 'circle'
         this.animate("fill-opacity": .3, 300, ">")
 
     move = (dx, dy)->
 
+
       element.translate(  dx - this.ox, dy - this.oy);
       this.ox = dx;
       this.oy = dy;
 
-      if this.line
-        path = this.line.e.attr('path')
-        path[1][1] = this.line.x
-        path[1][2] = this.line.y
+      #untranslate line path
+      el = elements[this.eid].element.items
+      for e in el
+        if e.type is "path"
+          path = e.attr 'path'
+          path[e.path_num] = [path[e.path_num][0], e.stop.x - dx, e.stop.y - dy]
+          e.attr path: path
 
-        console.log this.line
-
-        this.line.e.attr 'path': path
 
 
     up = ->
+
+
       if this.type != 'circle'
         this.animate( "fill-opacity": 0, 300, ">")
 
@@ -285,9 +297,7 @@ class Sha
                   params_start = false
     @elements
 
-
 $ ->
-
 sha = $('textarea#sha_viewer').val()
 elements = Sha.parse(sha)
 
@@ -310,17 +320,20 @@ for link in links
           stop_x = bbox.x + conf.dot.radius.min
           stop_y = bbox.y + conf.dot.radius.min
 
-          l = paper.path("M#{start_x}, #{start_y} L#{stop_x}, #{stop_y}")
+          l = paper.path("M#{start_x} #{start_y} L#{stop_x} #{stop_y}")
           l.attr
             stroke: "blue"
             "stroke-width": 2
             fill: "none"
 
+          l.start_id = link.eid
+          l.stop_id = stop_id
+
           elements[link.eid].element.push l
+          elements[stop_id].element.push l
 
           item2.toFront()
           item.toFront()
-
 
 
           break

@@ -145,20 +145,26 @@
       });
       this.rect.eid = this.id;
       this.element = paper.set();
+      this.element.eid = this.id;
       this.draw_dots(this.ini.Methods, this.ini.Property);
       this.element.push(this.rect, this.icon);
       element = this.element;
       start = function() {
-        var e, el, xy, _i, _len;
+        var e, el, path_num, xy, _i, _len;
         this.ox = 0;
         this.oy = 0;
         el = elements[this.eid].element.items;
         for (_i = 0, _len = el.length; _i < _len; _i++) {
           e = el[_i];
           if (e.type === "path") {
-            xy = e.attr('path')[1];
-            this.line = {
-              e: e,
+            if (e.stop_id === this.eid) {
+              path_num = 0;
+            } else {
+              path_num = 1;
+            }
+            xy = e.attr('path')[path_num];
+            e.path_num = path_num;
+            e.stop = {
               x: xy[1],
               y: xy[2]
             };
@@ -171,19 +177,25 @@
         }
       };
       move = function(dx, dy) {
-        var path;
+        var e, el, path, _i, _len, _results;
         element.translate(dx - this.ox, dy - this.oy);
         this.ox = dx;
         this.oy = dy;
-        if (this.line) {
-          path = this.line.e.attr('path');
-          path[1][1] = this.line.x;
-          path[1][2] = this.line.y;
-          console.log(this.line);
-          return this.line.e.attr({
-            'path': path
-          });
+        el = elements[this.eid].element.items;
+        _results = [];
+        for (_i = 0, _len = el.length; _i < _len; _i++) {
+          e = el[_i];
+          if (e.type === "path") {
+            path = e.attr('path');
+            path[e.path_num] = [path[e.path_num][0], e.stop.x - dx, e.stop.y - dy];
+            _results.push(e.attr({
+              path: path
+            }));
+          } else {
+            _results.push(void 0);
+          }
         }
+        return _results;
       };
       up = function() {
         if (this.type !== 'circle') {
@@ -361,13 +373,16 @@
             bbox = item2.getBBox();
             stop_x = bbox.x + conf.dot.radius.min;
             stop_y = bbox.y + conf.dot.radius.min;
-            l = paper.path("M" + start_x + ", " + start_y + " L" + stop_x + ", " + stop_y);
+            l = paper.path("M" + start_x + " " + start_y + " L" + stop_x + " " + stop_y);
             l.attr({
               stroke: "blue",
               "stroke-width": 2,
               fill: "none"
             });
+            l.start_id = link.eid;
+            l.stop_id = stop_id;
             elements[link.eid].element.push(l);
+            elements[stop_id].element.push(l);
             item2.toFront();
             item.toFront();
             break;
