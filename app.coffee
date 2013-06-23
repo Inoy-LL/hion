@@ -426,6 +426,5 @@ handleFileSelect = (evt)->
 
   reader.readAsText(f,"WINDOWS-1251");
 
-
 document.getElementById('files').addEventListener('change', handleFileSelect, false)
 
