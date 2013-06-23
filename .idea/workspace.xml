@@ -6,8 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6d3ef65-dd21-4053-8596-145653f9bc3d" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.gitignore" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="C:\open_server\OpenServer\domains\canvas\.idea\workspace.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.coffee" afterPath="$PROJECT_DIR$/app.coffee" />
     </list>
     <ignored path="canvas.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -16,8 +16,9 @@
     <file path="/sha.js" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371449654445" ignored="false" />
     <file path="/.htaccess" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371455046665" ignored="false" />
     <file path="/dummy.xml" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371710121807" ignored="false" />
-    <file path="/Dummy.txt" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999693135" ignored="false" />
+    <file path="/Dummy.txt" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999769789" ignored="false" />
     <file path="/.gitignore" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999546882" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="e6d3ef65-dd21-4053-8596-145653f9bc3d" time="1371999853958" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +41,7 @@
       <file leaf-file-name="app.coffee" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="400" column="0" selection-start="9474" selection-end="9474" vertical-scroll-proportion="0.20024125">
+            <state line="399" column="26" selection-start="9473" selection-end="9473" vertical-scroll-proportion="0.17973462">
               <folding>
                 <element signature="e#5810#7930#0" expanded="false" />
               </folding>
@@ -89,8 +90,8 @@
         <option value="$PROJECT_DIR$/.htaccess" />
         <option value="$PROJECT_DIR$/sha.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/app.coffee" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/app.coffee" />
       </list>
     </option>
   </component>
@@ -261,7 +262,11 @@
       <created>1371999694999</created>
       <updated>1371999694999</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="-">
+      <created>1371999775624</created>
+      <updated>1371999775624</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -487,7 +492,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="400" column="0" selection-start="9474" selection-end="9474" vertical-scroll-proportion="0.20024125">
+        <state line="399" column="26" selection-start="9473" selection-end="9473" vertical-scroll-proportion="0.17973462">
           <folding>
             <element signature="e#5810#7930#0" expanded="false" />
           </folding>
