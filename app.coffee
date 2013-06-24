@@ -16,7 +16,7 @@ conf =
     border:
       color: "#555"
       size: 1
-    size: 32
+    size: 34
     opacity: .1
     hover:
       opacity: .4
@@ -26,16 +26,14 @@ conf =
     path: "/delphi/icon/"
     size: 24
   conf:
-    path: "/delphi/conf/"
+    path: "/delphi_utf/conf/"
 
   link:
     color:
       vars: 'blue'
       events: '#F00'
     size: 2
-
-if "<?='true'?>" != true
-  conf.conf.path = "/delphi_utf/conf/"
+    opacity: 0.7
 
 
 
@@ -61,27 +59,23 @@ class Element
   draw_dots: (params, property)->
     #i = 0
 
-    i = [0,0,0,0,0,0,0]
+    i = [0,0,0,0,0,0,0,0,0,0,0]
 
     for param of params
+      str = params[param].split('|')
 
-      if param.substr(0,1) == "*"
+      if param[0] is "*" and str[2] != "2"
         continue
 
+      types = ['', 'do', 'on', 'top', 'bot', 'bot']
+      type_num = parseInt str[1] || 2
 
-
-      str = params[param].split('|')
-      types = ['', 'do', 'on', 'top', 'bot']
-
-      type_num = parseInt str[1]
-      type = types[ type_num ]
+      type= types[type_num]
 
       offset_x = 0
 
       if type == 'on'
         offset_x = conf.element.size
-
-
 
       text = str[0]
 
@@ -90,6 +84,7 @@ class Element
 
       dot_color = conf.dot.color
       border_color = conf.dot.border.color
+
 
       if type == 'top' or  type == 'bot'
         dot_x = @x + conf.dot.offset - 1 + i[type_num] * conf.dot.indent
@@ -108,6 +103,11 @@ class Element
         dot_color = "#FFFF00"
         border_color = "#DAA520"
 
+      if param[0] is "*"
+        param = param.substr(1)
+        dot_color = "#00CCCC"
+        border_color = "#229999"
+
 
 
 
@@ -119,7 +119,6 @@ class Element
       dot.default_color = dot_color
       dot.name = param
       dot.eid = @id
-
 
       # helper dots
       dot.hover( (e)->
@@ -166,13 +165,19 @@ class Element
       Helper.setText " #{this.name} "
       Helper.move(e.layerX, e.layerY)
       Helper.show()
-
     ,->
       Helper.hide()
     )
 
 
-    @draw_dots(@ini.Methods, @ini.Property)
+    dots = @ini.Methods
+    #for prop of @ini.Property
+    #  if prop[0] is "+"
+    #    dots[prop] = @ini.Property[prop]
+        #console.log prop,@name
+
+
+    @draw_dots(dots, @ini.Property)
 
     #
     @element.push @rect, @icon #, line
@@ -204,6 +209,11 @@ class Element
       if this.type != 'circle'
         this.animate("fill-opacity": conf.element.hover.opacity, conf.element.hover.time, ">")
 
+      $("#props").empty()
+      for el in elements[this.eid].params
+        if el.name.substr(0, 4) != "link"
+          $("#props").append("<tr><td>#{el.name}</td><td>#{el.value}</td></tr>")
+
 
 
     move = (dx, dy)->
@@ -223,7 +233,7 @@ class Element
           path[e.path_num][2] =  e.stop.y - dy
 
           if path[e.path_num][0] == "S"
-            path[e.path_num][2] =  path[e.path_num][2] / 0.97
+            path[e.path_num][2] =  path[e.path_num][2] / 0.90
             path[e.path_num][3] =  e.stop.x - dx
             path[e.path_num][4] =  e.stop.y - dy
 
@@ -365,7 +375,7 @@ elements = []
 
   for link in links
     if not elements[link.eid]
-      console.error "dots undefined тут должена быть точка, но её нет"
+      console.error "dots undefined #{link.eid}"
       continue
     items = elements[link.eid].element.items
     for item in items
@@ -384,7 +394,7 @@ elements = []
             stop_y = bbox.y + conf.dot.radius.min
 
 
-            l = paper.path("M#{start_x},#{start_y},S#{stop_x-10},#{stop_y/0.95},#{stop_x},#{stop_y}")
+            l = paper.path("M#{start_x},#{start_y},S#{stop_x*0.90},#{stop_y/0.90},#{stop_x},#{stop_y}")
 
             color = conf.link.color.events
             if item.name.substr(0, 2) != "on"
@@ -394,6 +404,7 @@ elements = []
               stroke: color
               "stroke-width": conf.link.size
               fill: "none"
+              opacity: conf.link.opacity
 
             l.start_id = link.eid
             l.stop_id = stop_id

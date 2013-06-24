@@ -25,7 +25,7 @@
         color: "#555",
         size: 1
       },
-      size: 32,
+      size: 34,
       opacity: .1,
       hover: {
         opacity: .4,
@@ -37,20 +37,17 @@
       size: 24
     },
     conf: {
-      path: "/delphi/conf/"
+      path: "/delphi_utf/conf/"
     },
     link: {
       color: {
         vars: 'blue',
         events: '#F00'
       },
-      size: 2
+      size: 2,
+      opacity: 0.7
     }
   };
-
-  if ("<?='true'?>" !== true) {
-    conf.conf.path = "/delphi_utf/conf/";
-  }
 
   paper = Raphael(10, 10, 1000, 500);
 
@@ -77,14 +74,14 @@
 
     Element.prototype.draw_dots = function(params, property) {
       var border_color, dot, dot_color, dot_x, dot_y, i, link, offset_x, param, str, text, type, type_num, types, _i, _len, _ref, _results;
-      i = [0, 0, 0, 0, 0, 0, 0];
+      i = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       for (param in params) {
-        if (param.substr(0, 1) === "*") {
+        str = params[param].split('|');
+        if (param[0] === "*" && str[2] !== "2") {
           continue;
         }
-        str = params[param].split('|');
-        types = ['', 'do', 'on', 'top', 'bot'];
-        type_num = parseInt(str[1]);
+        types = ['', 'do', 'on', 'top', 'bot', 'bot'];
+        type_num = parseInt(str[1] || 2);
         type = types[type_num];
         offset_x = 0;
         if (type === 'on') {
@@ -107,6 +104,11 @@
         if (property[param] !== void 0) {
           dot_color = "#FFFF00";
           border_color = "#DAA520";
+        }
+        if (param[0] === "*") {
+          param = param.substr(1);
+          dot_color = "#00CCCC";
+          border_color = "#229999";
         }
         dot = paper.circle(dot_x, dot_y, conf.dot.radius.min).attr({
           fill: dot_color,
@@ -152,7 +154,7 @@
     };
 
     Element.prototype.save = function() {
-      var element, move, start, up;
+      var dots, element, move, start, up;
       this.icon = paper.image("" + conf.icon.path + this.name + ".ico", this.x + 4, this.y + 4, this.icon_size, this.icon_size);
       this.rect = paper.rect(this.x, this.y, this.size, this.size, 3).attr({
         fill: this.icon,
@@ -171,11 +173,12 @@
       }, function() {
         return Helper.hide();
       });
-      this.draw_dots(this.ini.Methods, this.ini.Property);
+      dots = this.ini.Methods;
+      this.draw_dots(dots, this.ini.Property);
       this.element.push(this.rect, this.icon);
       element = this.element;
       start = function() {
-        var e, el, path, path_num, _i, _len;
+        var e, el, path, path_num, _i, _j, _len, _len1, _ref, _results;
         this.ox = 0;
         this.oy = 0;
         el = elements[this.eid].element.items;
@@ -203,10 +206,22 @@
           }
         }
         if (this.type !== 'circle') {
-          return this.animate({
+          this.animate({
             "fill-opacity": conf.element.hover.opacity
           }, conf.element.hover.time, ">");
         }
+        $("#props").empty();
+        _ref = elements[this.eid].params;
+        _results = [];
+        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+          el = _ref[_j];
+          if (el.name.substr(0, 4) !== "link") {
+            _results.push($("#props").append("<tr><td>" + el.name + "</td><td>" + el.value + "</td></tr>"));
+          } else {
+            _results.push(void 0);
+          }
+        }
+        return _results;
       };
       move = function(dx, dy) {
         var e, el, path, _i, _len, _results;
@@ -222,7 +237,7 @@
             path[e.path_num][1] = e.stop.x - dx;
             path[e.path_num][2] = e.stop.y - dy;
             if (path[e.path_num][0] === "S") {
-              path[e.path_num][2] = path[e.path_num][2] / 0.97;
+              path[e.path_num][2] = path[e.path_num][2] / 0.90;
               path[e.path_num][3] = e.stop.x - dx;
               path[e.path_num][4] = e.stop.y - dy;
             }
@@ -407,7 +422,7 @@
     for (_j = 0, _len1 = links.length; _j < _len1; _j++) {
       link = links[_j];
       if (!elements[link.eid]) {
-        console.error("dots undefined тут должена быть точка, но её нет");
+        console.error("dots undefined " + link.eid);
         continue;
       }
       items = elements[link.eid].element.items;
@@ -428,7 +443,7 @@
                 bbox = item2.getBBox();
                 stop_x = bbox.x + conf.dot.radius.min;
                 stop_y = bbox.y + conf.dot.radius.min;
-                l = paper.path("M" + start_x + "," + start_y + ",S" + (stop_x - 10) + "," + (stop_y / 0.95) + "," + stop_x + "," + stop_y);
+                l = paper.path("M" + start_x + "," + start_y + ",S" + (stop_x * 0.90) + "," + (stop_y / 0.90) + "," + stop_x + "," + stop_y);
                 color = conf.link.color.events;
                 if (item.name.substr(0, 2) !== "on") {
                   color = conf.link.color.vars;
@@ -436,7 +451,8 @@
                 l.attr({
                   stroke: color,
                   "stroke-width": conf.link.size,
-                  fill: "none"
+                  fill: "none",
+                  opacity: conf.link.opacity
                 });
                 l.start_id = link.eid;
                 l.stop_id = stop_id;
