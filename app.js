@@ -49,7 +49,7 @@
     }
   };
 
-  paper = Raphael(10, 10, 1000, 500);
+  paper = Raphael(119, 88, 762, 443);
 
   paper.canvas.id = "canvas";
 

@@ -19,26 +19,36 @@
 
         #sha_viewer {
             position: fixed;
-            top: 520px;
+            top: 580px;
             left: 10px;
             width: 1000px;
         }
 
         #redraw {
             position: fixed;
-            top: 520px;
+            top: 550px;
             left: 300px;
+            z-index: 5000
         }
 
         #files {
             position: fixed;
-            top: 520px;
+            top: 550px;
             left: 500px;
+            background-color: white;
+            border-radius: 5px;
+            z-index: 5000;
         }
 
+        body {
+            padding: 0px;
+            background: url("canvas.jpg");
+            background-repeat: space;
+        }
 
         #canvas {
-            background: url("background.jpg");
+            /*background: url("canvas.jpg");*/
+            position: fixed;
         }
     </style>
     <div class="props">

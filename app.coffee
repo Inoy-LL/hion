@@ -37,14 +37,15 @@ conf =
 
 
 
-paper = Raphael(10, 10, 1000, 500)
+paper = Raphael(119, 88, 762, 443)
 
 paper.canvas.id = "canvas"
 
 
-
+# Класс отвечает за создание элемета
 class Element
   constructor: (@name, x, y, @params = {}, @id, @ini)->
+    #утсанавливаем переменные как свойство класса @ = this
     @x = parseInt(x)
     @y = parseInt(y)
     @ini = ini
@@ -56,29 +57,39 @@ class Element
       @size = conf.element.size
       @icon_size = conf.icon.size
 
+  #тут мы рисем точки
   draw_dots: (params, property)->
     #i = 0
 
+    # для каждого типа точки своя перменная счётчик
     i = [0,0,0,0,0,0,0,0,0,0,0]
 
+
     for param of params
+      # описание элемента|тип элемента
       str = params[param].split('|')
 
+      #если точка скрыта и тип непоказывать то пропускаем 1 ход цикла
       if param[0] is "*" and str[2] != "2"
         continue
 
+      #цифры хорошо но буквами понятнее bot - низ, top -верх
       types = ['', 'do', 'on', 'top', 'bot', 'bot']
       type_num = parseInt str[1] || 2
-
       type= types[type_num]
 
+      #отступ точки от верхнего края элемента по х
       offset_x = 0
 
-      if type == 'on'
+      if type == 'on'# если это событие идём к правому краю
         offset_x = conf.element.size
 
+      # описание элемента
       text = str[0]
 
+      # тперь находим координату х, отсутп элемнта по х и отсутп точки от края элемента
+      # тут тоже самое @y + conf.dot.offset, дабьше переменная i для нашего типа точки * на отсутп между точками
+      #
       dot_x = offset_x + @x
       dot_y = @y + conf.dot.offset + i[type_num] * conf.dot.indent
 
@@ -86,6 +97,7 @@ class Element
       border_color = conf.dot.border.color
 
 
+      # если точки для данных то меняем цвет и координаты
       if type == 'top' or  type == 'bot'
         dot_x = @x + conf.dot.offset - 1 + i[type_num] * conf.dot.indent
         dot_y = @y
@@ -98,6 +110,7 @@ class Element
           dot_y+=conf.element.size
 
 
+      #
       if property[param] != undefined
         #dot_color = property[param].split('|') # нестандартные цвета из свойств
         dot_color = "#FFFF00"
@@ -110,18 +123,18 @@ class Element
 
 
 
-
+      # рисуем круг
       dot = paper.circle( dot_x,dot_y, conf.dot.radius.min).attr
         fill: dot_color
         stroke: border_color
         "stroke-width": 1
       dot.text = "#{param}: #{text}"
-      dot.default_color = dot_color
+      dot.default_color = dot_color # нужна для востановления цвета после анимации
       dot.name = param
       dot.eid = @id
 
-      # helper dots
-      dot.hover( (e)->
+      # helper dots / подскзаки для точек и жлемента
+      dot.hover( (e)-> # если мышка наведена
         this.attr
           fill: conf.dot.hover_color
           r: conf.dot.radius.max
@@ -130,16 +143,19 @@ class Element
         Helper.move(e.layerX, e.layerY)
         Helper.show()
 
-      ,->
+      ,-> #мышка ушла с точки
         this.attr
           fill: this.default_color
           r: conf.dot.radius.min
         Helper.hide()
       )
 
+      # прикрепляем точки к элементу, прикреалёные точки в raphael перемещяются автоматически вместе с элементом
+      # прим помоши метода translate, в методе move есть пример
       @element.push dot
       i[type_num]++
 
+    # парсим связи и добаляем все links
     for param in @params
       if param.name.substr(0, 4) is "link"
         link = param.name.substr(5, param.name.length - 6)
@@ -148,8 +164,10 @@ class Element
         link.eid = @id
         links.push link
   save: ->
+    # иконка элемента
     @icon = paper.image("#{conf.icon.path}#{@name}.ico", @x + 4, @y + 4, @icon_size, @icon_size)
 
+    # квадрат, сам элемент
     @rect = paper.rect(@x, @y, @size, @size, 3).attr
       fill: @icon
       "fill-opacity": conf.element.opacity
@@ -158,9 +176,11 @@ class Element
     @rect.eid = @id
     @rect.name = @name
 
+    # говорим что хотим обЪединить что то с элементом
     @element = paper.set()
     @element.eid = @id
 
+    # событие при наведени имыши, пожсказка к элементу
     @rect.hover( (e)->
       Helper.setText " #{this.name} "
       Helper.move(e.layerX, e.layerY)
@@ -170,29 +190,32 @@ class Element
     )
 
 
+
     dots = @ini.Methods
     #for prop of @ini.Property
     #  if prop[0] is "+"
     #    dots[prop] = @ini.Property[prop]
         #console.log prop,@name
 
-
+    # отрисоываем точки
     @draw_dots(dots, @ini.Property)
 
-    #
+    # объединяем элементы (будут перемещятся вместе при помощи метода translate)
     @element.push @rect, @icon #, line
 
     element = @element
-    # drag & drop
+    # drag & drop / перетаскивание
     start = ->
       this.ox = 0
       this.oy = 0
+      # меторд translate перемащяет элементы на остнове относительныз изменений координат
+      # поэтмо сохраняем их
 
       #find all lines and save path stop
       el = elements[this.eid].element.items
       for e in el
-        if e.type is "path"
-          if e.stop_id == this.eid
+        if e.type is "path" # если линия
+          if e.stop_id == this.eid #определяем это точка конца лини или начала
             path_num = 0
           else
             path_num = 1
@@ -205,11 +228,13 @@ class Element
           else
             e.stop = x: path[1], y: path[2]
 
+          # в path 3 координаты, x1,x2 в path[0], 2 другие идит друг задоугом в parh[1]
 
-      if this.type != 'circle'
+
+      if this.type != 'circle' #если тчока то аницации точки
         this.animate("fill-opacity": conf.element.hover.opacity, conf.element.hover.time, ">")
 
-      $("#props").empty()
+      $("#props").empty() #очиащем таблицу со свойствми
       for el in elements[this.eid].params
         if el.name.substr(0, 4) != "link"
           $("#props").append("<tr><td>#{el.name}</td><td>#{el.value}</td></tr>")
@@ -218,12 +243,13 @@ class Element
 
     move = (dx, dy)->
 
-
+      # автоматичкески пермещает все прикреплёные обЪекты
       element.translate(  dx - this.ox, dy - this.oy);
       this.ox = dx;
       this.oy = dy;
 
       #untranslate line path
+      # противоположную координату лини нам пермещять не надо, отменяем
       el = elements[this.eid].element.items
       for e in el
         if e.type is "path"
@@ -241,7 +267,7 @@ class Element
             #stop_y + stop_y/start_y
             path[1][2]+= path[1][4] /  path[0][2]
           e.attr path: path
-
+      #
 
 
     up = ->
