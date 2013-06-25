@@ -233,10 +233,13 @@ class Element
           path[e.path_num][2] =  e.stop.y - dy
 
           if path[e.path_num][0] == "S"
-            path[e.path_num][2] =  path[e.path_num][2] / 0.90
+            console.log path
             path[e.path_num][3] =  e.stop.x - dx
             path[e.path_num][4] =  e.stop.y - dy
-
+            #start_x+start_x/stop_x}
+            path[1][1]+= path[1][3] / path[0][1]
+            #stop_y + stop_y/start_y
+            path[1][2]+= path[1][4] /  path[0][2]
           e.attr path: path
 
 
@@ -366,6 +369,7 @@ elements = []
   paper.clear()
 
 @drawAll = ->
+
   sha = $('textarea#sha_viewer').val()
   elements = Sha.parse(sha)
 
@@ -393,8 +397,8 @@ elements = []
             stop_x = bbox.x + conf.dot.radius.min
             stop_y = bbox.y + conf.dot.radius.min
 
-
-            l = paper.path("M#{start_x},#{start_y},S#{stop_x*0.90},#{stop_y/0.90},#{stop_x},#{stop_y}")
+            #l = paper.path("M#{start_x},#{start_y},S#{stop_x*0.90},#{stop_y/0.90},#{stop_x},#{stop_y}")
+            l = paper.path("M#{start_x},#{start_y},S#{start_x+start_x/stop_x},#{stop_y + stop_y/start_y},#{stop_x},#{stop_y}")
 
             color = conf.link.color.events
             if item.name.substr(0, 2) != "on"
