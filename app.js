@@ -17,7 +17,7 @@
         size: 1
       },
       hover_color: "red",
-      indent: 5,
+      indent: 6,
       offset: 5
     },
     element: {
@@ -25,12 +25,13 @@
         color: "#555",
         size: 1
       },
-      size: 34,
+      size: 40,
       opacity: .1,
       hover: {
         opacity: .4,
         time: 300
-      }
+      },
+      color: "red"
     },
     icon: {
       path: "/delphi/icon/",
@@ -54,6 +55,8 @@
   paper.canvas.id = "canvas";
 
   Element = (function() {
+
+    Element.drag = false;
 
     function Element(name, x, y, params, id, ini) {
       this.name = name;
@@ -155,7 +158,7 @@
 
     Element.prototype.save = function() {
       var dots, element, move, start, up;
-      this.icon = paper.image("" + conf.icon.path + this.name + ".ico", this.x + 4, this.y + 4, this.icon_size, this.icon_size);
+      this.icon = paper.image("" + conf.icon.path + this.name + ".ico", this.x + (this.size - 32) / 2 + 4, this.y + (this.size - 32) / 2 + 4, this.icon_size, this.icon_size);
       this.rect = paper.rect(this.x, this.y, this.size, this.size, 3).attr({
         fill: this.icon,
         "fill-opacity": conf.element.opacity,
@@ -203,6 +206,9 @@
                 y: path[2]
               };
             }
+            e.cached = {
+              path: path
+            };
           }
         }
         if (this.type !== 'circle') {
@@ -216,15 +222,22 @@
         for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
           el = _ref[_j];
           if (el.name.substr(0, 4) !== "link") {
-            _results.push($("#props").append("<tr><td>" + el.name + "</td><td>" + el.value + "</td></tr>"));
+            if (el.name === "Data" && el.value === "Null()") {
+              el.value = "";
+            } else if (el.name === "Color") {
+
+            } else if (el.name === "Icon" && el.value === "[]") {
+              el.value = "[]";
+            }
+            _results.push($("#props").append("<tr>           <td>" + el.name + "</td>           <td class=\"value\">             <input type=\"\" value=\"" + el.value + "\"/>           </td>          </tr>"));
           } else {
             _results.push(void 0);
           }
         }
         return _results;
       };
-      move = function(dx, dy) {
-        var e, el, path, _i, _len, _results;
+      move = function(dx, dy, x, y, e) {
+        var el, path, _i, _len, _results;
         element.translate(dx - this.ox, dy - this.oy);
         this.ox = dx;
         this.oy = dy;
@@ -237,7 +250,6 @@
             path[e.path_num][1] = e.stop.x - dx;
             path[e.path_num][2] = e.stop.y - dy;
             if (path[e.path_num][0] === "S") {
-              console.log(path);
               path[e.path_num][3] = e.stop.x - dx;
               path[e.path_num][4] = e.stop.y - dy;
               path[1][1] += path[1][3] / path[0][1];
@@ -256,7 +268,7 @@
         if (this.type !== 'circle') {
           return this.animate({
             "fill-opacity": conf.element.opacity
-          }, 300, ">");
+          }, 500, ">");
         }
       };
       paper.set(this.element).drag(move, start, up).toBack();

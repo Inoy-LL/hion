@@ -3,6 +3,7 @@
 	<title>Canvas</title>
 </head>
 <body>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css"/>
     <style type="text/css">
         .props {
@@ -11,6 +12,17 @@
             float: right;
             top: 0px;
             right: 0px;
+            max-width: 250px;
+        }
+
+        .props .value {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .props input {
+            font-size: 20;
+            height: 38px;
         }
 
         table>thead,td {
@@ -50,6 +62,11 @@
             /*background: url("canvas.jpg");*/
             position: fixed;
         }
+
+        .draggable {
+            cursor: move;
+        }
+
     </style>
     <div class="props">
         <table class="table table-bordered table-striped">

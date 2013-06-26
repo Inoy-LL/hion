@@ -10,17 +10,18 @@ conf =
       color2: "#400"
       size: 1
     hover_color: "red"
-    indent: 5
+    indent: 6
     offset: 5
   element:
     border:
       color: "#555"
       size: 1
-    size: 34
+    size: 40
     opacity: .1
     hover:
       opacity: .4
       time: 300
+    color: "red"
 
   icon:
     path: "/delphi/icon/"
@@ -44,6 +45,7 @@ paper.canvas.id = "canvas"
 
 # Класс отвечает за создание элемета
 class Element
+  @drag: false
   constructor: (@name, x, y, @params = {}, @id, @ini)->
     #утсанавливаем переменные как свойство класса @ = this
     @x = parseInt(x)
@@ -150,6 +152,7 @@ class Element
         Helper.hide()
       )
 
+
       # прикрепляем точки к элементу, прикреалёные точки в raphael перемещяются автоматически вместе с элементом
       # прим помоши метода translate, в методе move есть пример
       @element.push dot
@@ -165,7 +168,7 @@ class Element
         links.push link
   save: ->
     # иконка элемента
-    @icon = paper.image("#{conf.icon.path}#{@name}.ico", @x + 4, @y + 4, @icon_size, @icon_size)
+    @icon = paper.image("#{conf.icon.path}#{@name}.ico", @x + (@size - 32)/2 + 4 , @y + (@size - 32)/2 + 4, @icon_size, @icon_size)
 
     # квадрат, сам элемент
     @rect = paper.rect(@x, @y, @size, @size, 3).attr
@@ -195,7 +198,7 @@ class Element
     #for prop of @ini.Property
     #  if prop[0] is "+"
     #    dots[prop] = @ini.Property[prop]
-        #console.log prop,@name
+
 
     # отрисоываем точки
     @draw_dots(dots, @ini.Property)
@@ -206,6 +209,7 @@ class Element
     element = @element
     # drag & drop / перетаскивание
     start = ->
+
       this.ox = 0
       this.oy = 0
       # меторд translate перемащяет элементы на остнове относительныз изменений координат
@@ -228,6 +232,8 @@ class Element
           else
             e.stop = x: path[1], y: path[2]
 
+          e.cached = path: path
+
           # в path 3 координаты, x1,x2 в path[0], 2 другие идит друг задоугом в parh[1]
 
 
@@ -237,19 +243,42 @@ class Element
       $("#props").empty() #очиащем таблицу со свойствми
       for el in elements[this.eid].params
         if el.name.substr(0, 4) != "link"
-          $("#props").append("<tr><td>#{el.name}</td><td>#{el.value}</td></tr>")
+
+          if el.name == "Data" and el.value == "Null()"
+            el.value = ""
+          else if el.name == "Color"
+            #el.value = parseInt(el.value)+16777201
+          else if el.name == "Icon" and el.value == "[]"
+            el.value = "[]"
+
+
+          $("#props").append("<tr>
+           <td>#{el.name}</td>
+           <td class=\"value\">
+             <input type=\"\" value=\"#{el.value}\"/>
+           </td>
+          </tr>")
 
 
 
-    move = (dx, dy)->
+    move = (dx, dy, x, y, e)->
 
+      #console.log x,y
       # автоматичкески пермещает все прикреплёные обЪекты
-      element.translate(  dx - this.ox, dy - this.oy);
+      #@attr 'x', @attr('x') + dx - this.ox
+      #@attr 'y', @attr('y') + dy - this.oy
+
+
+      element.translate(  dx - this.ox, dy - this.oy)
+
+
       this.ox = dx;
       this.oy = dy;
 
       #untranslate line path
       # противоположную координату лини нам пермещять не надо, отменяем
+
+
       el = elements[this.eid].element.items
       for e in el
         if e.type is "path"
@@ -259,25 +288,30 @@ class Element
           path[e.path_num][2] =  e.stop.y - dy
 
           if path[e.path_num][0] == "S"
-            console.log path
             path[e.path_num][3] =  e.stop.x - dx
             path[e.path_num][4] =  e.stop.y - dy
+
+            #path[e.path_num][3] =  e.stop.x - dx
+            #path[e.path_num][4] =  e.stop.y - dy
+
             #start_x+start_x/stop_x}
             path[1][1]+= path[1][3] / path[0][1]
             #stop_y + stop_y/start_y
             path[1][2]+= path[1][4] /  path[0][2]
           e.attr path: path
-      #
 
+      #
 
     up = ->
 
 
       if this.type != 'circle'
-        this.animate( "fill-opacity": conf.element.opacity, 300, ">")
+        this.animate( "fill-opacity": conf.element.opacity, 500, ">")
 
     # set group params
     paper.set(@element).drag(move, start, up).toBack()
+
+    ####
 
     paper.renderfix()
     paper.safari()
@@ -319,6 +353,7 @@ class Helper
   constructor: ()->
 
 @links = []
+
 
 class Sha
   @elements = []
