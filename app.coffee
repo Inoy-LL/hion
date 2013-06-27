@@ -66,19 +66,20 @@ class Element
     # для каждого типа точки своя перменная счётчик
     i = [0,0,0,0,0,0,0,0,0,0,0]
 
-
     for param of params
       # описание элемента|тип элемента
       str = params[param].split('|')
-
-      #если точка скрыта и тип непоказывать то пропускаем 1 ход цикла
-      if param[0] is "*" and str[2] != "2"
-        continue
 
       #цифры хорошо но буквами понятнее bot - низ, top -верх
       types = ['', 'do', 'on', 'top', 'bot', 'bot']
       type_num = parseInt str[1] || 2
       type= types[type_num]
+
+      #если точка скрыта и тип непоказывать то пропускаем 1 ход цикла
+      if param[0] is "*" and (str[2] != "2" or str[1] != "3") or (i[type_num] >= 4)
+        continue
+
+
 
       #отступ точки от верхнего края элемента по х
       offset_x = 0

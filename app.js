@@ -80,12 +80,12 @@
       i = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       for (param in params) {
         str = params[param].split('|');
-        if (param[0] === "*" && str[2] !== "2") {
-          continue;
-        }
         types = ['', 'do', 'on', 'top', 'bot', 'bot'];
         type_num = parseInt(str[1] || 2);
         type = types[type_num];
+        if (param[0] === "*" && (str[2] !== "2" || str[1] !== "3") || (i[type_num] >= 4)) {
+          continue;
+        }
         offset_x = 0;
         if (type === 'on') {
           offset_x = conf.element.size;
