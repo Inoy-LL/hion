@@ -242,23 +242,39 @@ class Element
         this.animate("fill-opacity": conf.element.hover.opacity, conf.element.hover.time, ">")
 
       $("#props").empty() #очиащем таблицу со свойствми
-      for el in elements[this.eid].params
-        if el.name.substr(0, 4) != "link"
+      for prop in elements[this.eid].params
+        if prop.name.substr(0, 4) != "link"
 
-          if el.name == "Data" and el.value == "Null()"
-            el.value = ""
-          else if el.name == "Color"
-            #el.value = parseInt(el.value)+16777201
-          else if el.name == "Icon" and el.value == "[]"
-            el.value = "[]"
+          if prop.name == "Data" and prop.value == "Null()"
+            prop.value = ""
+          else if prop.name == "Color"
+
+            #prop.value = parseInt(prop.value)+16777201
+          else if prop.name == "Icon" and prop.value == "[]"
+            prop.value = "[]"
+
+          value_string = "<input type=\"\" value=\"#{prop.value}\"/>"
+
+          color = ""
+          if prop.name == "Color"
+            color = colors[prop.value].rgb
+            name = colors[prop.value].name
+            value_string = "<select style=\"background-color: #{color}\"><option selected>#{name}</option></select>"
+          if prop.name == "Font"
+            value_string = "<input id=\"font\" value=\"#{prop.value}\" />"
+
 
 
           $("#props").append("<tr>
-           <td>#{el.name}</td>
+           <td>#{prop.name}</td>
            <td class=\"value\">
-             <input type=\"\" value=\"#{el.value}\"/>
+             #{value_string}
            </td>
           </tr>")
+
+          if prop.name == "Font"
+            $("#font").fontSelector(value: 'Arial')
+
 
 
 
@@ -533,4 +549,83 @@ $('.elements img').live 'click', ->
   elements[id] = new Element name, 0, 0, {}, id, result
   elements[id].save()
 
+colors = `{"0":{"rgb":"#000000","name":"clBlack"},"128":{"rgb":"#800000","name":"clMaroon"},"255":{"rgb":"#FF0000","name":"clRed"},"32768":{"rgb":"#008000","name":"clGreen"},"32896":{"rgb":"#808000","name":"clOlive"},"65280":{"rgb":"#00FF00","name":"clLime"},"65535":{"rgb":"#FFFF00","name":"clYellow"},"8388608":{"rgb":"#000080","name":"clNavy"},"8388736":{"rgb":"#800080","name":"clPurple"},"8421376":{"rgb":"#008080","name":"clTeal"},"8421504":{"rgb":"#808080","name":"clGray"},"10789024":{"rgb":"#A0A0A4","name":"clMedGray"},"12632256":{"rgb":"#C0C0C0","name":"clSilver"},"12639424":{"rgb":"#C0DCC0","name":"clMoneyGreen"},"15780518":{"rgb":"#A6CAF0","name":"clSkyBlue"},"15793151":{"rgb":"#FFFBF0","name":"clCream"},"16711680":{"rgb":"#0000FF","name":"clBlue"},"16711935":{"rgb":"#FF00FF","name":"clFuchsia"},"16776960":{"rgb":"#00FFFF","name":"clAqua"},"16777215":{"rgb":"#FFFFFF","name":"clWhite"},"R,G,B":{"name":"###"},"-16777206":{"rgb":"#B4B4B4","name":"clActiveBorder"},"-16777214":{"rgb":"#99B4D1","name":"clActiveCaption"},"-16777204":{"rgb":"#ABABAB","name":"clAppWorkSpace"},"-16777215":{"rgb":"#000000","name":"clBackground"},"-16777201":{"rgb":"#F0F0F0","name":"clBtnFace"},"-16777196":{"rgb":"#FFFFFF","name":"clBtnHighlight"},"-16777200":{"rgb":"#A0A0A0","name":"clBtnShadow"},"-16777198":{"rgb":"#000000","name":"clBtnText"},"-16777207":{"rgb":"#000000","name":"clCaptionText"},"-16777189":{"rgb":"#B9D1EA","name":"clGradientActiveCaption"},"-16777188":{"rgb":"#D7E4F2","name":"clGradientInactiveCaption"},"-16777199":{"rgb":"#6D6D6D","name":"clGrayText"},"-16777203":{"rgb":"#3399FF","name":"clHighlight"},"-16777202":{"rgb":"#FFFFFF","name":"clHighlightText"},"-16777190":{"rgb":"#0066CC","name":"clHotLight"},"-16777205":{"rgb":"#F4F7FC","name":"clInactiveBorder"},"-16777213":{"rgb":"#BFCDDB","name":"clInactiveCaption"},"-16777197":{"rgb":"#434E54","name":"clInactiveCaptionText"},"-16777192":{"rgb":"#FFFFE1","name":"clInfoBk"},"-16777193":{"rgb":"#000000","name":"clInfoText"},"-16777212":{"rgb":"#F0F0F0","name":"clMenu"},"-16777186":{"rgb":"#F0F0F0","name":"clMenuBar"},"-16777187":{"rgb":"#3399FF","name":"clMenuHighlight"},"-16777209":{"rgb":"#000000","name":"clMenuText"},"-16777216":{"rgb":"#C8C8C8","name":"clScrollBar"},"-16777195":{"rgb":"#696969","name":"cl3DDkShadow"},"-16777194":{"rgb":"#E3E3E3","name":"cl3DLight"},"-16777211":{"rgb":"#FFFFFF","name":"clWindow"},"-16777210":{"rgb":"#646464","name":"clWindowFrame"},"-16777208":{"rgb":"#000000","name":"clWindowText"}}`
 
+
+`/**
+* Font selector plugin
+* turns an ordinary input field into a list of web-safe fonts
+* Usage: $('select').fontSelector();
+*
+* Author     : James Carmichael
+* Website    : www.siteclick.co.uk
+* License    : MIT
+*/
+jQuery.fn.fontSelector = function() {
+
+  var fonts = new Array(
+'Arial,Arial,Helvetica,sans-serif',
+'Arial Black,Arial Black,Gadget,sans-serif',
+'Comic Sans MS,Comic Sans MS,cursive',
+'Courier New,Courier New,Courier,monospace',
+'Georgia,Georgia,serif',
+'Impact,Charcoal,sans-serif',
+'Lucida Console,Monaco,monospace',
+'Lucida Sans Unicode,Lucida Grande,sans-serif',
+'Palatino Linotype,Book Antiqua,Palatino,serif',
+'Tahoma,Geneva,sans-serif',
+'Times New Roman,Times,serif',
+'Trebuchet MS,Helvetica,sans-serif',
+'Verdana,Geneva,sans-serif' );
+
+    $("body").click(function(){
+       $(".fontselector").hide();
+    });
+
+  return this.each(function(){
+
+    // Get input field
+    var sel = this;
+
+    // Add a ul to hold fonts
+    var ul = $('<ul class="fontselector" style="z-index: 500000"></ul>');
+    $('body').prepend(ul);
+    $(ul).hide();
+
+    jQuery.each(fonts, function(i, item) {
+
+      $(ul).append('<li><a href="#" class="font_' + i + '" style="font-family: ' + item + '">' + item.split(',')[0] + '</a></li>');
+
+      // Prevent real select from working
+      $(sel).click(function(ev) {
+
+        ev.preventDefault();
+
+        // Show font list
+        $(ul).show();
+
+        // Position font list
+        $(ul).css({ top:  $(sel).offset().top + $(sel).height() + 4,
+                    left: $(sel).offset().left});
+
+        // Blur field
+        $(this).blur();
+        return false;
+      });
+
+
+      $(ul).find('a').click(function(ev) {
+        ev.stopPropagation();
+        var font = fonts[$(this).attr('class').split('_')[1]];
+        $(sel).val(font);
+        $(ul).hide();
+        return false;
+      });
+
+
+
+    });
+
+  });
+
+}`
