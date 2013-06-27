@@ -113,7 +113,7 @@ class Element
 
 
       #
-      if property[param] != undefined
+      if property and property[param] != undefined
         #dot_color = property[param].split('|') # нестандартные цвета из свойств
         dot_color = "#FFFF00"
         border_color = "#DAA520"
@@ -357,6 +357,12 @@ class Helper
 
 class Sha
   @elements = []
+  @getConf: (name)->
+    result = ""
+    $.ajax( url: "#{conf.conf.path}#{name}.ini", async: false, dataType : "text" ).success( (data)->
+      result = parseINIString( data)
+    )
+    result
   @parse: (sha)->
     for i of sha
       if not make and not selection and sha.substr(i, 4) is 'Make'
@@ -399,10 +405,7 @@ class Sha
 
                   [name, id, x, y] = element.split ","
 
-                  result = ""
-                  $.ajax( url: "#{conf.conf.path}#{name}.ini", async: false, dataType : "text" ).success( (data)->
-                    result = parseINIString( data)
-                  )
+                  result = @getConf(name)
 
                   @elements.push
                     name: name
@@ -508,4 +511,25 @@ handleFileSelect = (evt)->
   reader.readAsText(f,"WINDOWS-1251");
 
 document.getElementById('files').addEventListener('change', handleFileSelect, false)
+
+
+
+$.get '/delphi_utf/all.json',
+(data)->
+  i = 0
+  for el in data
+    if i >= 30
+      break
+    $('.elements').append("<img class=\"btn\" data-name=\"#{el}\" src=\"/delphi/icon/#{el}.ico\"/>")
+    i++
+
+
+
+$('.elements img').live 'click', ->
+  id = Math.random() * (10000000 - 1000000) + 1000000
+  name = $(this).data('name')
+  result = Sha.getConf(name)
+  elements[id] = new Element name, 0, 0, {}, id, result
+  elements[id].save()
+
 

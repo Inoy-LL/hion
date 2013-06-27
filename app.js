@@ -104,7 +104,7 @@
             dot_y += conf.element.size;
           }
         }
-        if (property[param] !== void 0) {
+        if (property && property[param] !== void 0) {
           dot_color = "#FFFF00";
           border_color = "#DAA520";
         }
@@ -335,6 +335,19 @@
 
     Sha.elements = [];
 
+    Sha.getConf = function(name) {
+      var result;
+      result = "";
+      $.ajax({
+        url: "" + conf.conf.path + name + ".ini",
+        async: false,
+        dataType: "text"
+      }).success(function(data) {
+        return result = parseINIString(data);
+      });
+      return result;
+    };
+
     Sha.parse = function(sha) {
       var element, element_start, i, id, j, make, make_start, name, param, params, params_start, prop, quote, result, selection, x, y, _ref;
       for (i in sha) {
@@ -378,14 +391,7 @@
                       });
                     }
                     _ref = element.split(","), name = _ref[0], id = _ref[1], x = _ref[2], y = _ref[3];
-                    result = "";
-                    $.ajax({
-                      url: "" + conf.conf.path + name + ".ini",
-                      async: false,
-                      dataType: "text"
-                    }).success(function(data) {
-                      return result = parseINIString(data);
-                    });
+                    result = this.getConf(name);
                     this.elements.push({
                       name: name,
                       id: id,
@@ -511,5 +517,29 @@
   };
 
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+  $.get('/delphi_utf/all.json', function(data) {
+    var el, i, _i, _len, _results;
+    i = 0;
+    _results = [];
+    for (_i = 0, _len = data.length; _i < _len; _i++) {
+      el = data[_i];
+      if (i >= 30) {
+        break;
+      }
+      $('.elements').append("<img class=\"btn\" data-name=\"" + el + "\" src=\"/delphi/icon/" + el + ".ico\"/>");
+      _results.push(i++);
+    }
+    return _results;
+  });
+
+  $('.elements img').live('click', function() {
+    var id, name, result;
+    id = Math.random() * (10000000 - 1000000) + 1000000;
+    name = $(this).data('name');
+    result = Sha.getConf(name);
+    elements[id] = new Element(name, 0, 0, {}, id, result);
+    return elements[id].save();
+  });
 
 }).call(this);
