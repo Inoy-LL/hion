@@ -191,10 +191,32 @@ class Element
             plus = true
 
         if name[0] is '*' or name[0] is '+'
-          name = name.substr(1)
+            name = name.substr(1)
 
         # Todo: plus,hide or type?
         @props[name] = hint: hint, type: type, plus: plus, hide: hide
+
+
+    if @ini.Type
+        if @ini.Type.Sub
+            subs = @ini.Type.Sub.split ","
+            for sub_ in subs
+                if sub_ != ""
+                    sub = sub_.split "|"
+
+                    ini_sub = @ini.Property[ sub[0] ].split("|")
+                    type = ini_sub[1]
+                    if @props[ sub[0] ]
+                        count = parseInt @props[ sub[0] ].value
+                    else
+                        count = parseInt ini_sub[2]
+
+                    if sub[1][0] == "o"
+                        type = 2
+                    else type = 1
+
+                    for i in [1..count]
+                        @props[ sub[1] + i ] = hint: "", type: type, plus: false, hide: false
 
 
     @links = []
@@ -238,7 +260,7 @@ class Element
               color = conf.dot.color2
               border_color = conf.dot.border.color2
               if type == DOT.bot
-                  y+=conf.element.size
+                  y+=@size
 
 
           else
@@ -247,7 +269,7 @@ class Element
                   color = conf.dot.color
                   border_color = conf.dot.border.color
                   if type == DOT.on
-                      x+=conf.element.size
+                      x+=@size
               else
                   continue
 
@@ -263,7 +285,7 @@ class Element
             #@element[0].attr 'width',   @size + conf.dot.indent + y - y2
 
 
-          console.log @props, @ini
+          #console.log @props, @ini
     Paper::bindElementEvents(@element, @props)
 
 
@@ -562,13 +584,13 @@ class Helper
   helper = null
 
   @get: ->
-    if not @helper?
+    if not helper?
       Scheme.getPaper().setStart()
       Scheme.getPaper().rect(0, 0, 1, 20, 4).attr("fill": conf.helper.color.fill)
       Scheme.getPaper().text(0, 10, "").attr("fill": conf.helper.color.text)
-      @helper = Scheme.getPaper().setFinish().toFront().hide()
+      helper = Scheme.getPaper().setFinish().toFront().hide()
 
-    @helper
+    helper
   @setText: (text)->
     @text = text
     @get().attr 'text', text

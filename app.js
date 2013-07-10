@@ -240,7 +240,7 @@
   Element = (function() {
 
     function Element(name, id, x, y, params) {
-      var DOT, border_color, color, dot, hide, hint, i, key, link, param, path, plus, prop, show, start, stop, type, _i, _len, _ref, _ref1;
+      var DOT, border_color, color, count, dot, hide, hint, i, ini_sub, key, link, param, path, plus, prop, show, start, stop, sub, sub_, subs, type, _i, _j, _k, _len, _len1, _ref, _ref1;
       this.name = name;
       this.id = id;
       this.x = x;
@@ -280,10 +280,41 @@
           hide: hide
         };
       }
+      if (this.ini.Type) {
+        if (this.ini.Type.Sub) {
+          subs = this.ini.Type.Sub.split(",");
+          for (_i = 0, _len = subs.length; _i < _len; _i++) {
+            sub_ = subs[_i];
+            if (sub_ !== "") {
+              sub = sub_.split("|");
+              ini_sub = this.ini.Property[sub[0]].split("|");
+              type = ini_sub[1];
+              if (this.props[sub[0]]) {
+                count = parseInt(this.props[sub[0]].value);
+              } else {
+                count = parseInt(ini_sub[2]);
+              }
+              if (sub[1][0] === "o") {
+                type = 2;
+              } else {
+                type = 1;
+              }
+              for (i = _j = 1; 1 <= count ? _j <= count : _j >= count; i = 1 <= count ? ++_j : --_j) {
+                this.props[sub[1] + i] = {
+                  hint: "",
+                  type: type,
+                  plus: false,
+                  hide: false
+                };
+              }
+            }
+          }
+        }
+      }
       this.links = [];
       _ref1 = this.params;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        param = _ref1[_i];
+      for (_k = 0, _len1 = _ref1.length; _k < _len1; _k++) {
+        param = _ref1[_k];
         if (param.name.substr(0, 4) === 'link') {
           link = param.name.substr(5, param.name.length - 6);
           link = link.replace(/\)\(/g, ',').replace(/\[\(/g, '').replace(/\)\]/g, '').replace(/,\[\]/, '').split(',');
@@ -331,7 +362,7 @@
           color = conf.dot.color2;
           border_color = conf.dot.border.color2;
           if (type === DOT.bot) {
-            y += conf.element.size;
+            y += this.size;
           }
         } else {
           if (type === DOT["do"] || type === DOT.on) {
@@ -339,7 +370,7 @@
             color = conf.dot.color;
             border_color = conf.dot.border.color;
             if (type === DOT.on) {
-              x += conf.element.size;
+              x += this.size;
             }
           } else {
             continue;
@@ -348,7 +379,6 @@
         dot = Paper.prototype.drawDot(color, border_color, x, y, key, prop.hint, this.element, type);
         this.dots.push(dot);
         i[type]++;
-        console.log(this.props, this.ini);
       }
       Paper.prototype.bindElementEvents(this.element, this.props);
     }
@@ -680,7 +710,7 @@
     helper = null;
 
     Helper.get = function() {
-      if (this.helper == null) {
+      if (helper == null) {
         Scheme.getPaper().setStart();
         Scheme.getPaper().rect(0, 0, 1, 20, 4).attr({
           "fill": conf.helper.color.fill
@@ -688,9 +718,9 @@
         Scheme.getPaper().text(0, 10, "").attr({
           "fill": conf.helper.color.text
         });
-        this.helper = Scheme.getPaper().setFinish().toFront().hide();
+        helper = Scheme.getPaper().setFinish().toFront().hide();
       }
-      return this.helper;
+      return helper;
     };
 
     Helper.setText = function(text) {
