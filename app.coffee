@@ -33,8 +33,11 @@ conf =
     color:
       vars: 'blue'
       events: '#F00'
+      new_var: '#3399FF'
+      new_event: '#FF6600'
     size: 2
     opacity: 0.7
+    new_link_opacity: 1
     path: (start_x, start_y, stop_x, stop_y) -> "M#{start_x},#{start_y},S#{start_x+start_x/stop_x},#{stop_y + stop_y/start_y},#{stop_x},#{stop_y}"
 
   paper:
@@ -247,7 +250,7 @@ class Element
               else
                   continue
 
-          dot = Paper::drawDot(color, border_color, x, y, key, prop.hint, @element)
+          dot = Paper::drawDot(color, border_color, x, y, key, prop.hint, @element, type)
           @dots.push dot
           i[type]++
     Paper::bindElementEvents(@element, @props)
@@ -270,17 +273,15 @@ class RaphaelAdapter
       paper.canvas.id = conf.paper.canvas
       paper.canvas.oncontextmenu = -> conf.paper.contextmenu
 
-      paper.canvas.onmousemove =  (e)-> #Todo: !!!!
+      paper.canvas.onmousemove =  (e)->
           if Scheme.create_line
-              stop_x = e.layerX - 3
-              stop_y = e.layerY - 3
               path = Scheme.create_line.attr 'path'
-              Scheme.create_line.attr 'path', conf.link.path(path[0][1], path[0][2], stop_x, stop_y)
-      paper.canvas.onmousemove = (e)->
+              Scheme.create_line.attr 'path', conf.link.path(path[0][1], path[0][2], e.layerX, e.layerY)
+      paper.canvas.onmousedown = (e)->
           if Scheme.create_line and e.which == 3
               Scheme.create_line.remove()
               Scheme.create_line = false
-          false
+
 
       paper
 
@@ -306,7 +307,7 @@ class RaphaelAdapter
       rect.el = element
       element.push rect, icon
 
-  drawDot: (color, border_color, x, y, prop_name, prop_hint, element)->
+  drawDot: (color, border_color, x, y, prop_name, prop_hint, element, type)->
       hint = "#{prop_name}: #{prop_hint}"
       dot = Scheme.getPaper().circle( x, y, conf.dot.radius.min).attr
           fill: color
@@ -317,6 +318,8 @@ class RaphaelAdapter
       dot.text = hint
       dot.name = prop_name
       dot.default_color = color
+      dot.dot_type = type
+      dot.el = element
 
       dot.hover( (e)->
           this.attr
@@ -331,6 +334,80 @@ class RaphaelAdapter
               r: conf.dot.radius.min
           Helper.hide()
       )
+
+      dot.click (e)->
+
+        if Scheme.create_line
+            this_type = this.dot_type
+            mass = [0, 1, -1, 2, -2]
+
+            if mass[Scheme.create_line.dot_type] + mass[this_type] != 0
+                return false
+
+            this.el.push Scheme.create_line
+
+            bbox = this.getBBox()
+            start_x = bbox.x + conf.dot.radius.min * 2
+            start_y = bbox.y + conf.dot.radius.min * 2
+
+            path = Scheme.create_line.attr 'path'
+            path[1][3] = start_x #this.attr 'cx'
+            path[1][4] = start_y #this.attr 'cy'
+
+
+
+            Scheme.create_line.attr 'path', path
+            color = conf.link.color.events
+            if this.dot_type > 2
+                color = conf.link.color.vars
+
+
+            Scheme.create_line.attr
+                "stroke-dasharray": ""
+                "stroke-width": conf.link.size
+                "stroke": color
+                opacity: conf.link.opacity
+
+
+            Scheme.create_line.toBack()
+            #Scheme.create_line.start_rid = dot.el[0].id
+            #Scheme.create_line.el.push Scheme.create_line
+
+
+            Scheme.create_line = false
+
+            return false
+
+        else
+            bbox = this.getBBox()
+            start_x = bbox.x + conf.dot.radius.min * 2
+            start_y = bbox.y + conf.dot.radius.min * 2
+
+            stop_x = e.layerX
+            stop_y = e.layerY
+
+            Scheme.create_line = Scheme.getPaper().path conf.link.path(start_x, start_y, stop_x, stop_y)
+            color = conf.link.color.new_event
+            Scheme.create_line.dot_type = this.dot_type
+            Scheme.create_line.el = dot.el
+            Scheme.create_line.start_rid = dot.el[0].id
+            dot.el.push Scheme.create_line
+
+            if this.dot_type > 2
+                color = conf.link.color.new_var
+
+
+            Scheme.create_line.attr
+                stroke: color
+                "stroke-width": conf.link.size + 1
+                fill: "none"
+                "stroke-dasharray": "- "
+                opacity: conf.link.new_link_opacity
+
+            Scheme.create_line.toBack()
+
+      dot
+
 
 
 
@@ -458,70 +535,6 @@ $('#redraw').click ->
 
 #------------------------------------
 
-# old dead code (Element1)
-class Element1
-  @drag: false
-
-  draw_dots: (params, property)->
-
-    #...
-    if a
-
-      dot.click( (e)->
-
-        if Scheme.create_line
-          this_type = this.dot_type
-          if (Scheme.create_line.dot_type == "on" and this_type != "do") or (Scheme.create_line.dot_type == "top" and this_type != "bot") or  (Scheme.create_line.dot_type == "do" and this_type != "on") or (Scheme.create_line.dot_type == "bot" and this_type != "top")
-            return false
-
-          this.el.push Scheme.create_line
-          Scheme.create_line.element.push Scheme.create_line
-
-          path = Scheme.create_line.attr 'path'
-          path[1][3] = this.attr 'cx'
-          path[1][4] = this.attr 'cy'
-
-
-
-          Scheme.create_line.attr 'path', path
-          Scheme.create_line.toFront()
-
-          Scheme.create_line = false
-          return false
-
-
-
-        start_x = this.attr 'cx'
-        start_y = this.attr 'cy'
-
-        stop_x = e.layerX
-        stop_y = e.layerY
-
-        Scheme.create_line = Scheme.getPaper().path("M#{start_x},#{start_y},S#{start_x+start_x/stop_x},#{stop_y + stop_y/start_y},#{stop_x},#{stop_y}")
-
-        color = conf.link.color.events
-        Scheme.create_line.dot_type = this.dot_type
-        Scheme.create_line.element = @el
-
-        if this.dot_type != "on" and this.dot_type != "do"
-          color = conf.link.color.vars
-
-
-        Scheme.create_line.attr
-          stroke: color
-          "stroke-width": conf.link.size
-          fill: "none"
-          opacity: conf.link.opacity
-
-        Scheme.create_line.toFront()
-
-      )
-
-
-      # прикрепляем точки к элементу, прикреалёные точки в raphael перемещяются автоматически вместе с элементом
-      # прим помоши метода translate, в методе move есть пример
-      @element.push dot
-      i[type_num]++
 
 #DOT HELPER Todo: move to adapter
 class Helper
