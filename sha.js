@@ -1,7 +1,7 @@
 function parseINIString(data){
     var regex = {
         section: /^\s*\[\s*([^\]]*)\s*\]\s*$/,
-        param: /^\s*([\+\*@\w\.\-\_]+)\s*=\s*(.*?)\s*$/,
+        param: /^\s*([\+\*@%\w\.\-\_]+)\s*=\s*(.*?)\s*$/,
         comment: /^\s*;.*$/
     };
     var value = {};

@@ -273,6 +273,10 @@
         if (name[0] === '*' || name[0] === '+') {
           name = name.substr(1);
         }
+        if (name.indexOf('%') !== -1) {
+          start = name.indexOf('%');
+          name = name.split("%")[0];
+        }
         this.props[name] = {
           hint: hint,
           type: type,

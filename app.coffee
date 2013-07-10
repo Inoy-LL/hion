@@ -176,6 +176,8 @@ class Element
     @props = {}
     @dots = []
 
+    #console.log @ini.Methods
+
     #load default parameters
     for key of @ini.Methods
         [hint, type, show] = @ini.Methods[key].split('|')
@@ -193,8 +195,15 @@ class Element
         if name[0] is '*' or name[0] is '+'
             name = name.substr(1)
 
+        if name.indexOf('%') != -1
+            start = name.indexOf('%')
+            name = name.split("%")[0]
+
         # Todo: plus,hide or type?
         @props[name] = hint: hint, type: type, plus: plus, hide: hide
+
+
+
 
 
     if @ini.Type
@@ -235,6 +244,7 @@ class Element
             else
                 #console.log param
                 @props[param.name] = value: param.value, hide: false, plus: false, hint: param.name, type: 0
+
 
 
 
