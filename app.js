@@ -124,8 +124,7 @@
     Scheme.clear = function() {
       this.create_line = false;
       this.links = {};
-      this.getPaper().clear();
-      return instance = null;
+      return this.getPaper().clear();
     };
 
     Scheme.parse = function(sha) {
@@ -249,9 +248,9 @@
       this.params = params;
       this.x = parseInt(x);
       this.y = parseInt(y);
-      if (name === 'HubEx') {
-        this.size = 15;
-        this.icon_size = 5;
+      if (name.substr(0, 3) === 'Hub') {
+        this.size = 20;
+        this.icon_size = 16;
       } else {
         this.size = conf.element.size;
         this.icon_size = conf.icon.size;
@@ -265,17 +264,14 @@
         name = key;
         hide = false;
         plus = false;
-        if (name[0] === '*' || name[0] === '+') {
-          name = name.substr(1);
-          if (name[0] === '*' || name[0] === '+') {
-            name = name.substr(1);
-          }
-        }
-        if (key.indexOf('*') !== -1 && show !== "2") {
+        if (key.indexOf('*') !== -1) {
           hide = true;
         }
         if (key.indexOf('+') !== -1) {
           plus = true;
+        }
+        if (name[0] === '*' || name[0] === '+') {
+          name = name.substr(1);
         }
         this.props[name] = {
           hint: hint,
@@ -352,6 +348,7 @@
         dot = Paper.prototype.drawDot(color, border_color, x, y, key, prop.hint, this.element, type);
         this.dots.push(dot);
         i[type]++;
+        console.log(this.props, this.ini);
       }
       Paper.prototype.bindElementEvents(this.element, this.props);
     }
@@ -404,7 +401,7 @@
 
     RaphaelAdapter.prototype.drawElement = function(size, icon_size, name, x, y, id) {
       var element, icon, rect;
-      icon = Scheme.getPaper().image("" + conf.icon.path + name + ".ico", x + (size - 32) / 2 + 4, y + (size - 32) / 2 + 4, icon_size, icon_size);
+      icon = Scheme.getPaper().image("" + conf.icon.path + name + ".ico", x + (size - icon_size) / 2, y + (size - icon_size) / 2, icon_size, icon_size);
       rect = Scheme.getPaper().rect(x, y, size, size, 3).attr({
         fill: icon,
         "fill-opacity": conf.element.opacity,

@@ -79,7 +79,6 @@ class Scheme
       @create_line = false
       @links = {}
       @getPaper().clear()
-      instance = null
 
 
   @parse: (sha) ->
@@ -165,9 +164,9 @@ class Element
     @x = parseInt(x)
     @y = parseInt(y)
 
-    if name == 'HubEx'
-        @size = 15
-        @icon_size = 5
+    if name.substr(0, 3) == 'Hub'
+        @size = 20
+        @icon_size = 16
     else
         @size = conf.element.size
         @icon_size = conf.icon.size
@@ -184,15 +183,15 @@ class Element
         hide = false
         plus = false
 
-        if name[0] is '*' or name[0] is '+'
-            name = name.substr(1)
-            if name[0] is '*' or name[0] is '+'
-                name = name.substr(1)
 
-        if key.indexOf('*') != -1 and show != "2"
+
+        if key.indexOf('*') != -1 #and show != "2"
             hide = true
         if key.indexOf('+') != -1
             plus = true
+
+        if name[0] is '*' or name[0] is '+'
+          name = name.substr(1)
 
         # Todo: plus,hide or type?
         @props[name] = hint: hint, type: type, plus: plus, hide: hide
@@ -240,6 +239,8 @@ class Element
               border_color = conf.dot.border.color2
               if type == DOT.bot
                   y+=conf.element.size
+
+
           else
               if type == DOT.do or type == DOT.on
                   y = y + i[type] * conf.dot.indent + conf.dot.offset
@@ -253,6 +254,16 @@ class Element
           dot = Paper::drawDot(color, border_color, x, y, key, prop.hint, @element, type)
           @dots.push dot
           i[type]++
+
+          #x2 = @x + @size - conf.dot.offset
+          #y2 = @y + @size - conf.dot.offset
+          #if x > x2 and type < 3
+              #@element[0].attr 'heigth',  @size + conf.dot.indent + x - x2
+          #else if y > y2 and type > 2
+            #@element[0].attr 'width',   @size + conf.dot.indent + y - y2
+
+
+          console.log @props, @ini
     Paper::bindElementEvents(@element, @props)
 
 
@@ -286,7 +297,7 @@ class RaphaelAdapter
       paper
 
   drawElement: (size, icon_size, name, x, y, id)->
-      icon = Scheme.getPaper().image("#{conf.icon.path}#{name}.ico", x + (size - 32)/2 + 4 , y + (size - 32)/2 + 4, icon_size, icon_size)
+      icon = Scheme.getPaper().image("#{conf.icon.path}#{name}.ico", x + (size - icon_size)/2 , y + (size - icon_size)/2, icon_size, icon_size)
       rect = Scheme.getPaper().rect(x, y, size, size, 3).attr
           fill: icon
           "fill-opacity": conf.element.opacity
