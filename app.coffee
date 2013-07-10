@@ -200,20 +200,18 @@ class Element
     if @ini.Type
         if @ini.Type.Sub
             subs = @ini.Type.Sub.split ","
+            type = 0
             for sub_ in subs
+                type++
                 if sub_ != ""
                     sub = sub_.split "|"
 
                     ini_sub = @ini.Property[ sub[0] ].split("|")
-                    type = ini_sub[1]
                     if @props[ sub[0] ]
                         count = parseInt @props[ sub[0] ].value
                     else
                         count = parseInt ini_sub[2]
 
-                    if sub[1][0] == "o"
-                        type = 2
-                    else type = 1
 
                     for i in [1..count]
                         @props[ sub[1] + i ] = hint: "", type: type, plus: false, hide: false

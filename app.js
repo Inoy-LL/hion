@@ -283,21 +283,17 @@
       if (this.ini.Type) {
         if (this.ini.Type.Sub) {
           subs = this.ini.Type.Sub.split(",");
+          type = 0;
           for (_i = 0, _len = subs.length; _i < _len; _i++) {
             sub_ = subs[_i];
+            type++;
             if (sub_ !== "") {
               sub = sub_.split("|");
               ini_sub = this.ini.Property[sub[0]].split("|");
-              type = ini_sub[1];
               if (this.props[sub[0]]) {
                 count = parseInt(this.props[sub[0]].value);
               } else {
                 count = parseInt(ini_sub[2]);
-              }
-              if (sub[1][0] === "o") {
-                type = 2;
-              } else {
-                type = 1;
               }
               for (i = _j = 1; 1 <= count ? _j <= count : _j >= count; i = 1 <= count ? ++_j : --_j) {
                 this.props[sub[1] + i] = {
