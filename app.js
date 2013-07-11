@@ -50,6 +50,7 @@
         new_event: '#FF6600'
       },
       size: 2,
+      active_size: 4,
       opacity: 0.7,
       new_link_opacity: 1,
       path: function(start_x, start_y, stop_x, stop_y) {
@@ -194,7 +195,7 @@
     };
 
     Scheme.load = function(sha) {
-      var dot, element, elinks, id, link, start_x, start_y, stop, stop_x, stop_y, _i, _len, _ref, _results;
+      var dot, element, elinks, id, l, link, start_dot, start_x, start_y, stop, stop_dot, stop_x, stop_y, _i, _len, _ref, _results;
       _ref = this.parse(sha);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         element = _ref[_i];
@@ -215,6 +216,7 @@
                 continue;
               }
               _ref2 = Paper.prototype.getDotPosition(dot), start_x = _ref2[0], start_y = _ref2[1];
+              start_dot = dot;
             }
             stop = link.stop;
             _ref3 = this.elements[stop[0]].dots;
@@ -224,8 +226,13 @@
                 continue;
               }
               _ref4 = Paper.prototype.getDotPosition(dot), stop_x = _ref4[0], stop_y = _ref4[1];
+              stop_dot = dot;
             }
-            _results1.push(Paper.prototype.drawLink(link.start, start_x, start_y, stop_x, stop_y, this.elements[id], this.elements[stop[0]]));
+            l = Paper.prototype.drawLink(link.start, start_x, start_y, stop_x, stop_y, this.elements[id], this.elements[stop[0]]);
+            l.dot1 = start_dot;
+            l.dot2 = stop_dot;
+            start_dot.link = l;
+            _results1.push(stop_dot.link = l);
           }
           return _results1;
         }).call(this));
@@ -441,7 +448,6 @@
       element = Scheme.getPaper().set();
       element.eid = id;
       rect.hover(function(e) {
-        console.log(e);
         Helper.setText(" " + name + " ");
         Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y);
         return Helper.show();
@@ -467,18 +473,26 @@
       dot.dot_type = type;
       dot.el = element;
       dot.hover(function(e) {
-        this.attr({
-          fill: conf.dot.hover_color,
-          r: conf.dot.radius.max
-        });
+        Paper.prototype.hover_dot_animate(this, 'on');
         Helper.setText(this.text);
         Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y);
-        return Helper.show();
+        Helper.show();
+        if (this.link) {
+          this.link.attr({
+            "stroke-width": conf.link.active_size
+          });
+          Paper.prototype.hover_dot_animate(this.link.dot1, 'on');
+          return Paper.prototype.hover_dot_animate(this.link.dot2, 'on');
+        }
       }, function() {
-        this.attr({
-          fill: this.default_color,
-          r: conf.dot.radius.min
-        });
+        Paper.prototype.hover_dot_animate(this, 'off');
+        if (this.link) {
+          this.link.attr({
+            "stroke-width": conf.link.size
+          });
+          Paper.prototype.hover_dot_animate(this.link.dot1, 'off');
+          Paper.prototype.hover_dot_animate(this.link.dot2, 'off');
+        }
         return Helper.hide();
       });
       dot.click(function(e) {
@@ -509,6 +523,8 @@
             opacity: conf.link.opacity
           });
           Scheme.create_line.toBack();
+          dot.link = Scheme.create_line;
+          Scheme.create_line.dot2 = dot;
           Scheme.create_line = false;
           return false;
         } else {
@@ -520,9 +536,11 @@
           Scheme.create_line = Scheme.getPaper().path(conf.link.path(start_x, start_y, stop_x, stop_y));
           color = conf.link.color.new_event;
           Scheme.create_line.dot_type = this.dot_type;
+          Scheme.create_line.dot1 = dot;
           Scheme.create_line.el = dot.el;
           Scheme.create_line.start_rid = dot.el[0].id;
           dot.el.push(Scheme.create_line);
+          dot.link = Scheme.create_line;
           if (this.dot_type > 2) {
             color = conf.link.color.new_var;
           }
@@ -532,6 +550,15 @@
             fill: "none",
             "stroke-dasharray": "- ",
             opacity: conf.link.new_link_opacity
+          });
+          Scheme.create_line.hover(function(e) {
+            return this.attr({
+              "stroke-width": conf.link.active_size
+            });
+          }, function() {
+            return this.attr({
+              "stroke-width": conf.link.size
+            });
           });
           return Scheme.create_line.toBack();
         }
@@ -626,9 +653,40 @@
         opacity: conf.link.opacity
       });
       l.toBack();
+      l.hover(function(e) {
+        this.attr({
+          "stroke-width": conf.link.active_size
+        });
+        Paper.prototype.hover_dot_animate(this.dot1, 'on');
+        return Paper.prototype.hover_dot_animate(this.dot2, 'on');
+      }, function() {
+        this.attr({
+          "stroke-width": conf.link.size
+        });
+        Paper.prototype.hover_dot_animate(this.dot1, 'off');
+        return Paper.prototype.hover_dot_animate(this.dot2, 'off');
+      });
       l.start_rid = el.element[0].id;
       el.element.push(l);
-      return el2.element.push(l);
+      el2.element.push(l);
+      return l;
+    };
+
+    RaphaelAdapter.prototype.hover_dot_animate = function(dot, type) {
+      if (type == null) {
+        type = 'on';
+      }
+      if (type === 'on') {
+        return dot.attr({
+          fill: conf.dot.hover_color,
+          r: conf.dot.radius.max
+        });
+      } else {
+        return dot.attr({
+          fill: dot.default_color,
+          r: conf.dot.radius.min
+        });
+      }
     };
 
     return RaphaelAdapter;

@@ -36,6 +36,7 @@ conf =
       new_var: '#3399FF'
       new_event: '#FF6600'
     size: 2
+    active_size: 4
     opacity: 0.7
     new_link_opacity: 1
     path: (start_x, start_y, stop_x, stop_y) ->
@@ -158,14 +159,21 @@ class Scheme
                   if dot.name != link.start
                       continue
                   [start_x, start_y] = Paper::getDotPosition dot
+                  start_dot = dot
 
               stop = link.stop
               for dot in @elements[stop[0]].dots
                   if dot.name != stop[1]
                       continue
                   [stop_x, stop_y] = Paper::getDotPosition dot
+                  stop_dot = dot
 
-              Paper::drawLink link.start, start_x, start_y, stop_x, stop_y, @elements[id], @elements[ stop[0] ]
+              l = Paper::drawLink link.start, start_x, start_y, stop_x, stop_y, @elements[id], @elements[ stop[0] ]
+              l.dot1 = start_dot
+              l.dot2 = stop_dot
+              start_dot.link = l
+              stop_dot.link = l
+
 
 
 
@@ -349,7 +357,6 @@ class RaphaelAdapter
       element.eid = id
 
       rect.hover( (e)->
-          console.log e
           Helper.setText " #{name} "
           Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y)
           Helper.show()
@@ -375,16 +382,20 @@ class RaphaelAdapter
       dot.el = element
 
       dot.hover( (e)->
-          this.attr
-              fill: conf.dot.hover_color
-              r: conf.dot.radius.max
+          Paper::hover_dot_animate( this, 'on')
           Helper.setText(this.text)
           Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y)
           Helper.show()
+          if this.link
+              this.link.attr "stroke-width": conf.link.active_size
+              Paper::hover_dot_animate( this.link.dot1, 'on')
+              Paper::hover_dot_animate( this.link.dot2, 'on')
       ,->
-          this.attr
-              fill: this.default_color
-              r: conf.dot.radius.min
+          Paper::hover_dot_animate( this, 'off')
+          if this.link
+              this.link.attr "stroke-width": conf.link.size
+              Paper::hover_dot_animate( this.link.dot1, 'off')
+              Paper::hover_dot_animate( this.link.dot2, 'off')
           Helper.hide()
       )
 
@@ -425,6 +436,8 @@ class RaphaelAdapter
 
 
             Scheme.create_line.toBack()
+            dot.link = Scheme.create_line
+            Scheme.create_line.dot2 = dot
             #Scheme.create_line.start_rid = dot.el[0].id
             #Scheme.create_line.el.push Scheme.create_line
 
@@ -444,9 +457,11 @@ class RaphaelAdapter
             Scheme.create_line = Scheme.getPaper().path conf.link.path(start_x, start_y, stop_x, stop_y)
             color = conf.link.color.new_event
             Scheme.create_line.dot_type = this.dot_type
+            Scheme.create_line.dot1 = dot
             Scheme.create_line.el = dot.el
             Scheme.create_line.start_rid = dot.el[0].id
             dot.el.push Scheme.create_line
+            dot.link = Scheme.create_line
 
             if this.dot_type > 2
                 color = conf.link.color.new_var
@@ -458,6 +473,13 @@ class RaphaelAdapter
                 fill: "none"
                 "stroke-dasharray": "- "
                 opacity: conf.link.new_link_opacity
+
+
+            Scheme.create_line.hover( (e)->
+                this.attr "stroke-width": conf.link.active_size
+            ,->
+                this.attr "stroke-width": conf.link.size
+            )
 
             Scheme.create_line.toBack()
 
@@ -533,10 +555,32 @@ class RaphaelAdapter
           opacity: conf.link.opacity
       l.toBack()
 
+      l.hover( (e)->
+          this.attr "stroke-width": conf.link.active_size
+          Paper::hover_dot_animate( this.dot1, 'on')
+          Paper::hover_dot_animate( this.dot2, 'on')
+      ,->
+          this.attr "stroke-width": conf.link.size
+          Paper::hover_dot_animate( this.dot1, 'off')
+          Paper::hover_dot_animate( this.dot2, 'off')
+      )
+
       l.start_rid = el.element[0].id
 
       el.element.push l
       el2.element.push l
+
+      l
+
+  hover_dot_animate: (dot, type = 'on')->
+      if type == 'on'
+          dot.attr
+              fill: conf.dot.hover_color
+              r: conf.dot.radius.max
+      else
+          dot.attr
+              fill: dot.default_color
+              r: conf.dot.radius.min
 
 
 class Paper extends RaphaelAdapter
