@@ -53,17 +53,17 @@
       opacity: 0.7,
       new_link_opacity: 1,
       path: function(start_x, start_y, stop_x, stop_y) {
-        return "M" + start_x + "," + start_y + ",S" + (start_x + start_x / stop_x) + "," + (stop_y + stop_y / start_y) + "," + stop_x + "," + stop_y;
+        return "M" + start_x + "," + start_y + ",L" + stop_x + "," + stop_y;
       }
     },
     paper: {
       offset: {
-        x: 119,
-        y: 88
+        x: 229,
+        y: 56
       },
       size: {
-        width: 762,
-        heigth: 443
+        width: 619,
+        heigth: 895
       },
       id: "canvas",
       contextmenu: false
@@ -481,7 +481,7 @@
         return Helper.hide();
       });
       dot.click(function(e) {
-        var bbox, mass, path, start_x, start_y, stop_x, stop_y, this_type;
+        var bbox, last, mass, path, start_x, start_y, stop_x, stop_y, this_type;
         if (Scheme.create_line) {
           this_type = this.dot_type;
           mass = [0, 1, -1, 2, -2];
@@ -493,8 +493,9 @@
           start_x = bbox.x + conf.dot.radius.min * 2;
           start_y = bbox.y + conf.dot.radius.min * 2;
           path = Scheme.create_line.attr('path');
-          path[1][3] = start_x;
-          path[1][4] = start_y;
+          last = path[1].length - 1;
+          path[1][last - 1] = start_x;
+          path[1][last] = start_y;
           Scheme.create_line.attr('path', path);
           color = conf.link.color.events;
           if (this.dot_type > 2) {
@@ -558,7 +559,7 @@
         }
       };
       move = function(dx, dy) {
-        var el, path, _i, _len, _ref;
+        var el, last, path, _i, _len, _ref;
         if (this.type !== 'circle') {
           element.translate(dx - this.ox, dy - this.oy);
           _ref = this.el;
@@ -568,9 +569,10 @@
               continue;
             }
             path = el.attr('path');
+            last = path[1].length - 1;
             if (el.start_rid === this.id) {
-              path[1][3] = el.old_path[1][3] - dx;
-              path[1][4] = el.old_path[1][4] - dy;
+              path[1][last - 1] = el.old_path[1][last - 1] - dx;
+              path[1][last] = el.old_path[1][last] - dy;
             } else {
               path[0][1] = el.old_path[0][1] - dx;
               path[0][2] = el.old_path[0][2] - dy;
@@ -582,7 +584,7 @@
         }
       };
       up = function() {
-        var el, path, _i, _len, _ref, _results;
+        var el, last, path, _i, _len, _ref, _results;
         if (this.type !== 'circle') {
           this.animate({
             "fill-opacity": conf.element.opacity
@@ -593,7 +595,8 @@
             el = _ref[_i];
             if (el.type === "path") {
               path = el.attr("path");
-              _results.push(el.attr("path", conf.link.path(path[0][1], path[0][2], path[1][3], path[1][4])));
+              last = path[1].length - 1;
+              _results.push(el.attr("path", conf.link.path(path[0][1], path[0][2], path[1][last - 1], path[1][last])));
             } else {
               _results.push(void 0);
             }
@@ -702,16 +705,6 @@
     return Scheme.load($('textarea#sha_viewer').val());
   });
 
-  $.ajax({
-    url: 'https://api.bitbucket.org/1.0/repositories/onefive/onefive.bitbucket.org/events?limit=1&start=0&type=pushed',
-    type: 'get',
-    dataType: 'jsonp'
-  }).success(function(d) {
-    var last_commit;
-    last_commit = d.events[0].description.commits[0].description;
-    return $('#last_commit').html("/ <a href=\"https://bitbucket.org/OneFive/onefive.bitbucket.org\">last commit</a>: " + last_commit);
-  });
-
   Helper = (function() {
     var helper;
 
@@ -792,13 +785,13 @@
       if (i >= 30) {
         break;
       }
-      $('#elements').append("<span class=\"el\"><img data-name=\"" + el + "\" src=\"/delphi/icon/" + el + ".ico\"/></span>");
+      $('.elements').append("<span class=\"el\"><img data-name=\"" + el + "\" src=\"/delphi/icon/" + el + ".ico\"/></span>");
       _results.push(i++);
     }
     return _results;
   });
 
-  $('#elements img').live('click', function() {
+  $('.elements img').live('click', function() {
     var id, name;
     id = Math.round(Math.random() * (10000000 - 1000000) + 1000000);
     name = $(this).data('name');

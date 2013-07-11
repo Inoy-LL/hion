@@ -38,15 +38,26 @@ conf =
     size: 2
     opacity: 0.7
     new_link_opacity: 1
-    path: (start_x, start_y, stop_x, stop_y) -> "M#{start_x},#{start_y},S#{start_x+start_x/stop_x},#{stop_y + stop_y/start_y},#{stop_x},#{stop_y}"
+    path: (start_x, start_y, stop_x, stop_y) ->
+        #x = (stop_x - start_x)/2
+        #y = (stop_y - start_y)/2
+        #if -15 < (stop_x - start_x) > 15
+        #    if -20 < (stop_y - start_y) > 20
+        #        y = 10
+        #else
+        #    x= 10
+        #"M#{start_x},#{start_y},#{start_x+x},#{start_y},#{stop_x-x},#{stop_y},L#{stop_x},#{stop_y}"
+
+        "M#{start_x},#{start_y},L#{stop_x},#{stop_y}"
+        # "M#{start_x},#{start_y},S#{start_x+start_x/stop_x},#{stop_y + stop_y/start_y},#{stop_x},#{stop_y}"
 
   paper:
     offset:
-      x: 119
-      y: 88
+      x: 229
+      y: 56
     size:
-      width: 762
-      heigth: 443
+      width: 619
+      heigth: 895
     id: "canvas"
     contextmenu: false
 
@@ -392,8 +403,10 @@ class RaphaelAdapter
             start_y = bbox.y + conf.dot.radius.min * 2
 
             path = Scheme.create_line.attr 'path'
-            path[1][3] = start_x #this.attr 'cx'
-            path[1][4] = start_y #this.attr 'cy'
+
+            last = path[1].length - 1
+            path[1][last - 1] = start_x #this.attr 'cx'
+            path[1][last] = start_y #this.attr 'cy'
 
 
 
@@ -477,9 +490,11 @@ class RaphaelAdapter
 
                   # отменяем перемещение противоположного конца связи
                   path = el.attr 'path'
+                  last = path[1].length - 1
+
                   if el.start_rid == this.id
-                      path[1][3] = el.old_path[1][3] - dx
-                      path[1][4] = el.old_path[1][4] - dy
+                      path[1][last-1] = el.old_path[1][last-1] - dx
+                      path[1][last] = el.old_path[1][last] - dy
                   else
                       path[0][1] = el.old_path[0][1] - dx
                       path[0][2] = el.old_path[0][2] - dy
@@ -496,7 +511,8 @@ class RaphaelAdapter
               for el in this.el
                   if el.type == "path"
                       path = el.attr "path"
-                      el.attr "path", conf.link.path(path[0][1], path[0][2], path[1][3], path[1][4])
+                      last = path[1].length - 1
+                      el.attr "path", conf.link.path(path[0][1], path[0][2], path[1][last-1], path[1][last])
 
       Scheme.getPaper().set(element).drag(move, start, up)
 
@@ -575,14 +591,14 @@ $('#redraw').click ->
 
 
 
-$.ajax(
-  url:'https://api.bitbucket.org/1.0/repositories/onefive/onefive.bitbucket.org/events?limit=1&start=0&type=pushed'
-  type:'get'
-  dataType:'jsonp'
-).success (d)->
+#$.ajax(
+#  url:'https://api.bitbucket.org/1.0/repositories/onefive/onefive.bitbucket.org/events?limit=1&start=0&type=pushed'
+#  type:'get'
+#  dataType:'jsonp'
+#).success (d)->
 
-    last_commit = d.events[0].description.commits[0].description
-    $('#last_commit').html "/ <a href=\"https://bitbucket.org/OneFive/onefive.bitbucket.org\">last commit</a>: #{last_commit}"
+#    last_commit = d.events[0].description.commits[0].description
+#    $('#last_commit').html "/ <a href=\"https://bitbucket.org/OneFive/onefive.bitbucket.org\">last commit</a>: #{last_commit}"
 
 #------------------------------------
 
@@ -648,12 +664,12 @@ $.get '/delphi_utf/all.json',
   for el in data
     if i >= 30
       break
-    $('#elements').append("<span class=\"el\"><img data-name=\"#{el}\" src=\"/delphi/icon/#{el}.ico\"/></span>")
+    $('.elements').append("<span class=\"el\"><img data-name=\"#{el}\" src=\"/delphi/icon/#{el}.ico\"/></span>")
     i++
 
 
 
-$('#elements img').live 'click', ->
+$('.elements img').live 'click', ->
     id = Math.round( Math.random() * (10000000 - 1000000) + 1000000 )
     name = $(this).data('name')
     Scheme.addElement(name, id, 50, 50, {} )
