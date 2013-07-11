@@ -349,8 +349,9 @@ class RaphaelAdapter
       element.eid = id
 
       rect.hover( (e)->
+          console.log e
           Helper.setText " #{name} "
-          Helper.move(e.layerX, e.layerY)
+          Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y)
           Helper.show()
       ,->
           Helper.hide()
@@ -378,7 +379,7 @@ class RaphaelAdapter
               fill: conf.dot.hover_color
               r: conf.dot.radius.max
           Helper.setText(this.text)
-          Helper.move(e.layerX, e.layerY)
+          Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y)
           Helper.show()
       ,->
           this.attr

@@ -441,8 +441,9 @@
       element = Scheme.getPaper().set();
       element.eid = id;
       rect.hover(function(e) {
+        console.log(e);
         Helper.setText(" " + name + " ");
-        Helper.move(e.layerX, e.layerY);
+        Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y);
         return Helper.show();
       }, function() {
         return Helper.hide();
@@ -471,7 +472,7 @@
           r: conf.dot.radius.max
         });
         Helper.setText(this.text);
-        Helper.move(e.layerX, e.layerY);
+        Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y);
         return Helper.show();
       }, function() {
         this.attr({
