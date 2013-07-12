@@ -16,7 +16,7 @@ conf =
     border:
       color: "#555"
       size: 1
-    size: 40
+    size: 36
     opacity: .1
     hover:
       opacity: .4
@@ -35,6 +35,7 @@ conf =
       events: '#F00'
       new_var: '#3399FF'
       new_event: '#FF6600'
+      random: true
     size: 2
     active_size: 4
     opacity: 0.7
@@ -427,6 +428,9 @@ class RaphaelAdapter
             if this.dot_type > 2
                 color = conf.link.color.vars
 
+            if conf.link.color.random
+                color = getRandonColor()
+
 
             Scheme.create_line.attr
                 "stroke-dasharray": ""
@@ -466,6 +470,9 @@ class RaphaelAdapter
             if this.dot_type > 2
                 color = conf.link.color.new_var
 
+            if conf.link.color.random
+                color = getRandonColor()
+
 
             Scheme.create_line.attr
                 stroke: color
@@ -504,6 +511,9 @@ class RaphaelAdapter
 
 
       move = (dx, dy)->
+
+          if ((dx - this.ox != 0 and dx % 2 == 0) or (dy - this.oy != 0 and dy % 2 == 0)) and !!!window.chrome
+              return false
           if this.type != 'circle'
               element.translate(  dx - this.ox, dy - this.oy)
 
@@ -547,6 +557,11 @@ class RaphaelAdapter
       color = conf.link.color.events
       if name.substr(0, 2) != "on"
           color = conf.link.color.vars
+
+
+
+      if conf.link.color.random
+          color = getRandonColor()
 
       l.attr
           stroke: color
@@ -627,6 +642,13 @@ class PropsPanel
 
           if name == "Font"
             $("#font").fontSelector(value: 'Arial')
+
+
+getRandonColor = ->
+    color = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
+    if color.length - 1 % 3 != 0
+        color = color.substr(0, 4)
+    return color
 
 Scheme.load $('textarea#sha_viewer').val()
 
