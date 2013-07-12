@@ -98,3 +98,7 @@ bottom: 30px;
 input, textarea {outline: none;} /*������� ��������� ��������� */
 input:active, textarea:active {outline: none;}/* �� �������� ����� */
 :focus {outline: none;}/* ������� ��� ��������� */
+
+.el {
+margin: 10px;
+}
