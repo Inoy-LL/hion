@@ -442,7 +442,7 @@ class RaphaelAdapter
             Scheme.create_line.toBack()
             dot.link = Scheme.create_line
             Scheme.create_line.dot2 = dot
-            #Scheme.create_line.start_rid = dot.el[0].id
+            # Scheme.create_line.start_rid = dot.el[0].id
             #Scheme.create_line.el.push Scheme.create_line
 
 
