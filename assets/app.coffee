@@ -725,14 +725,14 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 
 
 # Todo: add from elements.sqlite
-$.get '/delphi_utf/all.json',
-(data)->
-  i = 0
-  for el in data
-    if i >= 30
-      break
-    $('.elements').append("<span class=\"el\"><img data-name=\"#{el}\" src=\"/delphi/icon/#{el}.ico\"/></span>")
-    i++
+$.ajax(url:'/delphi_utf/all.json', dataType: 'json')
+.success (data)->
+    i = 0
+    for el in data
+      if i >= 30
+        break
+      $('.elements').append("<span class=\"el\"><img data-name=\"#{el}\" src=\"/delphi/icon/#{el}.ico\"/></span>")
+      i++
 
 
 
