@@ -578,11 +578,15 @@
       start = function() {
         var el, _i, _len, _ref;
         if (this.type !== 'circle') {
-          this.ox = 0;
-          this.oy = 0;
           this.animate({
             "fill-opacity": conf.element.hover.opacity
           }, conf.element.hover.time, ">");
+          if (!this.lx) {
+            this.lx = 0;
+            this.ly = 0;
+            this.ox = 0;
+            this.oy = 0;
+          }
           _ref = this.el;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             el = _ref[_i];
@@ -594,13 +598,13 @@
         }
       };
       move = function(dx, dy) {
-        var el, last, path, _i, _len, _ref;
-        if (((dx - this.ox !== 0 && dx % 2 === 0) || (dy - this.oy !== 0 && dy % 2 === 0)) && !!!window.chrome) {
-          return false;
-        }
+        var el, last, path, _i, _len, _ref, _results;
         if (this.type !== 'circle') {
-          element.translate(dx - this.ox, dy - this.oy);
+          this.lx = dx + this.ox;
+          this.ly = dy + this.oy;
+          element.transform("t" + this.lx + "," + this.ly);
           _ref = this.el;
+          _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             el = _ref[_i];
             if (el.type !== "path") {
@@ -609,16 +613,15 @@
             path = el.attr('path');
             last = path[1].length - 1;
             if (el.start_rid === this.id) {
-              path[1][last - 1] = el.old_path[1][last - 1] - dx;
-              path[1][last] = el.old_path[1][last] - dy;
+              path[1][last - 1] = el.old_path[1][last - 1] - this.lx + this.ox;
+              path[1][last] = el.old_path[1][last] - this.ly + this.oy;
             } else {
-              path[0][1] = el.old_path[0][1] - dx;
-              path[0][2] = el.old_path[0][2] - dy;
+              path[0][1] = el.old_path[0][1] - this.lx + this.ox;
+              path[0][2] = el.old_path[0][2] - this.ly + this.oy;
             }
-            el.attr('path', path);
+            _results.push(el.attr('path', path));
           }
-          this.ox = dx;
-          return this.oy = dy;
+          return _results;
         }
       };
       up = function() {
@@ -627,6 +630,8 @@
           this.animate({
             "fill-opacity": conf.element.opacity
           }, 500, ">");
+          this.ox = this.lx;
+          this.oy = this.ly;
           _ref = this.el;
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {

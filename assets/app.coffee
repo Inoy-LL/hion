@@ -499,9 +499,13 @@ class RaphaelAdapter
   bindElementEvents: (element, props)->
       start = ->
         if this.type != 'circle'
-            this.ox = 0
-            this.oy = 0
             this.animate("fill-opacity": conf.element.hover.opacity, conf.element.hover.time, ">")
+
+            if !@lx
+                @lx = 0
+                @ly = 0
+                @ox = 0
+                @oy = 0
 
             for el in this.el
                 if el.type == "path"
@@ -512,10 +516,12 @@ class RaphaelAdapter
 
       move = (dx, dy)->
 
-          if ((dx - this.ox != 0 and dx % 2 == 0) or (dy - this.oy != 0 and dy % 2 == 0)) and !!!window.chrome
-              return false
+          #if ((dx - this.ox != 0 and dx % 2 == 0) or (dy - this.oy != 0 and dy % 2 == 0)) and !!!window.chrome
+          #    return false
           if this.type != 'circle'
-              element.translate(  dx - this.ox, dy - this.oy)
+              @lx = dx + @ox
+              @ly = dy + @oy
+              element.transform( "t#{@lx},#{@ly}" )
 
               for el in this.el
                   if el.type != "path"
@@ -526,19 +532,20 @@ class RaphaelAdapter
                   last = path[1].length - 1
 
                   if el.start_rid == this.id
-                      path[1][last-1] = el.old_path[1][last-1] - dx
-                      path[1][last] = el.old_path[1][last] - dy
+                      path[1][last-1] = el.old_path[1][last-1] - @lx + @ox
+                      path[1][last] = el.old_path[1][last] - @ly + @oy
                   else
-                      path[0][1] = el.old_path[0][1] - dx
-                      path[0][2] = el.old_path[0][2] - dy
+                      path[0][1] = el.old_path[0][1] - @lx + @ox
+                      path[0][2] = el.old_path[0][2] - @ly + @oy
 
                   el.attr 'path', path
-
-              this.ox = dx;
-              this.oy = dy;
       up = ->
           if this.type != 'circle'
               this.animate( "fill-opacity": conf.element.opacity, 500, ">")
+
+
+              @ox = @lx
+              @oy = @ly
 
               # делаем полную трасировку
               for el in this.el
