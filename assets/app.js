@@ -599,6 +599,11 @@
       };
       move = function(dx, dy) {
         var el, last, path, _i, _len, _ref, _results;
+        this.lx = dx + this.ox;
+        this.ly = dy + this.oy;
+        if (((this.lx !== 0 && this.lx % 2 === 0) || (this.ly !== 0 && this.ly % 2 === 0)) && !!!window.chrome) {
+          return false;
+        }
         if (this.type !== 'circle') {
           this.lx = dx + this.ox;
           this.ly = dy + this.oy;

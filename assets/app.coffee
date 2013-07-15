@@ -515,9 +515,10 @@ class RaphaelAdapter
 
 
       move = (dx, dy)->
-
-          #if ((dx - this.ox != 0 and dx % 2 == 0) or (dy - this.oy != 0 and dy % 2 == 0)) and !!!window.chrome
-          #    return false
+          @lx = dx + @ox
+          @ly = dy + @oy
+          if ((@lx != 0 and @lx % 2 == 0) or (@ly != 0 and @ly % 2 == 0)) and !!!window.chrome
+              return false
           if this.type != 'circle'
               @lx = dx + @ox
               @ly = dy + @oy
