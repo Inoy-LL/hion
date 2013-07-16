@@ -586,6 +586,7 @@
             this.ly = 0;
             this.ox = 0;
             this.oy = 0;
+            this.pos = true;
           }
           _ref = this.el;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -601,6 +602,10 @@
         var l, last, path, _i, _len, _ref, _results;
         this.lx = dx + this.ox;
         this.ly = dy + this.oy;
+        this.pos = !this.pos;
+        if (this.pos && !!!window.chrome) {
+          return false;
+        }
         if (this.type !== 'circle') {
           this.lx = dx + this.ox;
           this.ly = dy + this.oy;
