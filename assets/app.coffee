@@ -575,8 +575,12 @@ class RaphaelAdapter
               for el in this.el
                   if el.type == "path"
                       path = el.attr "path"
-                      last = path[1].length - 1
-                      el.attr "path", conf.link.path(path[0][1], path[0][2], path[1][last-1], path[1][last])
+                      #last = path[1].length - 1
+                      dot1 = el.dot1.getBBox()
+                      dot2 = el.dot2.getBBox()
+                      size = conf.dot.radius.min
+                      el.attr "path", conf.link.path(dot1.x + size, dot1.y + size, dot2.x + size, dot2.y + size)
+                      #el.attr "path", conf.link.path(path[0][1], path[0][2], path[1][last-1], path[1][last])
 
       Scheme.getPaper().set(element).drag(move, start, up)
 
@@ -589,15 +593,8 @@ class RaphaelAdapter
       if name.substr(0, 2) != "on"
           color = conf.link.color.vars
 
-
-
       if conf.link.color.random
           color = getRandonColor()
-
-
-
-
-
 
 
       l.attr
