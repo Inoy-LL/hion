@@ -507,9 +507,11 @@ class RaphaelAdapter
                 @ox = 0
                 @oy = 0
 
+
             for el in this.el
                 if el.type == "path"
                     el.old_path = el.attr "path"
+
 
             PropsPanel::setProps props
 
@@ -517,29 +519,32 @@ class RaphaelAdapter
       move = (dx, dy)->
           @lx = dx + @ox
           @ly = dy + @oy
-          if ((@lx != 0 and @lx % 2 == 0) or (@ly != 0 and @ly % 2 == 0)) and !!!window.chrome
-              return false
+          #if ((@lx != 0 and @lx % 2 == 0) or (@ly != 0 and @ly % 2 == 0)) and !!!window.chrome
+          #    return false
           if this.type != 'circle'
               @lx = dx + @ox
               @ly = dy + @oy
               element.transform( "t#{@lx},#{@ly}" )
 
-              for el in this.el
-                  if el.type != "path"
+              for l in this.el
+                  if l.type != "path"
                       continue
 
                   # отменяем перемещение противоположного конца связи
-                  path = el.attr 'path'
+                  path = l.attr 'path'
                   last = path[1].length - 1
 
-                  if el.start_rid == this.id
-                      path[1][last-1] = el.old_path[1][last-1] - @lx + @ox
-                      path[1][last] = el.old_path[1][last] - @ly + @oy
-                  else
-                      path[0][1] = el.old_path[0][1] - @lx + @ox
-                      path[0][2] = el.old_path[0][2] - @ly + @oy
 
-                  el.attr 'path', path
+                  l.attr 'transform', ""
+
+                  if l.start_rid != this.id
+                      path[1][last-1] = l.old_path[1][last-1] + dx
+                      path[1][last] = l.old_path[1][last] + dy
+                  else
+                      path[0][1] = l.old_path[0][1] + dx
+                      path[0][2] = l.old_path[0][2] + dy
+
+                  l.attr 'path', path
       up = ->
           if this.type != 'circle'
               this.animate( "fill-opacity": conf.element.opacity, 500, ">")
