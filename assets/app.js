@@ -33,7 +33,13 @@
         opacity: .4,
         time: 300
       },
-      color: "red"
+      color: "red",
+      glow: {
+        enable: true,
+        color: "#0F0",
+        width: 5,
+        opacity: 0.5
+      }
     },
     icon: {
       path: "/delphi/icon/",
@@ -49,6 +55,12 @@
         new_var: '#3399FF',
         new_event: '#FF6600',
         random: true
+      },
+      glow: {
+        enable: true,
+        color: "#0F0",
+        width: 5,
+        opacity: 0.5
       },
       size: 2,
       active_size: 4,
@@ -438,7 +450,7 @@
     };
 
     RaphaelAdapter.prototype.drawElement = function(size, icon_size, name, x, y, id) {
-      var element, icon, rect;
+      var element, glow, icon, rect;
       icon = Scheme.getPaper().image("" + conf.icon.path + name + ".ico", x + (size - icon_size) / 2, y + (size - icon_size) / 2, icon_size, icon_size);
       rect = Scheme.getPaper().rect(x, y, size, size, 3).attr({
         fill: icon,
@@ -456,7 +468,15 @@
         return Helper.hide();
       });
       rect.el = element;
-      return element.push(rect, icon);
+      element.push(rect, icon);
+      if (conf.element.glow.enable) {
+        glow = rect.glow({
+          color: conf.element.glow.color,
+          width: conf.element.glow.width,
+          opacity: conf.element.glow.opacity
+        });
+        return element.push(glow);
+      }
     };
 
     RaphaelAdapter.prototype.drawDot = function(color, border_color, x, y, prop_name, prop_hint, element, type) {

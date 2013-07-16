@@ -22,7 +22,11 @@ conf =
       opacity: .4
       time: 300
     color: "red"
-
+    glow:
+      enable: true
+      color: "#0F0"
+      width: 5
+      opacity: 0.5
   icon:
     path: "/delphi/icon/"
     size: 24
@@ -36,6 +40,11 @@ conf =
       new_var: '#3399FF'
       new_event: '#FF6600'
       random: true
+    glow:
+      enable: true
+      color: "#0F0"
+      width: 5
+      opacity: 0.5
     size: 2
     active_size: 4
     opacity: 0.7
@@ -354,6 +363,7 @@ class RaphaelAdapter
           "stroke-width": conf.element.border.size
           stroke: conf.element.border.color
 
+
       element = Scheme.getPaper().set()
       element.eid = id
 
@@ -367,6 +377,10 @@ class RaphaelAdapter
 
       rect.el = element
       element.push rect, icon
+
+      if conf.element.glow.enable
+          glow = rect.glow color: conf.element.glow.color, width: conf.element.glow.width, opacity: conf.element.glow.opacity
+          element.push glow
 
   drawDot: (color, border_color, x, y, prop_name, prop_hint, element, type)->
       hint = "#{prop_name}: #{prop_hint}"
@@ -546,6 +560,8 @@ class RaphaelAdapter
                       path[0][1] = l.old_path[0][1] + dx
                       path[0][2] = l.old_path[0][2] + dy
 
+
+
                   l.attr 'path', path
       up = ->
           if this.type != 'circle'
@@ -578,6 +594,12 @@ class RaphaelAdapter
       if conf.link.color.random
           color = getRandonColor()
 
+
+
+
+
+
+
       l.attr
           stroke: color
           "stroke-width": conf.link.size
@@ -596,6 +618,11 @@ class RaphaelAdapter
       )
 
       l.start_rid = el.element[0].id
+
+      #if conf.link.glow.enable
+      #    glow = l.glow color: conf.link.glow.color, width: conf.link.glow.width, opacity: conf.link.glow.opacity
+      #    el.element.push glow
+      #    el2.element.push glow
 
       el.element.push l
       el2.element.push l
