@@ -27,6 +27,8 @@ conf =
       color: "#0F0"
       width: 5
       opacity: 0.5
+    selected:
+      color: "yellow"
   icon:
     path: "/delphi/icon/"
     size: 24
@@ -39,7 +41,7 @@ conf =
       events: '#F00'
       new_var: '#3399FF'
       new_event: '#FF6600'
-      random: true
+      random: false
     glow:
       enable: true
       color: "#0F0"
@@ -79,6 +81,7 @@ conf =
 
 class Scheme
   @create_line: false
+  @selected_element: null
   @links: {}
   instance = null
   @elements = {}
@@ -523,7 +526,8 @@ class RaphaelAdapter
                 @pos = true
 
 
-            for el in this.el
+            if this.el
+              for el in this.el
                 if el.type == "path"
                     el.old_path = el.attr "path"
 
@@ -572,7 +576,8 @@ class RaphaelAdapter
               @oy = @ly
 
               # делаем полную трасировку
-              for el in this.el
+              if this.el
+                for el in this.el
                   if el.type == "path"
                       path = el.attr "path"
                       #last = path[1].length - 1
@@ -583,6 +588,12 @@ class RaphaelAdapter
                       #el.attr "path", conf.link.path(path[0][1], path[0][2], path[1][last-1], path[1][last])
 
       Scheme.getPaper().set(element).drag(move, start, up)
+
+      element.click ->
+          if Scheme::selected_element
+              Scheme::selected_element.attr 'stroke', conf.element.border.color
+          Scheme::selected_element = this
+          this.attr 'stroke': conf.element.selected.color
 
   getDotPosition: (dot)->
       [dot.attr('cx'), (dot.attr 'cy')]

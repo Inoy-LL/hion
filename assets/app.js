@@ -39,6 +39,9 @@
         color: "#0F0",
         width: 5,
         opacity: 0.5
+      },
+      selected: {
+        color: "yellow"
       }
     },
     icon: {
@@ -54,7 +57,7 @@
         events: '#F00',
         new_var: '#3399FF',
         new_event: '#FF6600',
-        random: true
+        random: false
       },
       glow: {
         enable: true,
@@ -96,6 +99,8 @@
     function Scheme() {}
 
     Scheme.create_line = false;
+
+    Scheme.selected_element = null;
 
     Scheme.links = {};
 
@@ -608,11 +613,13 @@
             this.oy = 0;
             this.pos = true;
           }
-          _ref = this.el;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            el = _ref[_i];
-            if (el.type === "path") {
-              el.old_path = el.attr("path");
+          if (this.el) {
+            _ref = this.el;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              el = _ref[_i];
+              if (el.type === "path") {
+                el.old_path = el.attr("path");
+              }
             }
           }
           return PropsPanel.prototype.setProps(props);
@@ -660,24 +667,35 @@
           }, 500, ">");
           this.ox = this.lx;
           this.oy = this.ly;
-          _ref = this.el;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            el = _ref[_i];
-            if (el.type === "path") {
-              path = el.attr("path");
-              dot1 = el.dot1.getBBox();
-              dot2 = el.dot2.getBBox();
-              size = conf.dot.radius.min;
-              _results.push(el.attr("path", conf.link.path(dot1.x + size, dot1.y + size, dot2.x + size, dot2.y + size)));
-            } else {
-              _results.push(void 0);
+          if (this.el) {
+            _ref = this.el;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              el = _ref[_i];
+              if (el.type === "path") {
+                path = el.attr("path");
+                dot1 = el.dot1.getBBox();
+                dot2 = el.dot2.getBBox();
+                size = conf.dot.radius.min;
+                _results.push(el.attr("path", conf.link.path(dot1.x + size, dot1.y + size, dot2.x + size, dot2.y + size)));
+              } else {
+                _results.push(void 0);
+              }
             }
+            return _results;
           }
-          return _results;
         }
       };
-      return Scheme.getPaper().set(element).drag(move, start, up);
+      Scheme.getPaper().set(element).drag(move, start, up);
+      return element.click(function() {
+        if (Scheme.prototype.selected_element) {
+          Scheme.prototype.selected_element.attr('stroke', conf.element.border.color);
+        }
+        Scheme.prototype.selected_element = this;
+        return this.attr({
+          'stroke': conf.element.selected.color
+        });
+      });
     };
 
     RaphaelAdapter.prototype.getDotPosition = function(dot) {
