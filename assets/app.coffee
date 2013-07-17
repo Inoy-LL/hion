@@ -51,18 +51,31 @@ conf =
     active_size: 4
     opacity: 0.7
     new_link_opacity: 1
-    path: (start_x, start_y, stop_x, stop_y) ->
-        #x = (stop_x - start_x)/2
-        #y = (stop_y - start_y)/2
-        #if -15 < (stop_x - start_x) > 15
-        #    if -20 < (stop_y - start_y) > 20
-        #        y = 10
-        #else
-        #    x= 10
-        #"M#{start_x},#{start_y},#{start_x+x},#{start_y},#{stop_x-x},#{stop_y},L#{stop_x},#{stop_y}"
+    path: (start_x, start_y, stop_x, stop_y, type) ->
+        x = Math.abs(stop_x - start_x)/2
+        y = Math.abs(stop_y - start_y)/2
 
-        "M#{start_x},#{start_y},L#{stop_x},#{stop_y}"
-        # "M#{start_x},#{start_y},S#{start_x+start_x/stop_x},#{stop_y + stop_y/start_y},#{stop_x},#{stop_y}"
+        if type == 2
+          if -15 < (stop_x - start_x) > 15
+            if -20 < (stop_y - start_y) > 20
+                x = 10
+
+          return "M#{start_x},#{start_y},#{start_x+x},#{start_y},#{stop_x-x},#{stop_y},L#{stop_x},#{stop_y}"
+        else
+          if -15 < (stop_y - start_y) > 15
+            if -20 < (stop_x - start_x) > 20
+              y = 10
+          #else
+          #  y = 10
+          return "M#{start_x},#{start_y},#{start_x},#{start_y-y},#{stop_x},#{stop_y+y},L#{stop_x},#{stop_y}"
+
+        #"M#{start_x},#{start_y},L#{stop_x},#{stop_y}"
+        #"M#{start_x},#{start_y},S#{start_x+start_x/stop_x},#{stop_y + stop_y/start_y},#{stop_x},#{stop_y}"
+        #"M#{start_x},#{start_y},S#{start_x+Math.abs(start_x-stop_x)/2},#{start_y + Math.abs(start_y-stop_y)/2},#{stop_x},#{stop_y}"
+
+        #"M#{start_x},#{start_y},#{start_x+Math.abs(start_x-stop_x)/2},#{start_y + Math.abs(start_y-stop_y)/2},#{stop_x},#{stop_y}"
+
+        #"M#{start_x},#{start_y},S#{start_x+Math.abs(start_x-stop_x)/2},#{start_y + Math.abs(start_y-stop_y)/2},S#{stop_x-Math.abs(start_x-stop_x)/2},#{stop_y - Math.abs(start_y-stop_y)/2},#{stop_x},#{stop_y}"
 
   paper:
     offset:
@@ -349,7 +362,7 @@ class RaphaelAdapter
       paper.canvas.onmousemove =  (e)->
           if Scheme.create_line
               path = Scheme.create_line.attr 'path'
-              Scheme.create_line.attr 'path', conf.link.path(path[0][1], path[0][2], e.layerX, e.layerY)
+              Scheme.create_line.attr 'path', conf.link.path(path[0][1], path[0][2], e.layerX, e.layerY, Scheme.create_line.dot_type)
       paper.canvas.onmousedown = (e)->
           if Scheme.create_line and e.which == 3
               Scheme.create_line.remove()
@@ -406,13 +419,15 @@ class RaphaelAdapter
           if this.link
               this.link.attr "stroke-width": conf.link.active_size
               Paper::hover_dot_animate( this.link.dot1, 'on')
-              Paper::hover_dot_animate( this.link.dot2, 'on')
+              if this.link.dot2
+                  Paper::hover_dot_animate( this.link.dot2, 'on')
       ,->
           Paper::hover_dot_animate( this, 'off')
           if this.link
               this.link.attr "stroke-width": conf.link.size
               Paper::hover_dot_animate( this.link.dot1, 'off')
-              Paper::hover_dot_animate( this.link.dot2, 'off')
+              if this.link.dot2
+                  Paper::hover_dot_animate( this.link.dot2, 'off')
           Helper.hide()
       )
 
@@ -477,7 +492,7 @@ class RaphaelAdapter
             stop_x = e.layerX
             stop_y = e.layerY
 
-            Scheme.create_line = Scheme.getPaper().path conf.link.path(start_x, start_y, stop_x, stop_y)
+            Scheme.create_line = Scheme.getPaper().path conf.link.path(start_x, start_y, stop_x, stop_y, Scheme.create_line.dot_type)
             color = conf.link.color.new_event
             Scheme.create_line.dot_type = this.dot_type
             Scheme.create_line.dot1 = dot
@@ -552,23 +567,40 @@ class RaphaelAdapter
                   if l.type != "path"
                       continue
 
-                  # отменяем перемещение противоположного конца связи
                   path = l.attr 'path'
-                  last = path[1].length - 1
-
+                  last = path.length - 1
 
                   l.attr 'transform', ""
+                  # отменяем перемещение противоположного конца связи
+                  #last = l.old_path[1].length - 1
+
+                  #last = path[1].length - 1
+
+
+                  if l.dot1.dot_type == 1 or l.dot1.dot_type == 2
+                      dot_type = 2
+                  else
+                      dot_type = 1
 
                   if l.start_rid != this.id
-                      path[1][last-1] = l.old_path[1][last-1] + dx
-                      path[1][last] = l.old_path[1][last] + dy
+                      path[last][1] = l.old_path[last][1] + dx
+                      path[last][2] = l.old_path[last][2] + dy
                   else
                       path[0][1] = l.old_path[0][1] + dx
                       path[0][2] = l.old_path[0][2] + dy
 
+                  path = conf.link.path(path[0][1], path[0][2], path[last][1], path[last][2], dot_type)
 
 
-                  l.attr 'path', path
+
+
+
+
+
+
+
+
+                  l.attr 'path': path
       up = ->
           if this.type != 'circle'
               this.animate( "fill-opacity": conf.element.opacity, 500, ">")
@@ -586,7 +618,12 @@ class RaphaelAdapter
                       dot1 = el.dot1.getBBox()
                       dot2 = el.dot2.getBBox()
                       size = conf.dot.radius.min
-                      el.attr "path", conf.link.path(dot1.x + size, dot1.y + size, dot2.x + size, dot2.y + size)
+
+                      if el.dot1.dot_type == 1 or el.dot1.dot_type == 2
+                          dot_type = 2
+                      else
+                          dot_type = 1
+                      el.attr "path", conf.link.path(dot1.x + size, dot1.y + size, dot2.x + size, dot2.y + size, dot_type)
                       #el.attr "path", conf.link.path(path[0][1], path[0][2], path[1][last-1], path[1][last])
 
       Scheme.getPaper().set(element).drag(move, start, up)
@@ -602,10 +639,18 @@ class RaphaelAdapter
       [dot.attr('cx'), (dot.attr 'cy')]
 
   drawLink: (name, start_x, start_y, stop_x, stop_y, el, el2)->
-      l = Scheme.getPaper().path conf.link.path(start_x, start_y, stop_x, stop_y)
+
       color = conf.link.color.events
-      if name.substr(0, 2) != "on"
+
+      if name.substr(0, 2) != "on" and name.substr(0, 2) != "do"
           color = conf.link.color.vars
+          dot_type = 1
+      else
+          dot_type = 2
+
+      l = Scheme.getPaper().path conf.link.path(start_x, start_y, stop_x, stop_y, dot_type)
+
+
 
       if conf.link.color.random
           color = getRandonColor()

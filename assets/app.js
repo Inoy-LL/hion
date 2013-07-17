@@ -69,8 +69,25 @@
       active_size: 4,
       opacity: 0.7,
       new_link_opacity: 1,
-      path: function(start_x, start_y, stop_x, stop_y) {
-        return "M" + start_x + "," + start_y + ",L" + stop_x + "," + stop_y;
+      path: function(start_x, start_y, stop_x, stop_y, type) {
+        var x, y, _ref, _ref1, _ref2, _ref3;
+        x = Math.abs(stop_x - start_x) / 2;
+        y = Math.abs(stop_y - start_y) / 2;
+        if (type === 2) {
+          if ((-15 < (_ref = stop_x - start_x) && _ref > 15)) {
+            if ((-20 < (_ref1 = stop_y - start_y) && _ref1 > 20)) {
+              x = 10;
+            }
+          }
+          return "M" + start_x + "," + start_y + "," + (start_x + x) + "," + start_y + "," + (stop_x - x) + "," + stop_y + ",L" + stop_x + "," + stop_y;
+        } else {
+          if ((-15 < (_ref2 = stop_y - start_y) && _ref2 > 15)) {
+            if ((-20 < (_ref3 = stop_x - start_x) && _ref3 > 20)) {
+              y = 10;
+            }
+          }
+          return "M" + start_x + "," + start_y + "," + start_x + "," + (start_y - y) + "," + stop_x + "," + (stop_y + y) + ",L" + stop_x + "," + stop_y;
+        }
       }
     },
     paper: {
@@ -442,7 +459,7 @@
         var path;
         if (Scheme.create_line) {
           path = Scheme.create_line.attr('path');
-          return Scheme.create_line.attr('path', conf.link.path(path[0][1], path[0][2], e.layerX, e.layerY));
+          return Scheme.create_line.attr('path', conf.link.path(path[0][1], path[0][2], e.layerX, e.layerY, Scheme.create_line.dot_type));
         }
       };
       paper.canvas.onmousedown = function(e) {
@@ -508,7 +525,9 @@
             "stroke-width": conf.link.active_size
           });
           Paper.prototype.hover_dot_animate(this.link.dot1, 'on');
-          return Paper.prototype.hover_dot_animate(this.link.dot2, 'on');
+          if (this.link.dot2) {
+            return Paper.prototype.hover_dot_animate(this.link.dot2, 'on');
+          }
         }
       }, function() {
         Paper.prototype.hover_dot_animate(this, 'off');
@@ -517,7 +536,9 @@
             "stroke-width": conf.link.size
           });
           Paper.prototype.hover_dot_animate(this.link.dot1, 'off');
-          Paper.prototype.hover_dot_animate(this.link.dot2, 'off');
+          if (this.link.dot2) {
+            Paper.prototype.hover_dot_animate(this.link.dot2, 'off');
+          }
         }
         return Helper.hide();
       });
@@ -565,7 +586,7 @@
           start_y = bbox.y + conf.dot.radius.min * 2;
           stop_x = e.layerX;
           stop_y = e.layerY;
-          Scheme.create_line = Scheme.getPaper().path(conf.link.path(start_x, start_y, stop_x, stop_y));
+          Scheme.create_line = Scheme.getPaper().path(conf.link.path(start_x, start_y, stop_x, stop_y, Scheme.create_line.dot_type));
           color = conf.link.color.new_event;
           Scheme.create_line.dot_type = this.dot_type;
           Scheme.create_line.dot1 = dot;
@@ -629,7 +650,7 @@
         }
       };
       move = function(dx, dy) {
-        var l, last, path, _i, _len, _ref, _results;
+        var dot_type, l, last, path, _i, _len, _ref, _results;
         this.lx = dx + this.ox;
         this.ly = dy + this.oy;
         this.pos = !this.pos;
@@ -648,22 +669,30 @@
               continue;
             }
             path = l.attr('path');
-            last = path[1].length - 1;
+            last = path.length - 1;
             l.attr('transform', "");
+            if (l.dot1.dot_type === 1 || l.dot1.dot_type === 2) {
+              dot_type = 2;
+            } else {
+              dot_type = 1;
+            }
             if (l.start_rid !== this.id) {
-              path[1][last - 1] = l.old_path[1][last - 1] + dx;
-              path[1][last] = l.old_path[1][last] + dy;
+              path[last][1] = l.old_path[last][1] + dx;
+              path[last][2] = l.old_path[last][2] + dy;
             } else {
               path[0][1] = l.old_path[0][1] + dx;
               path[0][2] = l.old_path[0][2] + dy;
             }
-            _results.push(l.attr('path', path));
+            path = conf.link.path(path[0][1], path[0][2], path[last][1], path[last][2], dot_type);
+            _results.push(l.attr({
+              'path': path
+            }));
           }
           return _results;
         }
       };
       up = function() {
-        var dot1, dot2, el, path, size, _i, _len, _ref, _results;
+        var dot1, dot2, dot_type, el, path, size, _i, _len, _ref, _results;
         if (this.type !== 'circle') {
           this.animate({
             "fill-opacity": conf.element.opacity
@@ -680,7 +709,12 @@
                 dot1 = el.dot1.getBBox();
                 dot2 = el.dot2.getBBox();
                 size = conf.dot.radius.min;
-                _results.push(el.attr("path", conf.link.path(dot1.x + size, dot1.y + size, dot2.x + size, dot2.y + size)));
+                if (el.dot1.dot_type === 1 || el.dot1.dot_type === 2) {
+                  dot_type = 2;
+                } else {
+                  dot_type = 1;
+                }
+                _results.push(el.attr("path", conf.link.path(dot1.x + size, dot1.y + size, dot2.x + size, dot2.y + size, dot_type)));
               } else {
                 _results.push(void 0);
               }
@@ -708,12 +742,15 @@
     };
 
     RaphaelAdapter.prototype.drawLink = function(name, start_x, start_y, stop_x, stop_y, el, el2) {
-      var color, l;
-      l = Scheme.getPaper().path(conf.link.path(start_x, start_y, stop_x, stop_y));
+      var color, dot_type, l;
       color = conf.link.color.events;
-      if (name.substr(0, 2) !== "on") {
+      if (name.substr(0, 2) !== "on" && name.substr(0, 2) !== "do") {
         color = conf.link.color.vars;
+        dot_type = 1;
+      } else {
+        dot_type = 2;
       }
+      l = Scheme.getPaper().path(conf.link.path(start_x, start_y, stop_x, stop_y, dot_type));
       if (conf.link.color.random) {
         color = getRandonColor();
       }
