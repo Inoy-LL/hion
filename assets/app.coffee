@@ -592,14 +592,6 @@ class RaphaelAdapter
                   path = conf.link.path(path[0][1], path[0][2], path[last][1], path[last][2], dot_type)
 
 
-
-
-
-
-
-
-
-
                   l.attr 'path': path
       up = ->
           if this.type != 'circle'
