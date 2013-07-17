@@ -248,9 +248,6 @@ class Element
         @props[name] = hint: hint, type: type, plus: plus, hide: hide
 
 
-
-
-
     if @ini.Type
         if @ini.Type.Sub
             subs = @ini.Type.Sub.split ","
@@ -355,7 +352,10 @@ class Element
 
 class RaphaelAdapter
   create: ->
-      paper = Raphael(conf.paper.offset.x, conf.paper.offset.y, conf.paper.size.width, conf.paper.size.heigth)
+
+      #$('#polygon').css width: conf.paper.offset.x, height : conf.paper.offset.y
+      paper = Raphael("poligon", conf.paper.size.width, conf.paper.size.heigth)
+      #paper = Raphael(conf.paper.offset.x, conf.paper.offset.y, conf.paper.size.width, conf.paper.size.heigth)
       paper.canvas.id = conf.paper.canvas
       paper.canvas.oncontextmenu = -> conf.paper.contextmenu
 

@@ -451,7 +451,7 @@
 
     RaphaelAdapter.prototype.create = function() {
       var paper;
-      paper = Raphael(conf.paper.offset.x, conf.paper.offset.y, conf.paper.size.width, conf.paper.size.heigth);
+      paper = Raphael("poligon", conf.paper.size.width, conf.paper.size.heigth);
       paper.canvas.id = conf.paper.canvas;
       paper.canvas.oncontextmenu = function() {
         return conf.paper.contextmenu;
