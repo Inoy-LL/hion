@@ -1,57 +1,57 @@
 conf =
   dot:
-    radius:
-      min: 2.5
-      max: 5
-    color: "#090"
-    color2: "#009"
-    border:
-      color: "#040"
-      color2: "#004"
-      size: 1
-    hover_color: "red"
-    indent: 6.5
-    offset: 5
+      radius:
+          min: 2.5
+          max: 5
+      color: "#090"
+      color2: "#009"
+      border:
+          color: "#040"
+          color2: "#004"
+          size: 1
+      hover_color: "red"
+      indent: 6.5
+      offset: 5
   element:
-    border:
-      color: "#555"
-      size: 1
-    size: 36
-    opacity: .1
-    hover:
-      opacity: .4
-      time: 300
-    color: "red"
-    glow:
-      enable: true
-      color: "#0F0"
-      width: 5
-      opacity: 0.5
-    selected:
-      color: "yellow"
+      border:
+          color: "#555"
+          size: 1
+      size: 36
+      opacity: .1
+      hover:
+          opacity: .4
+          time: 300
+      color: "red"
+      glow:
+          enable: true
+          color: "#0F0"
+          width: 5
+          opacity: 0.5
+      selected:
+          color: "yellow"
   icon:
-    path: "/delphi/icon/"
-    size: 24
+      path: "/delphi/icon/"
+      size: 24
   conf:
-    path: "/delphi_utf/conf/"
-
+      path: "/delphi_utf/conf/"
   link:
-    color:
-      vars: 'blue'
-      events: '#F00'
-      new_var: '#3399FF'
-      new_event: '#FF6600'
-      random: false
-    glow:
-      enable: true
-      color: "#0F0"
-      width: 5
-      opacity: 0.5
-    size: 2
-    active_size: 4
-    opacity: 0.7
-    new_link_opacity: 1
-    path: (start_x, start_y, stop_x, stop_y, type) ->
+      color:
+          vars: 'blue'
+          events: '#F00'
+          new_var: '#3399FF'
+          new_event: '#FF6600'
+          random: true
+      glow:
+          enable: true
+          color: "#0F0"
+          width: 5
+          opacity: 0.5
+      size: 2
+      active_size: 4
+      opacity: 0.7
+      new_link_opacity: 1
+      min_random_color: 0x777777
+      path: (start_x, start_y, stop_x, stop_y, type) ->
         x = Math.abs(stop_x - start_x)/2
         y = Math.abs(stop_y - start_y)/2
 
@@ -78,19 +78,19 @@ conf =
         #"M#{start_x},#{start_y},S#{start_x+Math.abs(start_x-stop_x)/2},#{start_y + Math.abs(start_y-stop_y)/2},S#{stop_x-Math.abs(start_x-stop_x)/2},#{stop_y - Math.abs(start_y-stop_y)/2},#{stop_x},#{stop_y}"
 
   paper:
-    offset:
-      x: 229
-      y: 56
-    size:
-      width: 619
-      heigth: 895
-    id: "canvas"
-    contextmenu: false
+      offset:
+          x: 229
+          y: 56
+      size:
+          width: 619
+          heigth: 895
+      id: "canvas"
+      contextmenu: false
 
   helper:
-    color:
-      fill: "#eee"
-      text: "black"
+      color:
+          fill: "#eee"
+          text: "black"
 
 class Scheme
   @create_line: false
@@ -559,10 +559,11 @@ class RaphaelAdapter
           if @pos and !!!window.chrome #((@lx != 0 and @lx % 2 == 0) or (@ly != 0 and @ly % 2 == 0)) and !!!window.chrome
               return false
           if this.type != 'circle'
-              @lx = dx + @ox
-              @ly = dy + @oy
-              element.transform( "t#{@lx},#{@ly}" )
+            @lx = dx + @ox
+            @ly = dy + @oy
+            element.transform( "t#{@lx},#{@ly}" )
 
+            if this.el
               for l in this.el
                   if l.type != "path"
                       continue
@@ -735,7 +736,10 @@ class PropsPanel
 
 
 getRandonColor = ->
-    color = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
+    col = Math.random()*0xFFFFFF<<0
+    if col > conf.link.min_random_color
+        col -= conf.link.min_random_color
+    color = '#'+col.toString(16)
     if color.length - 1 % 3 != 0
         color = color.substr(0, 4)
     return color

@@ -57,7 +57,7 @@
         events: '#F00',
         new_var: '#3399FF',
         new_event: '#FF6600',
-        random: false
+        random: true
       },
       glow: {
         enable: true,
@@ -69,6 +69,7 @@
       active_size: 4,
       opacity: 0.7,
       new_link_opacity: 1,
+      min_random_color: 0x777777,
       path: function(start_x, start_y, stop_x, stop_y, type) {
         var x, y, _ref, _ref1, _ref2, _ref3;
         x = Math.abs(stop_x - start_x) / 2;
@@ -661,34 +662,36 @@
           this.lx = dx + this.ox;
           this.ly = dy + this.oy;
           element.transform("t" + this.lx + "," + this.ly);
-          _ref = this.el;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            l = _ref[_i];
-            if (l.type !== "path") {
-              continue;
+          if (this.el) {
+            _ref = this.el;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              l = _ref[_i];
+              if (l.type !== "path") {
+                continue;
+              }
+              path = l.attr('path');
+              last = path.length - 1;
+              l.attr('transform', "");
+              if (l.dot1.dot_type === 1 || l.dot1.dot_type === 2) {
+                dot_type = 2;
+              } else {
+                dot_type = 1;
+              }
+              if (l.start_rid !== this.id) {
+                path[last][1] = l.old_path[last][1] + dx;
+                path[last][2] = l.old_path[last][2] + dy;
+              } else {
+                path[0][1] = l.old_path[0][1] + dx;
+                path[0][2] = l.old_path[0][2] + dy;
+              }
+              path = conf.link.path(path[0][1], path[0][2], path[last][1], path[last][2], dot_type);
+              _results.push(l.attr({
+                'path': path
+              }));
             }
-            path = l.attr('path');
-            last = path.length - 1;
-            l.attr('transform', "");
-            if (l.dot1.dot_type === 1 || l.dot1.dot_type === 2) {
-              dot_type = 2;
-            } else {
-              dot_type = 1;
-            }
-            if (l.start_rid !== this.id) {
-              path[last][1] = l.old_path[last][1] + dx;
-              path[last][2] = l.old_path[last][2] + dy;
-            } else {
-              path[0][1] = l.old_path[0][1] + dx;
-              path[0][2] = l.old_path[0][2] + dy;
-            }
-            path = conf.link.path(path[0][1], path[0][2], path[last][1], path[last][2], dot_type);
-            _results.push(l.attr({
-              'path': path
-            }));
+            return _results;
           }
-          return _results;
         }
       };
       up = function() {
@@ -866,8 +869,12 @@
   })();
 
   getRandonColor = function() {
-    var color;
-    color = '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+    var col, color;
+    col = Math.random() * 0xFFFFFF << 0;
+    if (col > conf.link.min_random_color) {
+      col -= conf.link.min_random_color;
+    }
+    color = '#' + col.toString(16);
     if (color.length - 1 % 3 !== 0) {
       color = color.substr(0, 4);
     }
