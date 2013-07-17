@@ -355,7 +355,6 @@ class RaphaelAdapter
               Scheme.create_line.remove()
               Scheme.create_line = false
 
-
       paper
 
   drawElement: (size, icon_size, name, x, y, id)->
@@ -418,6 +417,9 @@ class RaphaelAdapter
       )
 
       dot.click (e)->
+
+        if this.link
+            return false
 
         if Scheme.create_line
             this_type = this.dot_type
@@ -590,6 +592,7 @@ class RaphaelAdapter
       Scheme.getPaper().set(element).drag(move, start, up)
 
       element.click ->
+        if this.type != 'circle'
           if Scheme::selected_element
               Scheme::selected_element.attr 'stroke', conf.element.border.color
           Scheme::selected_element = this
@@ -644,8 +647,8 @@ class RaphaelAdapter
               r: conf.dot.radius.max
       else
           dot.attr
-              fill: dot.default_color
-              r: conf.dot.radius.min
+                fill: dot.default_color
+                r: conf.dot.radius.min
 
 
 class Paper extends RaphaelAdapter

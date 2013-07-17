@@ -523,6 +523,9 @@
       });
       dot.click(function(e) {
         var bbox, last, mass, path, start_x, start_y, stop_x, stop_y, this_type;
+        if (this.link) {
+          return false;
+        }
         if (Scheme.create_line) {
           this_type = this.dot_type;
           mass = [0, 1, -1, 2, -2];
@@ -688,13 +691,15 @@
       };
       Scheme.getPaper().set(element).drag(move, start, up);
       return element.click(function() {
-        if (Scheme.prototype.selected_element) {
-          Scheme.prototype.selected_element.attr('stroke', conf.element.border.color);
+        if (this.type !== 'circle') {
+          if (Scheme.prototype.selected_element) {
+            Scheme.prototype.selected_element.attr('stroke', conf.element.border.color);
+          }
+          Scheme.prototype.selected_element = this;
+          return this.attr({
+            'stroke': conf.element.selected.color
+          });
         }
-        Scheme.prototype.selected_element = this;
-        return this.attr({
-          'stroke': conf.element.selected.color
-        });
       });
     };
 
