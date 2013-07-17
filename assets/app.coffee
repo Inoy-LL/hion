@@ -818,16 +818,43 @@ handleFileSelect = (evt)->
 document.getElementById('files').addEventListener('change', handleFileSelect, false)
 
 
-# Todo: add from elements.sqlite
-$.ajax(url:'/delphi_utf/all.json', dataType: 'json')
-.success (data)->
-    i = 0
-    for el in data
-      if i >= 30
-        break
-      $('.elements').append("<span class=\"el\"><img data-name=\"#{el}\" src=\"/delphi/icon/#{el}.ico\"/></span>")
-      i++
+elements = []
 
+# Todo: add from elements.sqlite
+$.ajax(url:'/delphi_utf/Elements.json', dataType: 'json')
+.success (data)->
+    html = ""
+    for g in data.groups
+        if g[1] != ""
+            html+= "<div class=\"group\" id=\"g#{g[0]}\" data-id=\"#{g[0]}\"><div class=\"name\">#{g[2]}</div><div class=\"elements\"></div></div></div>"
+
+    $('.elements').append(html)
+
+    elements = data.elements
+
+    element_panel_select(1)
+
+
+
+    #i = 0
+    #for el in data
+    #  if i >= 30
+    #    break
+    #  $('.elements').append("<span class=\"el\"><img data-name=\"#{el}\" src=\"/delphi/icon/#{el}.ico\"/></span>")
+    #  i++
+    true
+
+@element_panel_select = (gid)->
+  $('.elements > .group > .elements > *').empty()
+  elements_ = ""
+  for el in elements
+    if el[3] == gid
+      elements_+="<span class=\"el\"><img data-name=\"#{el[1]}\" src=\"/delphi/icon/#{el[1]}.ico\"/></span>"
+
+  $("#g#{gid} > .elements").append(elements_)
+
+$('.elements > .group').live 'click', ->
+    element_panel_select($(@).data('id'))
 
 
 $('.elements img').live 'click', ->
