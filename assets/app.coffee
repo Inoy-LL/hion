@@ -819,6 +819,7 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 
 
 elements = []
+last_gid = 0
 
 # Todo: add from elements.sqlite
 $.ajax(url:'/delphi_utf/Elements.json', dataType: 'json')
@@ -845,13 +846,17 @@ $.ajax(url:'/delphi_utf/Elements.json', dataType: 'json')
     true
 
 @element_panel_select = (gid)->
+  if last_gid == gid
+      return false
   $('.elements > .group > .elements > *').empty()
   elements_ = ""
   for el in elements
     if el[3] == gid
       elements_+="<span class=\"el\"><img data-name=\"#{el[1]}\" src=\"/delphi/icon/#{el[1]}.ico\"/></span>"
 
+
   $("#g#{gid} > .elements").append(elements_)
+  last_gid = gid
 
 $('.elements > .group').live 'click', ->
     element_panel_select($(@).data('id'))
