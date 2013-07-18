@@ -839,9 +839,10 @@ class ElementsPanel
       true
 
   @element_panel_select = (gid)->
+      $('.elements > .group > .elements > *').empty()
       if last_gid == gid
           return false
-      $('.elements > .group > .elements > *').empty()
+
       elements_ = ""
       for el in elements
           if el[3] == gid

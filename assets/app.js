@@ -991,10 +991,10 @@
 
     ElementsPanel.element_panel_select = function(gid) {
       var el, elements_, _i, _len;
+      $('.elements > .group > .elements > *').empty();
       if (last_gid === gid) {
         return false;
       }
-      $('.elements > .group > .elements > *').empty();
       elements_ = "";
       for (_i = 0, _len = elements.length; _i < _len; _i++) {
         el = elements[_i];
