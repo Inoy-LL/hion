@@ -820,14 +820,14 @@
     function PropsPanel() {}
 
     PropsPanel.prototype.setProps = function(props) {
-      var bold, color, curve, font, italy, name, prop, size, value_string, _ref, _results;
+      var bold, checkbox_types, color, font, italic, name, prop, size, underline, value_string, _ref, _results;
       $("#props").empty();
       _results = [];
       for (name in props) {
         prop = props[name];
         if (name && name.substr(0, 2) !== "on" && name.substr(0, 2) !== "do") {
           if (prop.value && prop.value[0] === '"') {
-            prop.value = prop.value.substr(1, prop.value.length - 1);
+            prop.value = prop.value.substr(1, prop.value.length - 2);
           }
           if (prop.value === "Null()" || prop.value === void 0) {
             prop.value = "";
@@ -849,8 +849,12 @@
             value_string = "<select style=\"background-color: " + color + "\"><option selected>" + name + "</option></select>";
           }
           if (name === "Font") {
-            _ref = prop.value.substr(1, prop.value.length).split(','), font = _ref[0], size = _ref[1], italy = _ref[2], bold = _ref[3], curve = _ref[4];
-            value_string = "            <span class=\"font_name\" style=\"font-family: " + font + "\">" + font + "</span>,<span class=\"font_size\">" + size + "</span><button class=\"font_selector_btn\">Изменить </button>            <div class=\"font_selector\" style=\"display: none;\">                <div>Font: <input class=\"font\" value=\"" + font + "\" /></div>                <div>Size: <input type=\"number\" class=\"size\" value=\"" + size + "\" /></div>            </div>";
+            checkbox_types = {
+              "0": "",
+              "1": "checked"
+            };
+            _ref = prop.value.substr(1, prop.value.length - 2).split(','), font = _ref[0], size = _ref[1], bold = _ref[2], italic = _ref[3], underline = _ref[4];
+            value_string = "            <span class=\"font_name\" style=\"font-family: " + font + "\">" + font + "</span>,<span class=\"font_size\">" + size + "</span><button class=\"font_selector_btn\">Изменить </button>            <div class=\"font_selector\" style=\"display: none;\">                <div>Font: <input class=\"font\" value=\"" + font + "\" /></div>                <div>Size: <input type=\"number\" class=\"size\" value=\"" + size + "\" /></div>                <div>Bold: <input type=\"checkbox\" class=\"bold\" " + checkbox_types[bold] + " /></div>                <div>Italic: <input type=\"checkbox\" class=\"italic\" " + checkbox_types[italic] + " /></div>                <div>Underline: <input type=\"checkbox\" class=\"underline\" " + checkbox_types[underline] + " /></div>            </div>";
           }
           $("#props").append("<tr>                               <td style=\"vertical-align: top;\">" + name + "</td>                               <td class=\"value\">                               " + value_string + "                               </td>                               </tr>");
           if (name === "Font") {

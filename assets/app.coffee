@@ -702,7 +702,7 @@ class PropsPanel
         if name and name.substr(0, 2) != "on" and  name.substr(0, 2) != "do"
 
           if prop.value and prop.value[0] == '"'
-            prop.value =  prop.value.substr(1, prop.value.length - 1)
+            prop.value =  prop.value.substr(1, prop.value.length - 2)
 
           if prop.value == "Null()" or prop.value == undefined
             prop.value = ""
@@ -725,13 +725,18 @@ class PropsPanel
 
             value_string = "<select style=\"background-color: #{color}\"><option selected>#{name}</option></select>"
           if name == "Font"
-            [font, size, italy, bold, curve] = prop.value.substr(1,  prop.value.length).split(',')
+            checkbox_types = "0": "", "1": "checked"
+
+            [font, size, bold, italic, underline] = prop.value.substr(1,  prop.value.length - 2 ).split(',')
 
             value_string = "
             <span class=\"font_name\" style=\"font-family: #{font}\">#{font}</span>,<span class=\"font_size\">#{size}</span><button class=\"font_selector_btn\">Изменить </button>
             <div class=\"font_selector\" style=\"display: none;\">
                 <div>Font: <input class=\"font\" value=\"#{font}\" /></div>
                 <div>Size: <input type=\"number\" class=\"size\" value=\"#{size}\" /></div>
+                <div>Bold: <input type=\"checkbox\" class=\"bold\" #{checkbox_types[bold]} /></div>
+                <div>Italic: <input type=\"checkbox\" class=\"italic\" #{checkbox_types[italic]} /></div>
+                <div>Underline: <input type=\"checkbox\" class=\"underline\" #{checkbox_types[underline]} /></div>
             </div>"
 
 
