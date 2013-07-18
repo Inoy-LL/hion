@@ -19,7 +19,7 @@ background-color:black;
 float:left;
 }
 
-input {
+#id input {
 position:relative;
     background: #DDD;
     font-size: 12px;

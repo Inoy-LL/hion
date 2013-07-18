@@ -28,9 +28,9 @@
         size: 1
       },
       size: 36,
-      opacity: .1,
+      opacity: .25,
       hover: {
-        opacity: .4,
+        opacity: .5,
         time: 300
       },
       color: "red",
@@ -820,7 +820,7 @@
     function PropsPanel() {}
 
     PropsPanel.prototype.setProps = function(props) {
-      var color, name, prop, value_string, _results;
+      var bold, color, curve, font, italy, name, prop, size, value_string, _ref, _results;
       $("#props").empty();
       _results = [];
       for (name in props) {
@@ -846,12 +846,20 @@
             value_string = "<select style=\"background-color: " + color + "\"><option selected>" + name + "</option></select>";
           }
           if (name === "Font") {
-            value_string = "<input id=\"font\" value=\"" + prop.value + "\" />";
+            _ref = prop.value.substr(1, prop.value.length).split(','), font = _ref[0], size = _ref[1], italy = _ref[2], bold = _ref[3], curve = _ref[4];
+            value_string = "            " + font + "," + size + "<button class=\"font_selector_btn\">Изменить </button>            <div class=\"font_selector\" style=\"display: none;\">                <div>Font: <input class=\"font\" value=\"" + font + "\" /></div>                <div>Size: <input type=\"number\" class=\"size\" value=\"" + size + "\" /></div>            </div>";
           }
-          $("#props").append("<tr>                               <td>" + name + "</td>                               <td class=\"value\">                               " + value_string + "                               </td>                               </tr>");
+          $("#props").append("<tr>                               <td style=\"vertical-align: top;\">" + name + "</td>                               <td class=\"value\">                               " + value_string + "                               </td>                               </tr>");
           if (name === "Font") {
-            _results.push($("#font").fontSelector({
-              value: 'Arial'
+            $(".font").fontSelector({
+              value: font
+            });
+            _results.push($('.font_selector_btn').toggle(function() {
+              $(this).parent().find('.font_selector').show();
+              return $(this).text(' Изменить ');
+            }, function() {
+              $(this).parent().find('.font_selector').hide();
+              return $(this).text(' Скрыть ');
             }));
           } else {
             _results.push(void 0);
@@ -1015,7 +1023,8 @@
         var id, name;
         id = Math.round(Math.random() * (10000000 - 1000000) + 1000000);
         name = $(this).data('name');
-        return Scheme.addElement(name, id, 50, 50, {});
+        Scheme.addElement(name, id, 50, 50, {});
+        return false;
       });
     };
 

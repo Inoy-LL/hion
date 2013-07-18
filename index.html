@@ -58,10 +58,28 @@
             height: 100%;
         }
 
+        #prop *{
+            float: none;
+        }
+
         #props input {
             border-radius: 2px;
             background-color: white;
             box-shadow: rgba(0,0,0,0.4) 0 1px 1px inset;
+        }
+
+        .font_selector .font {
+            width: 100px;
+            height: 20px;
+        }
+
+        .font_selector .size {
+            width: 50px;
+            height: 20px;
+        }
+
+        .elements > .group {
+            cursor: pointer;
         }
 
     </style>
@@ -69,6 +87,10 @@
     <div class="bitbucket">
         Project on <a href="https://bitbucket.org/OneFive/onefive.bitbucket.org">bitbucket / Список изменений</a>
         <span id="last_commit"></span>
+    </div>
+
+    <div class="select_font">
+
     </div>
 
 
