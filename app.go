@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+
 type gzipResponseWriter struct {
 	io.Writer
 	http.ResponseWriter
@@ -34,6 +35,7 @@ func makeGzipHandler(fn http.HandlerFunc) http.HandlerFunc {
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	renderTemplate(w, "index")
+
 }
 
 var templates = template.Must(template.ParseFiles("index.html"))
@@ -45,5 +47,5 @@ func renderTemplate(w http.ResponseWriter, tmpl string) {
 
 func main() {
 	http.HandleFunc("/", makeGzipHandler(indexHandler))
-	http.ListenAndServe(":8080", http.FileServer(http.Dir(".")))
+	http.ListenAndServe(":80", http.FileServer(http.Dir(".")))
 }
