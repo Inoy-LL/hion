@@ -841,6 +841,7 @@ class ElementsPanel
   @element_panel_select = (gid)->
       $('.elements > .group > .elements > *').empty()
       if last_gid == gid
+          last_gid = -1
           return false
 
       elements_ = ""

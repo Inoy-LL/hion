@@ -993,6 +993,7 @@
       var el, elements_, _i, _len;
       $('.elements > .group > .elements > *').empty();
       if (last_gid === gid) {
+        last_gid = -1;
         return false;
       }
       elements_ = "";
