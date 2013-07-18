@@ -699,9 +699,9 @@ class PropsPanel
       for name of props
         prop = props[name]
 
-        if name.substr(0, 2) != "on" and  name.substr(0, 2) != "do"
+        if name > 0 and name.substr(0, 2) != "on" and  name.substr(0, 2) != "do"
 
-          if prop.value[0] == '"'
+          if prop.value.length > 0 and prop.value[0] == '"'
             prop.value =  prop.value.substr(1, prop.value.length - 1)
 
           if prop.value == "Null()" or prop.value == undefined

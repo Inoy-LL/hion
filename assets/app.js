@@ -825,8 +825,8 @@
       _results = [];
       for (name in props) {
         prop = props[name];
-        if (name.substr(0, 2) !== "on" && name.substr(0, 2) !== "do") {
-          if (prop.value[0] === '"') {
+        if (name > 0 && name.substr(0, 2) !== "on" && name.substr(0, 2) !== "do") {
+          if (prop.value.length > 0 && prop.value[0] === '"') {
             prop.value = prop.value.substr(1, prop.value.length - 1);
           }
           if (prop.value === "Null()" || prop.value === void 0) {
