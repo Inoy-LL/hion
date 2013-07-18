@@ -701,12 +701,16 @@ class PropsPanel
 
         if name.substr(0, 2) != "on" and  name.substr(0, 2) != "do"
 
+          if prop.value[0] == '"'
+            prop.value =  prop.value.substr(1, prop.value.length - 1)
+
           if prop.value == "Null()" or prop.value == undefined
             prop.value = ""
           else if name == "Color"
             prop.value = parseInt(prop.value)+16777201
           else if prop.name == "Icon" and prop.value == "[]"
             prop.value = "[]"
+
 
           value_string = "<input type=\"\" value=\"#{prop.value}\"/>"
 
