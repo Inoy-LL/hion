@@ -175,7 +175,8 @@ class Scheme
     elements
   @load: (sha)->
       for element in @parse(sha)
-          @addElement(element.name, element.id, element.x, element.y, element.params)
+          if element.name != "HubEx"
+              @addElement(element.name, element.id, element.x, element.y, element.params)
 
 
       for id of @links
@@ -188,7 +189,8 @@ class Scheme
                   start_dot = dot
 
               stop = link.stop
-              for dot in @elements[stop[0]].dots
+              if @elements[stop[0]]
+                for dot in @elements[stop[0]].dots
                   if dot.name != stop[1]
                       continue
                   [stop_x, stop_y] = Paper::getDotPosition dot
@@ -217,6 +219,7 @@ class Element
         @icon_size = conf.icon.size
 
     @ini = @getConf(name)
+
     @methods = @ini.Methods
     @props = {}
     @dots = []
@@ -674,7 +677,8 @@ class RaphaelAdapter
       #    el2.element.push glow
 
       el.element.push l
-      el2.element.push l
+      if el2
+        el2.element.push l
 
       l
 

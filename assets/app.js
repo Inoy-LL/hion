@@ -235,7 +235,9 @@
       _ref = this.parse(sha);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         element = _ref[_i];
-        this.addElement(element.name, element.id, element.x, element.y, element.params);
+        if (element.name !== "HubEx") {
+          this.addElement(element.name, element.id, element.x, element.y, element.params);
+        }
       }
       _results = [];
       for (id in this.links) {
@@ -255,14 +257,16 @@
               start_dot = dot;
             }
             stop = link.stop;
-            _ref3 = this.elements[stop[0]].dots;
-            for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
-              dot = _ref3[_l];
-              if (dot.name !== stop[1]) {
-                continue;
+            if (this.elements[stop[0]]) {
+              _ref3 = this.elements[stop[0]].dots;
+              for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+                dot = _ref3[_l];
+                if (dot.name !== stop[1]) {
+                  continue;
+                }
+                _ref4 = Paper.prototype.getDotPosition(dot), stop_x = _ref4[0], stop_y = _ref4[1];
+                stop_dot = dot;
               }
-              _ref4 = Paper.prototype.getDotPosition(dot), stop_x = _ref4[0], stop_y = _ref4[1];
-              stop_dot = dot;
             }
             l = Paper.prototype.drawLink(link.start, start_x, start_y, stop_x, stop_y, this.elements[id], this.elements[stop[0]]);
             l.dot1 = start_dot;
@@ -778,7 +782,9 @@
       });
       l.start_rid = el.element[0].id;
       el.element.push(l);
-      el2.element.push(l);
+      if (el2) {
+        el2.element.push(l);
+      }
       return l;
     };
 
