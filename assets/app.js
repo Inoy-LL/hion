@@ -853,7 +853,7 @@
           if (name === "Font") {
             $(".font").fontSelector(function(font) {
               $('.font_name').css("font-family", font);
-              return $('.font_name').text(font);
+              return $('.font_name').text(font.split(',')[0]);
             });
             $('.font_selector_btn').toggle(function() {
               $(this).parent().find('.font_selector').show();
@@ -862,7 +862,7 @@
               $(this).parent().find('.font_selector').hide();
               return $(this).text(' Скрыть ');
             });
-            _results.push($('.font_selector > .size').bind('keyup mouseup', function() {
+            _results.push($('.font_selector .size').bind('keyup mouseup', function() {
               return $('.font_size').text($(this).val());
             }));
           } else {

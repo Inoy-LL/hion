@@ -741,7 +741,7 @@ class PropsPanel
           if name == "Font"
               $(".font").fontSelector((font)->
                   $('.font_name').css "font-family", font
-                  $('.font_name').text font
+                  $('.font_name').text font.split(',')[0]
               )
               $('.font_selector_btn').toggle(
                 ->
@@ -752,7 +752,7 @@ class PropsPanel
                     $(@).text(' Скрыть ')
               )
 
-              $('.font_selector > .size').bind('keyup mouseup', ->
+              $('.font_selector .size').bind('keyup mouseup', ->
                   $('.font_size').text( $(@).val() )
 
               )
