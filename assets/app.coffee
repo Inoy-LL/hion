@@ -724,7 +724,7 @@ class PropsPanel
             [font, size, italy, bold, curve] = prop.value.substr(1,  prop.value.length).split(',')
 
             value_string = "
-            #{font},#{size}<button class=\"font_selector_btn\">Изменить </button>
+            <span class=\"font_name\" style=\"font-family: #{font}\">#{font}</span>,<span class=\"font_size\">#{size}</span><button class=\"font_selector_btn\">Изменить </button>
             <div class=\"font_selector\" style=\"display: none;\">
                 <div>Font: <input class=\"font\" value=\"#{font}\" /></div>
                 <div>Size: <input type=\"number\" class=\"size\" value=\"#{size}\" /></div>
@@ -739,7 +739,10 @@ class PropsPanel
                                </tr>")
 
           if name == "Font"
-              $(".font").fontSelector(value: font)
+              $(".font").fontSelector((font)->
+                  $('.font_name').css "font-family", font
+                  $('.font_name').text font
+              )
               $('.font_selector_btn').toggle(
                 ->
                     $(@).parent().find('.font_selector').show()
@@ -747,6 +750,11 @@ class PropsPanel
                 ,->
                     $(@).parent().find('.font_selector').hide()
                     $(@).text(' Скрыть ')
+              )
+
+              $('.font_selector > .size').bind('keyup mouseup', ->
+                  $('.font_size').text( $(@).val() )
+
               )
 
 
@@ -899,7 +907,7 @@ WIN_COLORS = `{"0":{"rgb":"#000000","name":"clBlack"},"128":{"rgb":"#800000","na
 * Website    : www.siteclick.co.uk
 * License    : MIT
 */
-jQuery.fn.fontSelector = function() {
+jQuery.fn.fontSelector = function(callback) {
 
   var fonts = new Array(
 'Arial,Arial,Helvetica,sans-serif',
@@ -957,6 +965,9 @@ jQuery.fn.fontSelector = function() {
         var font = fonts[$(this).attr('class').split('_')[1]];
         $(sel).val(font);
         $(ul).hide();
+        if(callback)
+            callback(font)
+
         return false;
       });
 

@@ -847,19 +847,23 @@
           }
           if (name === "Font") {
             _ref = prop.value.substr(1, prop.value.length).split(','), font = _ref[0], size = _ref[1], italy = _ref[2], bold = _ref[3], curve = _ref[4];
-            value_string = "            " + font + "," + size + "<button class=\"font_selector_btn\">Изменить </button>            <div class=\"font_selector\" style=\"display: none;\">                <div>Font: <input class=\"font\" value=\"" + font + "\" /></div>                <div>Size: <input type=\"number\" class=\"size\" value=\"" + size + "\" /></div>            </div>";
+            value_string = "            <span class=\"font_name\" style=\"font-family: " + font + "\">" + font + "</span>,<span class=\"font_size\">" + size + "</span><button class=\"font_selector_btn\">Изменить </button>            <div class=\"font_selector\" style=\"display: none;\">                <div>Font: <input class=\"font\" value=\"" + font + "\" /></div>                <div>Size: <input type=\"number\" class=\"size\" value=\"" + size + "\" /></div>            </div>";
           }
           $("#props").append("<tr>                               <td style=\"vertical-align: top;\">" + name + "</td>                               <td class=\"value\">                               " + value_string + "                               </td>                               </tr>");
           if (name === "Font") {
-            $(".font").fontSelector({
-              value: font
+            $(".font").fontSelector(function(font) {
+              $('.font_name').css("font-family", font);
+              return $('.font_name').text(font);
             });
-            _results.push($('.font_selector_btn').toggle(function() {
+            $('.font_selector_btn').toggle(function() {
               $(this).parent().find('.font_selector').show();
               return $(this).text(' Изменить ');
             }, function() {
               $(this).parent().find('.font_selector').hide();
               return $(this).text(' Скрыть ');
+            });
+            _results.push($('.font_selector > .size').bind('keyup mouseup', function() {
+              return $('.font_size').text($(this).val());
             }));
           } else {
             _results.push(void 0);
@@ -1045,7 +1049,7 @@
 * Website    : www.siteclick.co.uk
 * License    : MIT
 */
-jQuery.fn.fontSelector = function() {
+jQuery.fn.fontSelector = function(callback) {
 
   var fonts = new Array(
 'Arial,Arial,Helvetica,sans-serif',
@@ -1103,6 +1107,9 @@ jQuery.fn.fontSelector = function() {
         var font = fonts[$(this).attr('class').split('_')[1]];
         $(sel).val(font);
         $(ul).hide();
+        if(callback)
+            callback(font)
+
         return false;
       });
 
