@@ -1070,7 +1070,7 @@
     $(this).animateRotate(90);
     return $(this).animate({
       left: "-=53",
-      top: "+=150"
+      top: "+=120"
     });
   }, function() {
     $(this).text("- Элементы");
@@ -1083,7 +1083,7 @@
     $(this).animateRotate(0);
     return $(this).animate({
       left: "+=53",
-      top: "-=150"
+      top: "-=120"
     });
   });
 
@@ -1092,7 +1092,7 @@
     $(this).animateRotate(-90);
     $(this).animate({
       right: "-=89",
-      top: "+=150"
+      top: "+=120"
     });
     return $('#right_menu').animate({
       right: "-=250px"
@@ -1101,7 +1101,7 @@
     $(this).animateRotate(0);
     $(this).animate({
       right: "+=89",
-      top: "-=150"
+      top: "-=120"
     });
     $(this).text("- Свойства");
     return $('#right_menu').animate({

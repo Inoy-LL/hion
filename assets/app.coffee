@@ -910,24 +910,24 @@ $('#left_menu_min').toggle ->
       $('#left_menu').animate({left: "-=200px"})
       $('#conte').animate({left: "-=200px"})
       $(@).animateRotate(90)
-      $(@).animate({left: "-=53", top: "+=150"})
+      $(@).animate({left: "-=53", top: "+=120"})
   ,->
       $(@).text("- Элементы")
       $('#left_menu').animate({left: "+=200px"})
       $('#conte').animate({left: "+=200px"})
       $(@).animateRotate(0)
-      $(@).animate({left: "+=53", top: "-=150"})
+      $(@).animate({left: "+=53", top: "-=120"})
 
 
 
 $('#right_menu_min').toggle ->
     $(@).text("+ Свойства")
     $(@).animateRotate(-90)
-    $(@).animate({right: "-=89", top: "+=150"})
+    $(@).animate({right: "-=89", top: "+=120"})
     $('#right_menu').animate({right: "-=250px"})
 ,->
     $(@).animateRotate(0)
-    $(@).animate({right: "+=89", top: "-=150"})
+    $(@).animate({right: "+=89", top: "-=120"})
     $(@).text("- Свойства")
     $('#right_menu').animate({right: "+=250px"})
 
