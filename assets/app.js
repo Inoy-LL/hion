@@ -1064,16 +1064,26 @@
     $('#left_menu').animate({
       left: "-=200px"
     });
-    return $('#conte').animate({
+    $('#conte').animate({
       left: "-=200px"
+    });
+    $(this).animateRotate(90);
+    return $(this).animate({
+      left: "-=53",
+      top: "+=150"
     });
   }, function() {
     $(this).text("- Элементы");
     $('#left_menu').animate({
       left: "+=200px"
     });
-    return $('#conte').animate({
+    $('#conte').animate({
       left: "+=200px"
+    });
+    $(this).animateRotate(0);
+    return $(this).animate({
+      left: "+=53",
+      top: "-=150"
     });
   });
 

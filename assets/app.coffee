@@ -909,10 +909,14 @@ $('#left_menu_min').toggle ->
       $(@).text("+ Элементы")
       $('#left_menu').animate({left: "-=200px"})
       $('#conte').animate({left: "-=200px"})
+      $(@).animateRotate(90)
+      $(@).animate({left: "-=53", top: "+=150"})
   ,->
       $(@).text("- Элементы")
       $('#left_menu').animate({left: "+=200px"})
       $('#conte').animate({left: "+=200px"})
+      $(@).animateRotate(0)
+      $(@).animate({left: "+=53", top: "-=150"})
 
 
 
