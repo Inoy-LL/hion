@@ -860,7 +860,7 @@
               "1": "checked"
             };
             _ref = prop.value.substr(1, prop.value.length - 2).split(','), font = _ref[0], size = _ref[1], bold = _ref[2], italic = _ref[3], underline = _ref[4];
-            value_string = "            <span class=\"font_name\" style=\"font-family: " + font + "\">" + font + "</span>,<span class=\"font_size\">" + size + "</span><button class=\"button font_selector_btn\"><a href=\"#\"> Изменить </a></button>            <div class=\"font_selector\" style=\"display: none;\">                <div>Font: <input class=\"font\" value=\"" + font + "\" /></div>                <div>Size: <input type=\"number\" class=\"size\" value=\"" + size + "\" /></div>                <div>Bold: <input type=\"checkbox\" class=\"bold\" " + checkbox_types[bold] + " /></div>                <div>Italic: <input type=\"checkbox\" class=\"italic\" " + checkbox_types[italic] + " /></div>                <div>Underline: <input type=\"checkbox\" class=\"underline\" " + checkbox_types[underline] + " /></div>            </div>";
+            value_string = "            <span class=\"font_name\" style=\"font-family: " + font + "\">" + font + "</span>,<span class=\"font_size\">" + size + "</span><button style=\"margin-left: 4px;\" class=\"button font_selector_btn\"><a href=\"#\"> Изменить </a></button>            <div class=\"font_selector\" style=\"display: none;\">                <div>Font: <input class=\"font\" value=\"" + font + "\" /></div>                <div>Size: <input type=\"number\" class=\"size\" value=\"" + size + "\" /></div>                <div>Bold: <input type=\"checkbox\" class=\"bold\" " + checkbox_types[bold] + " /></div>                <div>Italic: <input type=\"checkbox\" class=\"italic\" " + checkbox_types[italic] + " /></div>                <div>Underline: <input type=\"checkbox\" class=\"underline\" " + checkbox_types[underline] + " /></div>            </div>";
           }
           $("#props").append("<tr>                               <td style=\"vertical-align: top;\">" + name + "</td>                               <td class=\"value\">                               " + value_string + "                               </td>                               </tr>");
           if (name === "Font") {
@@ -870,10 +870,10 @@
             });
             $('.font_selector_btn').toggle(function() {
               $(this).parent().find('.font_selector').slideDown();
-              return $(this).html('<a href="#">  Изменить </a>');
+              return $(this).html('<a href="#"> Скрыть </a>');
             }, function() {
               $(this).parent().find('.font_selector').slideUp();
-              return $(this).html('<a href="#"> Скрыть </a>');
+              return $(this).html('<a href="#">  Изменить </a>');
             });
             _results.push($('.font_selector .size').bind('keyup mouseup', function() {
               return $('.font_size').text($(this).val());
