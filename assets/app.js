@@ -1081,7 +1081,8 @@
     $(this).text("+ Свойства");
     $(this).animateRotate(-90);
     $(this).animate({
-      right: "-=89"
+      right: "-=89",
+      top: "+=150"
     });
     return $('#right_menu').animate({
       right: "-=250px"
@@ -1089,7 +1090,8 @@
   }, function() {
     $(this).animateRotate(0);
     $(this).animate({
-      right: "+=89"
+      right: "+=89",
+      top: "-=150"
     });
     $(this).text("- Свойства");
     return $('#right_menu').animate({

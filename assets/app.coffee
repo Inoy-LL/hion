@@ -919,11 +919,11 @@ $('#left_menu_min').toggle ->
 $('#right_menu_min').toggle ->
     $(@).text("+ Свойства")
     $(@).animateRotate(-90)
-    $(@).animate({right: "-=89"})
+    $(@).animate({right: "-=89", top: "+=150"})
     $('#right_menu').animate({right: "-=250px"})
 ,->
     $(@).animateRotate(0)
-    $(@).animate({right: "+=89"})
+    $(@).animate({right: "+=89", top: "-=150"})
     $(@).text("- Свойства")
     $('#right_menu').animate({right: "+=250px"})
 
