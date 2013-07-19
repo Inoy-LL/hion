@@ -89,8 +89,7 @@
 
 
         .table {
-            border: 1px;
-            border-color: wheat;
+            border: 1px solid #000000;
         }
 
 
@@ -170,7 +169,7 @@
 
 
         /*http://www.csspop.com/view/533*/
-        input[type=text], textarea {
+        input, textarea {
             transition: all 0.30s ease-in-out;
             -webkit-transition: all 0.30s ease-in-out;
             -moz-transition: all 0.30s ease-in-out;
@@ -181,7 +180,7 @@
             border: 1px solid #DDDDDD;
         }
 
-        input[type=text]:focus, textarea:focus {
+        input:focus, textarea:focus {
             box-shadow: 0 0 5px rgba(81, 203, 238, 1);
             -webkit-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
             -moz-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
@@ -189,6 +188,20 @@
             margin: 5px 1px 3px 0px;
             border: 1px solid rgba(81, 203, 238, 1);;
         }
+
+        .el {
+            margin: 0px;
+            display: inline-block;
+        }
+        .el > img{
+            padding: 5px;
+        }
+
+        .el:hover {
+            background-color: #ddd;
+        }
+
+
     </style>
 
     <div class="bitbucket">
