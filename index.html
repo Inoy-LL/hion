@@ -88,9 +88,15 @@
         }
 
 
+        .table {
+            border: 1px;
+            border-color: wheat;
+        }
+
+
 
          /*http://www.csspop.com/view/620*/
-        .font_selector_btn{
+        .__font_selector_btn{
             cursor:pointer;
             text-transform:uppercase;
             padding: 5px 7px;
@@ -103,12 +109,86 @@
             font-family:Arial, sans-serif;
             position:relative;
         }
-        .font_selector_btn:active{
+        .__font_selector_btn:active{
             background:#548c12;
             top:1px;
 
         }
 
+        /*http://www.csspop.com/view/613*/
+        .button {
+            margin: 0px auto 0px auto;
+            padding: 0px;
+            clear: both;
+            float: none;
+            height: auto;
+            /*width: 150px;*/
+            border: 1px solid #CCC;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            box-shadow:0px 1px 0px #fff;
+        }
+        .button a {
+            color: #333;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            font-size: 14px;
+            /*line-height: 30px;*/
+            padding: 3px;
+            padding-left: 5px;
+            padding-right: 5px;
+            border-top-width: 1px;
+            border-top-style: solid;
+            border-top-color: #FFF;
+            background-color: #f3f3f3;
+            background-image:-webkit-linear-gradient(top,#f3f3f3 0%,#D9D9D9 100%);
+            background-image:-moz-linear-gradient(top,#f3f3f3 0%,#D9D9D9 100%);
+            background-image:-o-linear-gradient(top,#f3f3f3 0%,#D9D9D9 100%);
+            background-image:linear-gradient(top,#f3f3f3 0%,#D9D9D9 100%);
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            text-shadow:0px 1px 0px #fff;
+        }
+        .button a:hover {
+            background-color: #E5E5E5;
+            background-image:-webkit-linear-gradient(top,#E5E5E5 0%,#f3f3f3 50%,#f3f3f3 100%);
+            background-image:-moz-linear-gradient(top,#E5E5E5 0%,#f3f3f3 50%,#f3f3f3 100%);
+            background-image:-o-linear-gradient(top,#E5E5E5 0%,#f3f3f3 50%,#f3f3f3 100%);
+            background-image:linear-gradient(top,#E5E5E5 0%,#f3f3f3 50%,#f3f3f3 100%);
+            text-shadow:0px 1px 0px #fff;
+        }
+        .button a:active {
+            background-image:-webkit-linear-gradient(top,#E5E5E5 0%,#f3f3f3 70%,#ebebeb 100%);
+            background-image:-moz-linear-gradient(top,#E5E5E5 0%,#f3f3f3 70%,#ebebeb 100%);
+            background-image:-o-linear-gradient(top,#E5E5E5 0%,#f3f3f3 70%,#ebebeb 100%);
+            background-image:linear-gradient(top,#E5E5E5 0%,#f3f3f3 70%,#ebebeb 100%);
+            box-shadow:inset 0px 1px 15px #ccc;
+        }
+
+
+        /*http://www.csspop.com/view/533*/
+        input[type=text], textarea {
+            transition: all 0.30s ease-in-out;
+            -webkit-transition: all 0.30s ease-in-out;
+            -moz-transition: all 0.30s ease-in-out;
+            border:#fff 1px solid;
+            outline:none;
+            padding: 3px 0px 3px 3px;
+            margin: 5px 1px 3px 0px;
+            border: 1px solid #DDDDDD;
+        }
+
+        input[type=text]:focus, textarea:focus {
+            box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+            -webkit-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+            -moz-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+            padding: 3px 0px 3px 3px;
+            margin: 5px 1px 3px 0px;
+            border: 1px solid rgba(81, 203, 238, 1);;
+        }
     </style>
 
     <div class="bitbucket">

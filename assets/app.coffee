@@ -716,7 +716,7 @@ class PropsPanel
             prop.value = "[]"
 
 
-          value_string = "<input type=\"\" value=\"#{prop.value}\"/>"
+          value_string = "<input type=\"text\" value=\"#{prop.value}\"/>"
 
           color = ""
           if name == "Color"
@@ -734,7 +734,7 @@ class PropsPanel
             [font, size, bold, italic, underline] = prop.value.substr(1,  prop.value.length - 2 ).split(',')
 
             value_string = "
-            <span class=\"font_name\" style=\"font-family: #{font}\">#{font}</span>,<span class=\"font_size\">#{size}</span><button class=\"font_selector_btn\">Изменить </button>
+            <span class=\"font_name\" style=\"font-family: #{font}\">#{font}</span>,<span class=\"font_size\">#{size}</span><button class=\"button font_selector_btn\"><a href=\"#\"> Изменить </a></button>
             <div class=\"font_selector\" style=\"display: none;\">
                 <div>Font: <input class=\"font\" value=\"#{font}\" /></div>
                 <div>Size: <input type=\"number\" class=\"size\" value=\"#{size}\" /></div>
@@ -758,11 +758,11 @@ class PropsPanel
               )
               $('.font_selector_btn').toggle(
                 ->
-                    $(@).parent().find('.font_selector').show()
-                    $(@).text(' Изменить ')
+                    $(@).parent().find('.font_selector').slideDown()
+                    $(@).html('<a href="#">  Изменить </a>')
                 ,->
-                    $(@).parent().find('.font_selector').hide()
-                    $(@).text(' Скрыть ')
+                    $(@).parent().find('.font_selector').slideUp()
+                    $(@).html('<a href="#"> Скрыть </a>')
               )
 
               $('.font_selector .size').bind('keyup mouseup', ->
