@@ -10,12 +10,12 @@ html, body {
 }
 
 #menu {
-    /*top: 5px;*/
-    position: relative;
+    z-index: 100000;
+    top: 0px;
+    position: fixed;
     height: 31px; /* ������ */
     width: 100%; /* ������ */
     background-color: black;
-
     float: left;
 }
 
@@ -49,16 +49,78 @@ html, body {
 
 
 #right_menu {
-    top: 20px;
-    height: 400px;/* ������ */
-    width: 200px; /* ������ */
-    position: relative; /* ����������������*/
-    border: 0px solid black; /* ����� ������ ��������� */
-    right: 20px;
-    float:right;
+    z-index: 100000;
+    top: 55px;
+    right: 0px;
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    float: right;
     font-size: 16pt;
     font-style: italic;
-    color: #777777;
+    color: #777;
+    font-size: 14pt;
+    font-style: italic;
+    font-family: "Droid Sans";
+    border-left: 1px solid deepskyblue;
+    background: white;
+}
+
+#right_menu .head{
+    width: 230px;
+    background: azure;
+}
+
+#right_menu > div{
+    width: 230px;
+    border-bottom: 1px solid deepskyblue;
+    text-align: left;
+}
+
+
+#right_menu > div > span{
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: 1px solid deepskyblue;
+    background: beige;
+    width: 100%;
+}
+
+#right_menu > div > span:first-child{
+    border-left: 0;
+
+}
+
+#right_menu_min {
+    z-index: 100000;
+    position: fixed;
+    right: 0px;
+    padding: 5px;
+    padding-top: 0px;
+    top: 31px;
+    cursor: pointer;
+    background-color: khaki;
+    width: 190px;
+    border-left: 1px solid deepskyblue;
+    border-bottom: 1px solid deepskyblue;
+}
+
+
+#left_menu {
+    z-index: 100000;
+    background-color: white;
+    top: 55px;
+    left: -10px;
+    position: fixed;
+    height: 100%;
+    width: 120px;
+    margin:0 10px 0 10px;
+    float:left;
+    font-size: 14pt;
+    font-style: italic;
+    font-family: "Droid Sans";
+    color: #777;
+    border-right: 1px solid deepskyblue;
 }
 
 #left_menu_min {
@@ -75,23 +137,6 @@ html, body {
     border-bottom: 1px solid deepskyblue;
 }
 
-#left_menu {
-    z-index: 99999;
-    background-color: white;
-    position: fixed;
-    top: 55px;
-    left: -10px;
-    height: 100%;/* ������ */
-    width: 120px; /* ������ */
-    margin:0 10px 0 10px;/* ������� ������ � ����*/
-    float:left;
-    font-size: 14pt;
-    font-style: italic;
-    font-family: "Droid Sans";
-    color: #777;
-    border-right: 1px solid deepskyblue;
-
-}
 #left_menu_sliter {
     height: 200px;
     width: 500px;
@@ -119,11 +164,10 @@ html, body {
 }
 
 #conte {
-    position: absolute;
-    left: 0px;
-    right: 230px;
-    top: 55px;
-    bottom: 30px;
+    position: fixed;
+    left: 121px;
+    top: 30px;
+    width: 2000px;
 }
 
 hr{

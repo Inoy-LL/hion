@@ -744,12 +744,12 @@ class PropsPanel
             </div>"
 
 
-          $("#props").append("<tr>
-                               <td style=\"vertical-align: top;\">#{name}</td>
-                               <td class=\"value\">
+          $("#props").append("<div>
+                               <span style=\"vertical-align: top;\">#{name}</span>
+                               <span class=\"value\">
                                #{value_string}
-                               </td>
-                               </tr>")
+                               </span>
+                               </div>")
 
           if name == "Font"
               $(".font").fontSelector((font)->
@@ -907,13 +907,20 @@ class ElementsPanel
 $('#left_menu_min').toggle ->
       $(@).text("+ Элементы")
       $('#left_menu').animate({left: "-=200px"})
+      $('#conte').animate({left: "-=200px"})
   ,->
       $(@).text("- Элементы")
       $('#left_menu').animate({left: "+=200px"})
+      $('#conte').animate({left: "+=200px"})
 
 
 
-
+$('#right_menu_min').toggle ->
+    $(@).text("+ Свойства")
+    $('#right_menu').animate({right: "-=250px"})
+,->
+    $(@).text("- Свойства")
+    $('#right_menu').animate({right: "+=250px"})
 
 
 
