@@ -78,8 +78,8 @@ html, body {
 #left_menu {
     z-index: 99999;
     background-color: white;
-    position: relative;
-    top: 24px;
+    position: fixed;
+    top: 55px;
     left: -10px;
     height: 100%;/* ������ */
     width: 120px; /* ������ */
@@ -92,6 +92,19 @@ html, body {
     border-right: 1px solid deepskyblue;
 
 }
+#left_menu_sliter {
+    height: 200px;
+    width: 500px;
+    border: 5px solid #aaa;
+}
+#left_menu_sliter div {
+    overflow: auto;
+}
+.vsplitbar {
+    width: 5px;
+    background: #aaa;
+}
+
 
 #poligon{
     width: 100%; /* ������ */

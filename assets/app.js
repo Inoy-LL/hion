@@ -1051,10 +1051,14 @@
 
   $('#left_menu_min').toggle(function() {
     $(this).text("+ Элементы");
-    return $('#left_menu').slideUp();
+    return $('#left_menu').animate({
+      left: "-=200px"
+    });
   }, function() {
     $(this).text("- Элементы");
-    return $('#left_menu').slideDown();
+    return $('#left_menu').animate({
+      left: "+=200px"
+    });
   });
 
   ElementsPanel.create();
