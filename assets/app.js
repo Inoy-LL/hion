@@ -105,7 +105,7 @@
     },
     helper: {
       color: {
-        fill: "#eee",
+        fill: "khaki",
         text: "black"
       }
     }
@@ -488,7 +488,7 @@
       element.eid = id;
       rect.hover(function(e) {
         Helper.setText(" " + name + " ");
-        Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y);
+        Helper.move(e.offsetX, e.offsetY);
         return Helper.show();
       }, function() {
         return Helper.hide();
@@ -522,7 +522,7 @@
       dot.hover(function(e) {
         Paper.prototype.hover_dot_animate(this, 'on');
         Helper.setText(this.text);
-        Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y);
+        Helper.move(e.offsetX, e.offsetY);
         Helper.show();
         if (this.link) {
           this.link.attr({

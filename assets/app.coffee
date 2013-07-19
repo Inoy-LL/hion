@@ -89,7 +89,7 @@ conf =
 
   helper:
       color:
-          fill: "#eee"
+          fill: "khaki"
           text: "black"
 
 class Scheme
@@ -387,7 +387,8 @@ class RaphaelAdapter
 
       rect.hover( (e)->
           Helper.setText " #{name} "
-          Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y)
+          #console.log e
+          Helper.move(e.offsetX , e.offsetY)
           Helper.show()
       ,->
           Helper.hide()
@@ -417,7 +418,7 @@ class RaphaelAdapter
       dot.hover( (e)->
           Paper::hover_dot_animate( this, 'on')
           Helper.setText(this.text)
-          Helper.move(e.pageX - conf.paper.offset.x, e.pageY - conf.paper.offset.y)
+          Helper.move(e.offsetX, e.offsetY)
           Helper.show()
           if this.link
               this.link.attr "stroke-width": conf.link.active_size
