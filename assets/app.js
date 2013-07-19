@@ -1016,7 +1016,7 @@
 
     ElementsPanel.element_panel_select = function(gid) {
       var el, elements_, _i, _len;
-      $('.elements > .group > .elements > *').empty();
+      $('.elements > .group > .elements > *').slideUp().empty();
       if (last_gid === gid) {
         last_gid = -1;
         return false;
@@ -1028,7 +1028,7 @@
           elements_ += "<span class=\"el\"><img data-name=\"" + el[1] + "\" src=\"/delphi/icon/" + el[1] + ".ico\"/></span>";
         }
       }
-      $("#g" + gid + " > .elements").append(elements_);
+      $("#g" + gid + " > .elements").append(elements_).hide().slideDown();
       return last_gid = gid;
     };
 
@@ -1040,7 +1040,7 @@
         var id, name;
         id = Math.round(Math.random() * (10000000 - 1000000) + 1000000);
         name = $(this).data('name');
-        Scheme.addElement(name, id, 50, 50, {});
+        Scheme.addElement(name, id, 350, 350, {});
         return false;
       });
     };
@@ -1048,6 +1048,14 @@
     return ElementsPanel;
 
   })();
+
+  $('#left_menu_min').toggle(function() {
+    $(this).text("- Элементы");
+    return $('#left_menu').slideDown();
+  }, function() {
+    $(this).text("+ Элементы");
+    return $('#left_menu').slideUp();
+  });
 
   ElementsPanel.create();
 

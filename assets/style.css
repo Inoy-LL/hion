@@ -1,26 +1,26 @@
-html, body{
-height: 100%;/* ������ */
-width: 100%; /* ������ */
-padding:0;/* ���������� ������ � ��������*/
-margin:0;/* ������� ������ � ����*/
--webkit-box-shadow:0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
--moz-box-shadow:0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
-box-shadow:  0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
-text-align: center;
+html, body {
+    height: 100%; /* ������ */
+    width: 100%; /* ������ */
+    padding: 0; /* ���������� ������ � ��������*/
+    margin: 0; /* ������� ������ � ����*/
+    -webkit-box-shadow: 0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
+    -moz-box-shadow: 0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
+    box-shadow: 0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
+    text-align: center;
 }
 
-#menu{
-/*top: 5px;*/
-position:relative;
-height: 31px;/* ������ */
-width: 100%; /* ������ */
-background-color:black;
+#menu {
+    /*top: 5px;*/
+    position: relative;
+    height: 31px; /* ������ */
+    width: 100%; /* ������ */
+    background-color: black;
 
-float:left;
+    float: left;
 }
 
 #menu input {
-position:relative;
+    position:relative;
     background: #DDD;
     font-size: 12px;
     font-family: sans-serif;
@@ -34,71 +34,99 @@ position:relative;
 }
 
 #home_icon {
-float:left;
-margin: 3px 10px 0px 10px;/* ������� ������ � ����*/
+    float:left;
+    margin: 3px 10px 0px 10px;/* ������� ������ � ����*/
 }
-
-#poligon{
-width: 100%; /* ������ */
-height: 100%;/* ������ */
-position:relative; /* ����������������*/
-background-image: url('/assets/net.svg');/* ������� ����������� - �����*/
-background-color: #FFFFFF;
-border-radius: 4px;
-box-shadow: inset 0px 1px 4px rgba(0,0,0,0.6);
-float:left;
-
-overflow: auto;
-}
-
-#left_menu {
-top: 20px;
-height: 400px;/* ������ */
-width: 200px; /* ������ */
-position:relative; /* ����������������*/
-border: 0px solid black; /* ����� ������ ��������� */
-margin:0 10px 0 10px;/* ������� ������ � ����*/
-left: 10px;
-float:left;
-font-size: 16pt;
-font-style: italic;
-color: #777777;
-}
-hr{
-position:static;
-float:left;
-font-size: 18pt;
-font-style: italic;
-padding: 0;
-margin: 0;}
 
 
 #right_menu {
-top: 20px;
-height: 400px;/* ������ */
-width: 200px; /* ������ */
-position:relative; /* ����������������*/
-border: 0px solid black; /* ����� ������ ��������� */
-right: 20px;
-float:right;
-font-size: 16pt;
-font-style: italic;
-color: #777777;
+    top: 20px;
+    height: 400px;/* ������ */
+    width: 200px; /* ������ */
+    position: relative; /* ����������������*/
+    border: 0px solid black; /* ����� ������ ��������� */
+    right: 20px;
+    float:right;
+    font-size: 16pt;
+    font-style: italic;
+    color: #777777;
+}
+
+#left_menu_min {
+    z-index: 100000;
+    position: fixed;
+    left: 0px;
+    padding: 5px;
+    padding-top: 0px;
+    top: 31px;
+    cursor: pointer;
+    background-color: antiquewhite;
+    width: 110px;
+}
+
+#left_menu {
+
+    display: none;
+    z-index: 99999;
+    background-color: white;
+    position: relative;
+    top: 24px;
+    left: -10px;
+    height: 100%;/* ������ */
+    width: 120px; /* ������ */
+    margin:0 10px 0 10px;/* ������� ������ � ����*/
+    float:left;
+    font-size: 14pt;
+    font-style: italic;
+    font-family: "News Cycle";
+    color: #777;
+}
+
+#poligon{
+    width: 100%; /* ������ */
+    height: 100%;/* ������ */
+    position: relative; /* ����������������*/
+    background-image: url('/assets/net.svg');/* ������� ����������� - �����*/
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    box-shadow: inset 0px 1px 4px rgba(0,0,0,0.6);
+    float:left;
+    overflow: auto;
 }
 
 #conte {
-position:absolute;
-left: 230px;
-right: 230px;
-top: 55px;
-bottom: 30px;
+    position: absolute;
+    left: 0px;
+    right: 230px;
+    top: 55px;
+    bottom: 30px;
+}
+
+hr{
+    font-size: 18pt;
+    font-style: italic;
+    padding: 0;
+    margin: 0;
+}
+
+
+/*������� ��������� ��������� */
+input, textarea {
+    outline: none;
 }
 
 /*������� ��������� ��������� */
-input, textarea {outline: none;} /*������� ��������� ��������� */
-input:active, textarea:active {outline: none;}/* �� �������� ����� */
-:focus {outline: none;}/* ������� ��� ��������� */
+input:active, textarea:active {
+    outline: none;
+}
+
+/* �� �������� ����� */
+:focus {
+    outline: none;
+}
+
+/* ������� ��� ��������� */
 
 .el {
-margin: 10px;
+    margin: 10px;
 }

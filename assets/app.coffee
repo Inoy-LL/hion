@@ -878,7 +878,7 @@ class ElementsPanel
       true
 
   @element_panel_select = (gid)->
-      $('.elements > .group > .elements > *').empty()
+      $('.elements > .group > .elements > *').slideUp().empty()
       if last_gid == gid
           last_gid = -1
           return false
@@ -889,7 +889,7 @@ class ElementsPanel
               elements_+="<span class=\"el\"><img data-name=\"#{el[1]}\" src=\"/delphi/icon/#{el[1]}.ico\"/></span>"
 
 
-      $("#g#{gid} > .elements").append(elements_)
+      $("#g#{gid} > .elements").append(elements_).hide().slideDown()
       last_gid = gid
 
   @bind_events = ->
@@ -899,8 +899,22 @@ class ElementsPanel
       $('.elements img').live 'click', ->
           id = Math.round( Math.random() * (10000000 - 1000000) + 1000000 )
           name = $(this).data('name')
-          Scheme.addElement(name, id, 50, 50, {} )
+          Scheme.addElement(name, id, 350, 350, {} )
           return false
+
+
+
+$('#left_menu_min').toggle ->
+      $(@).text("- Элементы")
+      $('#left_menu').slideDown()
+  ,->
+      $(@).text("+ Элементы")
+      $('#left_menu').slideUp()
+
+
+
+
+
 
 
 ElementsPanel.create()
