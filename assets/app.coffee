@@ -905,11 +905,12 @@ class ElementsPanel
 
 
 $('#left_menu_min').toggle ->
-      $(@).text("- Элементы")
-      $('#left_menu').slideDown()
-  ,->
       $(@).text("+ Элементы")
       $('#left_menu').slideUp()
+  ,->
+      $(@).text("- Элементы")
+      $('#left_menu').slideDown()
+
 
 
 

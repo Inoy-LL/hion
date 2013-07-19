@@ -1050,11 +1050,11 @@
   })();
 
   $('#left_menu_min').toggle(function() {
-    $(this).text("- Элементы");
-    return $('#left_menu').slideDown();
-  }, function() {
     $(this).text("+ Элементы");
     return $('#left_menu').slideUp();
+  }, function() {
+    $(this).text("- Элементы");
+    return $('#left_menu').slideDown();
   });
 
   ElementsPanel.create();
