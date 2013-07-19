@@ -790,14 +790,14 @@ $('#redraw').click ->
     Scheme.clear()
     Scheme.load $('textarea#sha_viewer').val()
 
-#$.ajax(
-#  url:'https://api.bitbucket.org/1.0/repositories/onefive/onefive.bitbucket.org/events?limit=1&start=0&type=pushed'
-#  type:'get'
-#  dataType:'jsonp'
-#).success (d)->
+$.ajax(
+  url:'https://api.bitbucket.org/1.0/repositories/onefive/onefive.bitbucket.org/events?limit=1&start=0&type=pushed'
+  type:'get'
+  dataType:'jsonp'
+).success (d)->
 
-#    last_commit = d.events[0].description.commits[0].description
-#    $('#last_commit').html "/ <a href=\"https://bitbucket.org/OneFive/onefive.bitbucket.org\">last commit</a>: #{last_commit}"
+    last_commit = d.events[0].description.commits[0].description
+    $('#last_commit').html "<a href=\"https://bitbucket.org/OneFive/onefive.bitbucket.org\">last commit</a>: #{last_commit}"
 
 #------------------------------------
 

@@ -46,7 +46,7 @@
             font-family: verdana;
             position: fixed;
             color: gray;
-            z-index: 1000;
+            z-index: 10000000;
         }
 
         a,a:visited {
@@ -208,13 +208,29 @@
             font-size: 12px;
         }
 
+        #last_commit {
+            position: fixed;
+            bottom: 0px;
+            left: 120px;
+            z-index: 99999;
+            background: #272822;
+            color: rgb(249, 38, 114);
+            padding: 7px;
+        }
+
+        #last_commit a {
+            color: rgb(102, 217, 239);
+        }
+
     </style>
 
 
     <div class="bitbucket">
         Project on <a href="https://bitbucket.org/OneFive/onefive.bitbucket.org">bitbucket / Список изменений</a>
-        <span id="last_commit"></span>
+
     </div>
+
+    <span id="last_commit"></span>
 
     <div class="select_font">
 

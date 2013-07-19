@@ -150,6 +150,9 @@ html, body {
     background: #aaa;
 }
 
+#show_file {
+    z-index: 9000000;
+}
 
 #poligon{
     width: 100%; /* ������ */
