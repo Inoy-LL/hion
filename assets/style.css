@@ -1,8 +1,8 @@
 html, body {
-    height: 100%; /* ������ */
-    width: 100%; /* ������ */
-    padding: 0; /* ���������� ������ � ��������*/
-    margin: 0; /* ������� ������ � ����*/
+    height: 100%; 
+    width: 100%;
+    padding: 0;
+    margin: 0; 
     -webkit-box-shadow: 0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
     -moz-box-shadow: 0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
     box-shadow: 0 0, 0 0 80px rgba(0, 0, 0, 0.4) inset;
@@ -13,8 +13,8 @@ html, body {
     z-index: 100000;
     top: 0px;
     position: fixed;
-    height: 31px; /* ������ */
-    width: 100%; /* ������ */
+    height: 31px;
+    width: 100%;
     background-color: black;
     float: left;
 }
@@ -27,15 +27,15 @@ html, body {
     padding:  1px 7px;
     width: 80px;
     border-radius: 8px;
-	margin: 7px 10px 0px 0px;/* ������� ������ � ����*/
+	margin: 7px 10px 0px 0px;
     box-shadow: rgba(0,0,0,0.4) 0 2px 2px inset;
-	border: 0px; /* ����� ������ ��������� */
+	border: 0px; 
 	float:right;
 }
 
-#home_icon {
+.menu_icon {
     float:left;
-    margin: 3px 10px 0px 10px;/* ������� ������ � ����*/
+    margin: 3px 10px 0px 10px;
 }
 
 .group > .name {
@@ -155,10 +155,10 @@ html, body {
 }
 
 #poligon{
-    width: 100%; /* ������ */
-    height: 100%;/* ������ */
-    position: relative; /* ����������������*/
-    background-image: url('/assets/net.svg');/* ������� ����������� - �����*/
+    width: 100%;
+    height: 100%;
+    position: relative; 
+    background-image: url('/assets/net.svg');
     background-color: #FFFFFF;
     border-radius: 2px;
     box-shadow: inset 0px 1px 4px rgba(0,0,0,0.6);
@@ -181,23 +181,14 @@ hr{
 }
 
 
-/*������� ��������� ��������� */
 input, textarea {
     outline: none;
 }
 
-/*������� ��������� ��������� */
 input:active, textarea:active {
     outline: none;
 }
 
-/* �� �������� ����� */
 :focus {
     outline: none;
-}
-
-/* ������� ��� ��������� */
-
-.el {
-    margin: 10px;
 }
