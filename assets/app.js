@@ -1090,18 +1090,27 @@
       right: "-=95",
       top: "+=120",
       opacity: "-=0.3"
+    }, "slow", function() {
+      return $(this).animate({
+        right: "+=50",
+        'width': "-=100"
+      });
     });
     return $('#right_menu').animate({
       right: "-=250px"
     });
   }, function() {
-    $(this).animateRotate(-90, 0).animate({
-      right: "+=95",
-      top: "-=120",
-      opacity: "+=0.3"
-    });
-    return $('#right_menu').animate({
-      right: "+=250px"
+    return $(this).animate({
+      'width': "+=100"
+    }, 100, function() {
+      $(this).animateRotate(-90, 0).animate({
+        right: "+=45",
+        top: "-=120",
+        opacity: "+=0.3"
+      });
+      return $('#right_menu').animate({
+        right: "+=250px"
+      });
     });
   });
 

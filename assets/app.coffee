@@ -922,12 +922,17 @@ $('#left_menu_min').toggle ->
 
 $('#right_menu_min').toggle ->
     $(@).animateRotate(0, -90)
-    .animate({right: "-=95", top: "+=120", opacity: "-=0.3"})
+    .animate({right: "-=95", top: "+=120", opacity: "-=0.3"}, "slow", ->
+        $(@).animate(right: "+=50", 'width': "-=100")
+    )
     $('#right_menu').animate({right: "-=250px"})
 ,->
-    $(@).animateRotate(-90, 0)
-    .animate({right: "+=95", top: "-=120", opacity: "+=0.3"})
-    $('#right_menu').animate({right: "+=250px"})
+    $(@).animate( 'width': "+=100", 100, ->
+        $(@).animateRotate(-90, 0)
+        .animate({right: "+=45", top: "-=120", opacity: "+=0.3"})
+        $('#right_menu').animate({right: "+=250px"})
+    )
+
 
 
 
