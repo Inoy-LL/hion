@@ -935,10 +935,7 @@ $('#right_menu_min').toggle ->
 
 
 
-
-
 ElementsPanel.create()
-
 
 
 
