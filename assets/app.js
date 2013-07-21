@@ -45,11 +45,11 @@
       }
     },
     icon: {
-      path: "/delphi/icon/",
+      path: "delphi/icon/",
       size: 24
     },
     conf: {
-      path: "/delphi_utf/conf/"
+      path: "delphi_utf/conf/"
     },
     link: {
       color: {
