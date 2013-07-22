@@ -803,7 +803,6 @@ $.ajax(
 
 #------------------------------------
 
-
 #DOT HELPER Todo: move to adapter
 class Helper
   helper = null
