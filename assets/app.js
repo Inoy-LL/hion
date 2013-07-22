@@ -71,13 +71,23 @@
       new_link_opacity: 1,
       min_random_color: 0x777777,
       path: function(start_x, start_y, stop_x, stop_y, type) {
-        var x, y;
-        x = Math.abs(stop_x - start_x) / 2;
-        y = Math.abs(stop_y - start_y) / 2;
+        var x, xx, y, yy;
+        xx = stop_x - start_x;
+        yy = stop_y - start_y;
+        x = Math.abs(xx) / 2;
+        y = Math.abs(yy) / 2;
         if (type === 2) {
-          return "M" + start_x + "," + start_y + "," + (start_x + x) + "," + start_y + "," + (stop_x - x) + "," + stop_y + ",L" + stop_x + "," + stop_y;
+          if (start_x > stop_x) {
+            return "M" + start_x + "," + start_y + " " + (start_x + x) + "," + start_y + " " + (start_x + x) + "," + (start_y + yy / 2) + " " + (start_x + xx - x) + "," + (start_y + yy / 2) + " " + (stop_x - x) + "," + stop_y + " L" + stop_x + "," + stop_y;
+          } else {
+            return "M" + start_x + "," + start_y + " " + (start_x + x) + "," + start_y + " " + (stop_x - x) + "," + stop_y + " L" + stop_x + "," + stop_y;
+          }
         } else {
-          return "M" + start_x + "," + start_y + "," + start_x + "," + (start_y - y) + "," + stop_x + "," + (stop_y + y) + ",L" + stop_x + "," + stop_y;
+          if (stop_y > start_y) {
+            return "M" + start_x + "," + start_y + " " + start_x + "," + (start_y - y) + " " + (start_x + xx / 2) + "," + (start_y - y) + " " + (start_x + xx / 2) + "," + (stop_y + yy / 2) + " " + stop_x + "," + (stop_y + y) + " L" + stop_x + "," + stop_y;
+          } else {
+            return "M" + start_x + "," + start_y + " " + start_x + "," + (start_y - y) + " " + stop_x + "," + (stop_y + y) + " L" + stop_x + "," + stop_y;
+          }
         }
       }
     },
@@ -664,7 +674,7 @@
                 continue;
               }
               path = l.attr('path');
-              last = path.length - 1;
+              last = l.old_path.length - 1;
               l.attr('transform', "");
               if (l.dot1.dot_type === 1 || l.dot1.dot_type === 2) {
                 dot_type = 2;
