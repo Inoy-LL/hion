@@ -1035,7 +1035,7 @@
       for (_i = 0, _len = elements.length; _i < _len; _i++) {
         el = elements[_i];
         if (el[3] === gid) {
-          elements_ += "<span class=\"el\"><img data-name=\"" + el[1] + "\" src=\"/delphi/icon/" + el[1] + ".ico\"/></span>";
+          elements_ += "<span class=\"el\"><img data-name=\"" + el[1] + "\" src=\"delphi/icon/" + el[1] + ".ico\"/></span>";
         }
       }
       $("#g" + gid + " > .elements").append(elements_).hide().slideDown();
