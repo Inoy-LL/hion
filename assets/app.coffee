@@ -864,7 +864,7 @@ class ElementsPanel
 
   @create: ->
       # Todo: add from elements.sqlite
-      $.ajax(url:'/delphi_utf/Elements.json', dataType: 'json')
+      $.ajax(url:'/delphi_utf/Elements.txt', dataType: 'json')
       .success (data)->
         html = ""
         for g in data.groups

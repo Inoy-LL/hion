@@ -1004,7 +1004,7 @@
 
     ElementsPanel.create = function() {
       $.ajax({
-        url: '/delphi_utf/Elements.json',
+        url: '/delphi_utf/Elements.txt',
         dataType: 'json'
       }).success(function(data) {
         var g, html, _i, _len, _ref;
