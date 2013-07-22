@@ -71,22 +71,12 @@
       new_link_opacity: 1,
       min_random_color: 0x777777,
       path: function(start_x, start_y, stop_x, stop_y, type) {
-        var x, y, _ref, _ref1, _ref2, _ref3;
+        var x, y;
         x = Math.abs(stop_x - start_x) / 2;
         y = Math.abs(stop_y - start_y) / 2;
         if (type === 2) {
-          if ((-15 < (_ref = stop_x - start_x) && _ref > 15)) {
-            if ((-20 < (_ref1 = stop_y - start_y) && _ref1 > 20)) {
-              x = 10;
-            }
-          }
           return "M" + start_x + "," + start_y + "," + (start_x + x) + "," + start_y + "," + (stop_x - x) + "," + stop_y + ",L" + stop_x + "," + stop_y;
         } else {
-          if ((-15 < (_ref2 = stop_y - start_y) && _ref2 > 15)) {
-            if ((-20 < (_ref3 = stop_x - start_x) && _ref3 > 20)) {
-              y = 10;
-            }
-          }
           return "M" + start_x + "," + start_y + "," + start_x + "," + (start_y - y) + "," + stop_x + "," + (stop_y + y) + ",L" + stop_x + "," + stop_y;
         }
       }
@@ -563,9 +553,9 @@
           start_y = bbox.y + conf.dot.radius.min * 2;
           path = Scheme.create_line.attr('path');
           last = path[1].length - 1;
-          path[1][last - 1] = start_x;
-          path[1][last] = start_y;
-          Scheme.create_line.attr('path', path);
+          path[last - 1][0] = start_x;
+          path[last][1] = start_y;
+          Scheme.create_line.attr('path', conf.link.path(path[0][1], path[0][2], start_x, start_y, Scheme.create_line.dot_type));
           color = conf.link.color.events;
           if (this.dot_type > 2) {
             color = conf.link.color.vars;

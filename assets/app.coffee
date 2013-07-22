@@ -56,15 +56,10 @@ conf =
         y = Math.abs(stop_y - start_y)/2
 
         if type == 2
-          if -15 < (stop_x - start_x) > 15
-            if -20 < (stop_y - start_y) > 20
-                x = 10
 
           return "M#{start_x},#{start_y},#{start_x+x},#{start_y},#{stop_x-x},#{stop_y},L#{stop_x},#{stop_y}"
         else
-          if -15 < (stop_y - start_y) > 15
-            if -20 < (stop_x - start_x) > 20
-              y = 10
+
           #else
           #  y = 10
           return "M#{start_x},#{start_y},#{start_x},#{start_y-y},#{stop_x},#{stop_y+y},L#{stop_x},#{stop_y}"
@@ -456,12 +451,12 @@ class RaphaelAdapter
             path = Scheme.create_line.attr 'path'
 
             last = path[1].length - 1
-            path[1][last - 1] = start_x #this.attr 'cx'
-            path[1][last] = start_y #this.attr 'cy'
+            path[last - 1][0] = start_x #this.attr 'cx'
+            path[last][1] = start_y #this.attr 'cy'
 
 
 
-            Scheme.create_line.attr 'path', path
+            Scheme.create_line.attr 'path', conf.link.path(path[0][1], path[0][2], start_x, start_y, Scheme.create_line.dot_type)
             color = conf.link.color.events
             if this.dot_type > 2
                 color = conf.link.color.vars
