@@ -609,7 +609,7 @@ class RaphaelAdapter
               # делаем полную трасировку
               if this.el
                 for el in this.el
-                  if el.type == "path"
+                  if el.type == "path" and el.dot2
                       path = el.attr "path"
                       #last = path[1].length - 1
                       dot1 = el.dot1.getBBox()
