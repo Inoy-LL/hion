@@ -565,7 +565,7 @@
           last = path[1].length - 1;
           path[last - 1][0] = start_x;
           path[last][1] = start_y;
-          Scheme.create_line.attr('path', conf.link.path(path[0][1], path[0][2], start_x, start_y, Scheme.create_line.dot_type));
+          Scheme.create_line.attr('path', conf.link.path(start_x, start_y, path[0][1], path[0][2], Scheme.create_line.dot_type));
           color = conf.link.color.events;
           if (this.dot_type > 2) {
             color = conf.link.color.vars;
@@ -910,16 +910,6 @@
   $('#redraw').click(function() {
     Scheme.clear();
     return Scheme.load($('textarea#sha_viewer').val());
-  });
-
-  $.ajax({
-    url: 'https://api.github.com/repos/onefive/hion/commits/ce99c83bac202013e032cc2cf7233b305bd7fc99',
-    type: 'get',
-    dataType: 'jsonp'
-  }).success(function(d) {
-    var last_commit;
-    last_commit = d.commit.message;
-    return $('#last_commit').html("<a href=\"https://github.com/OneFive/hion/commits/master\">last commit</a>: " + last_commit);
   });
 
   Helper = (function() {
