@@ -913,13 +913,13 @@
   });
 
   $.ajax({
-    url: 'https://api.bitbucket.org/1.0/repositories/onefive/onefive.bitbucket.org/events?limit=1&start=0&type=pushed',
+    url: 'https://api.github.com/repos/onefive/hion/commits/ce99c83bac202013e032cc2cf7233b305bd7fc99',
     type: 'get',
     dataType: 'jsonp'
   }).success(function(d) {
     var last_commit;
-    last_commit = d.events[0].description.commits[0].description;
-    return $('#last_commit').html("<a href=\"https://bitbucket.org/OneFive/onefive.bitbucket.org\">last commit</a>: " + last_commit);
+    last_commit = d.commit.message;
+    return $('#last_commit').html("<a href=\"https://github.com/OneFive/hion/commits/master\">last commit</a>: " + last_commit);
   });
 
   Helper = (function() {
